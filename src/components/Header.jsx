@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-
+import logo from '../../public/logo.png'
 const Header = () => {
   const location = useLocation()
 
@@ -17,10 +17,8 @@ const Header = () => {
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-bold">AI</span>
-            </div>
+          <div className=" w-20 bg-white rounded-full flex items-center justify-center">
+             <img src={logo} className=" rounded-full"/>
           </div>
         </Link>
 
@@ -40,8 +38,14 @@ const Header = () => {
         </div>
 
         {/* Get in Touch Button */}
-        <button className="bg-transparent border border-gray-600 text-white px-6 py-2 rounded-full hover:border-gray-400 transition-colors duration-200 text-sm font-medium">
-          Get in Touch
+        <button className="hidden lg:flex relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200">
+          {/* Gradient border layer */}
+          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
+
+          {/* Inner solid bg to create border effect */}
+          <span className="relative block rounded-full bg-[#202024] px-6 py-2">
+            Get in Touch
+          </span>
         </button>
 
         {/* Mobile menu button */}
