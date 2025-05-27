@@ -70,62 +70,28 @@ function App() {
             {/* Main circuit paths */}
             <g className="circuit-paths">
               {/* Horizontal main lines */}
-              <path
-                d="M 0 200 L 400 200 L 450 250 L 800 250 L 850 200 L 1200 200 L 1250 250 L 1600 250 L 1650 200 L 1920 200"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
+              <path d="M 0 200 L 400 200 L 450 250 L 800 250 L 850 200 L 1200 200 L 1250 250 L 1600 250 L 1650 200 L 1920 200" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
+              <path d="M 0 400 L 300 400 L 350 450 L 700 450 L 750 400 L 1100 400 L 1150 450 L 1500 450 L 1550 400 L 1920 400" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
+              <path d="M 0 600 L 500 600 L 550 650 L 900 650 L 950 600 L 1300 600 L 1350 650 L 1700 650 L 1750 600 L 1920 600" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
+              <path d="M 0 800 L 200 800 L 250 850 L 600 850 L 650 800 L 1000 800 L 1050 850 L 1400 850 L 1450 800 L 1920 800" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
 
-              <path
-                d="M 0 400 L 300 400 L 350 450 L 700 450 L 750 400 L 1100 400 L 1150 450 L 1500 450 L 1550 400 L 1920 400"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
+              <path d="M 0 300 L 300 300 L 350 350 L 700 350 L 750 300 L 1100 300 L 1150 350 L 1500 350 L 1550 300 L 1920 300" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 0 500 L 400 500 L 450 550 L 800 550 L 850 500 L 1200 500 L 1250 550 L 1600 550 L 1650 500 L 1920 500" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 0 700 L 200 700 L 250 750 L 600 750 L 650 700 L 1000 700 L 1050 750 L 1400 750 L 1450 700 L 1920 700" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 0 900 L 200 900 L 250 950 L 600 950 L 650 900 L 1000 900 L 1050 950 L 1400 950 L 1450 900 L 1920 900" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
 
-              <path
-                d="M 0 600 L 500 600 L 550 650 L 900 650 L 950 600 L 1300 600 L 1350 650 L 1700 650 L 1750 600 L 1920 600"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
-
-              <path
-                d="M 0 800 L 200 800 L 250 850 L 600 850 L 650 800 L 1000 800 L 1050 850 L 1400 850 L 1450 800 L 1920 800"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
 
               {/* Vertical connecting lines */}
-              <path
-                d="M 200 0 L 200 300 L 250 350 L 250 700 L 200 750 L 200 1080"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
+              <path d="M 200 0 L 200 300 L 250 350 L 250 700 L 200 750 L 200 1080" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
+              <path d="M 600 0 L 600 150 L 650 200 L 650 500 L 600 550 L 600 1080" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
+              <path d="M 1000 0 L 1000 250 L 1050 300 L 1050 600 L 1000 650 L 1000 1080" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
+              <path d="M 1400 0 L 1400 350 L 1450 400 L 1450 750 L 1400 800 L 1400 1080" stroke="rgba(59, 130, 246, 0.3)" strokeWidth="2" fill="none" />
 
-              <path
-                d="M 600 0 L 600 150 L 650 200 L 650 500 L 600 550 L 600 1080"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
-
-              <path
-                d="M 1000 0 L 1000 250 L 1050 300 L 1050 600 L 1000 650 L 1000 1080"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
-
-              <path
-                d="M 1400 0 L 1400 350 L 1450 400 L 1450 750 L 1400 800 L 1400 1080"
-                stroke="rgba(59, 130, 246, 0.3)"
-                strokeWidth="2"
-                fill="none"
-              />
+              <path d="M 100 0 L 100 200 L 150 250 L 150 600 L 100 650 L 100 1080" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 400 0 L 400 180 L 450 230 L 450 580 L 400 630 L 400 1080" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 800 0 L 800 220 L 850 270 L 850 620 L 800 670 L 800 1080" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 1200 0 L 1200 260 L 1250 310 L 1250 660 L 1200 710 L 1200 1080" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
+              <path d="M 1600 0 L 1600 300 L 1650 350 L 1650 700 L 1600 750 L 1600 1080" stroke="rgba(59, 130, 246, 0.2)" strokeWidth="2" fill="none" />
             </g>
 
             {/* Animated flowing data paths */}
@@ -146,6 +112,20 @@ function App() {
                 <animate attributeName="stroke-dashoffset" values="0;-2000" dur="4s" repeatCount="indefinite" />
               </path>
 
+              <path d="M 1200 0 L 1200 260 L 1250 310 L 1250 660 L 1200 710 L 1200 1080" stroke="url(#flowingGradient)" strokeWidth="3" fill="none" filter="url(#glow)">                <animate
+                  attributeName="stroke-dasharray"
+                  values="0 2000;100 2000;0 2000"
+                  dur="4s"
+                  repeatCount="indefinite"
+                />
+                <animate attributeName="stroke-dashoffset" values="0;-2000" dur="4s" repeatCount="indefinite" /></path>
+              <path d="M 1600 0 L 1600 300 L 1650 350 L 1650 700 L 1600 750 L 1600 1080" stroke="url(#flowingGradient)" strokeWidth="3" fill="none" filter="url(#glow)">                <animate
+                  attributeName="stroke-dasharray"
+                  values="0 2000;100 2000;0 2000"
+                  dur="4s"
+                  repeatCount="indefinite"
+                />
+                <animate attributeName="stroke-dashoffset" values="0;-2000" dur="4s" repeatCount="indefinite" /></path>
               <path
                 d="M 200 0 L 200 300 L 250 350 L 250 700 L 200 750 L 200 1080"
                 stroke="url(#flowingGradient)"

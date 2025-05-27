@@ -25,7 +25,7 @@ const Header = () => {
         </Link>
 
         {/* Navigation Menu */}
-        <div className="hidden lg:flex items-center space-x-8">
+        <div className=" bg-[#202024] border border-white/20 rounded-3xl px-8 py-4 shadow-2xl hidden lg:flex items-center space-x-8" style={{ boxShadow: '0 8px 10px 2px rgba(255, 153, 51, 0.15)' }}>
           {navItems.map((item, index) => (
             <Link
               key={index}
