@@ -15,6 +15,7 @@ const Home = () => {
     "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df080?auto=format&fit=crop&w=800&q=80",
   ];
   
   return (
@@ -66,7 +67,7 @@ const Home = () => {
         title="Our Events"
         subtitle="A glimpse into our vibrant events and passionate community."
         images={dummyImages.slice(0, 4)}
-        large={false}
+        large={true}
       />
       <ApplicationsGrid />
       <ProjectsGrid />

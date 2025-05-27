@@ -103,15 +103,15 @@ const Testimonial = () => {
                   key={`${testimonial.id}-${index}`}
                   className={`
                     transition-all duration-500 ease-in-out rounded-2xl p-3 shadow-lg
-                    ${testimonial.isMain && isCenter ? "text-white" : "text-gray-800"}
+                    ${testimonial.isMain && isCenter ? "" : ""}
                     ${
                       isCenter
-                        ? "w-80 h-64 opacity-100 scale-100 z-20 bg-gradient-to-br from-blue-900 via-blue-700 to-violet-700"
+                        ? "w-80 h-64 opacity-100 scale-100 z-20 bg-gradient-to-br text-white from-blue-900 via-blue-700 to-violet-700"
                         : isAdjacent
-                          ? "w-64 h-56 opacity-80 scale-90 z-10 bg-gradient-to-br from-orange-500 via-orange-300 to-orange-100"
-                          : "w-48 h-48 opacity-60 scale-75 z-0 "
+                          ? "w-64 h-56 opacity-80 scale-90 z-10 bg-gradient-to-br text-gray-800 from-orange-500 via-orange-300 to-orange-100"
+                          : "w-48 h-48 opacity-60 scale-75 z-0 text-gray-800"
                     }
-                    ${isEdge ? "hidden md:block blur-sm bg-orange-200" : ""}
+                    ${isEdge ? "hidden md:block blur-sm text-gray-800 bg-orange-200" : ""}
                   `}
                 >
                   <div className="h-full flex flex-col justify-between">
@@ -119,7 +119,7 @@ const Testimonial = () => {
                       className={`
                         leading-relaxed mb-4
                         ${isCenter ? "text-base font-semibold" : "text-xs"}
-                        ${testimonial.isMain && isCenter ? "text-white" : "text-gray-700 text-xs"}
+                        ${testimonial.isMain && isCenter ? "" : " text-xs"}
                       `}
                     >
                       "{testimonial.text}"
@@ -129,14 +129,14 @@ const Testimonial = () => {
                       <img
                         src={testimonial.avatar || "/placeholder.svg"}
                         alt={testimonial.author}
-                        className={`rounded-full object-cover ${isCenter ? "w-12 h-12" : "w-10 h-10"}`}
+                        className={`rounded-full object-cover ${isCenter ? "w-12 h-12 text-white" : "w-10 h-10"}`}
                       />
                       <div>
                         <p
                           className={`
                             font-semibold
-                            ${isCenter ? "text-base font-bold" : "text-xs"}
-                            ${testimonial.isMain && isCenter ? "text-white" : "text-gray-900 text-xs"}
+                            ${isCenter ? "text-base font-bold text-white" : "text-gray-900 text-xs"}
+                            ${testimonial.isMain && isCenter ? "" : " text-xs"}
                           `}
                         >
                           {testimonial.author}

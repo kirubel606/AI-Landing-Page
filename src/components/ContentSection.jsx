@@ -18,11 +18,11 @@ const ContentSection = ({ title, subtitle, images, large = false }) => {
                   alt="AI Conference"
                   className="w-full h-96 object-cover rounded-lg shadow-lg"
                 />
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[1, 2, 3, 4].map((i) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4">
+                  {[1, 2, 3,4].map((i) => (
                     <img
                       key={i}
-                      src={`/placeholder.svg?height=150&width=200`}
+                      src={images[i]||`/placeholder.svg?height=150&width=200`}
                       alt={`Event ${i}`}
                       className="w-full h-32 object-cover rounded-lg shadow-md"
                     />
