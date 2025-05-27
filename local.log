@@ -1,0 +1,70 @@
+
+
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Tue May 27 2025 16:09:39:652 GMT+0300 (EAT) -- [ERROR] Another instance of BrowserStack Binary is running with on your system with PID: 165364
+Tue May 27 2025 16:09:39:652 GMT+0300 (EAT) -- [ERROR] Please close it and try again
+Tue May 27 2025 16:09:39:652 GMT+0300 (EAT) -- [ERROR] SYS_CONFLICT:1001 https://browserstack.com/docs/local-testing/binary/errors/1001
+Tue May 27 2025 16:09:39:653 GMT+0300 (EAT) -- You can learn more about BrowserStack Binary flags by running ./BrowserStackLocal --help
+Tue May 27 2025 16:09:46:439 GMT+0300 (EAT) -- [SUCCESS] You can now access your local server(s) in our remote browser
+
+Tue May 27 2025 16:10:02:168 GMT+0300 (EAT) -- Press Ctrl-C to exit
+
+
+Tue May 27 2025 16:29:04:797 GMT+0300 (EAT) -- Press Ctrl-C to exit
+
+
+Tue May 27 2025 16:29:06:525 GMT+0300 (EAT) -- Press Ctrl-C to exit
+
+
+Tue May 27 2025 16:29:07:624 GMT+0300 (EAT) -- Received runtime exception: TypeError: Cannot set property 'onmessage' of null
+    at repeaterConnection.onopen (bslocal.js:1:140383)
+    at ve.<anonymous> (bslocal.js:1:66239)
+    at x.o (bslocal.js:1:13853000)
+    at x.emit (events.js:198:13)
+    at x.S (bslocal.js:1:13858993)
+    at ClientRequest.e (bslocal.js:1:13857787)
+    at Object.onceWrapper (events.js:286:20)
+    at ClientRequest.emit (events.js:198:13)
+    at TLSSocket.socketOnData (_http_client.js:484:11)
+    at TLSSocket.emit (events.js:198:13)
+Tue May 27 2025 16:29:07:624 GMT+0300 (EAT) -- Exiting.
+Tue May 27 2025 16:29:07:631 GMT+0300 (EAT) -- Received runtime exception: TypeError: Cannot set property 'onmessage' of null
+    at repeaterConnection.onopen (bslocal.js:1:140383)
+    at ve.<anonymous> (bslocal.js:1:66239)
+    at x.o (bslocal.js:1:13853000)
+    at x.emit (events.js:198:13)
+    at x.S (bslocal.js:1:13858993)
+    at ClientRequest.e (bslocal.js:1:13857787)
+    at Object.onceWrapper (events.js:286:20)
+    at ClientRequest.emit (events.js:198:13)
+    at TLSSocket.socketOnData (_http_client.js:484:11)
+    at TLSSocket.emit (events.js:198:13)
+Tue May 27 2025 16:29:07:631 GMT+0300 (EAT) -- Exiting.
+Tue May 27 2025 16:29:07:730 GMT+0300 (EAT) -- Press Ctrl-C to exit
+
+
+Tue May 27 2025 16:29:07:922 GMT+0300 (EAT) -- Received runtime exception: TypeError: Cannot set property 'onmessage' of null
+    at repeaterConnection.onopen (bslocal.js:1:140383)
+    at ve.<anonymous> (bslocal.js:1:66239)
+    at x.o (bslocal.js:1:13853000)
+    at x.emit (events.js:198:13)
+    at x.S (bslocal.js:1:13858993)
+    at ClientRequest.e (bslocal.js:1:13857787)
+    at Object.onceWrapper (events.js:286:20)
+    at ClientRequest.emit (events.js:198:13)
+    at TLSSocket.socketOnData (_http_client.js:484:11)
+    at TLSSocket.emit (events.js:198:13)
+Tue May 27 2025 16:29:07:923 GMT+0300 (EAT) -- Exiting.
+Tue May 27 2025 16:29:08:523 GMT+0300 (EAT) -- Received runtime exception: TypeError: Cannot set property 'onmessage' of null
+    at repeaterConnection.onopen (bslocal.js:1:140383)
+    at ve.<anonymous> (bslocal.js:1:66239)
+    at x.o (bslocal.js:1:13853000)
+    at x.emit (events.js:198:13)
+    at x.S (bslocal.js:1:13858993)
+    at ClientRequest.e (bslocal.js:1:13857787)
+    at Object.onceWrapper (events.js:286:20)
+    at ClientRequest.emit (events.js:198:13)
+    at TLSSocket.socketOnData (_http_client.js:484:11)
+    at TLSSocket.emit (events.js:198:13)
+Tue May 27 2025 16:29:08:523 GMT+0300 (EAT) -- Exiting.
