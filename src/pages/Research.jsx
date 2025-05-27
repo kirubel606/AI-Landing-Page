@@ -1,5 +1,126 @@
 import CoolSvg from "../components/CoolSVg"
+const categories = [
+    { name: "Health", image: "../../public/Assets/health.png" },
+    { name: "Agriculture", image: "../../public/Assets/agri.png" },
+    {
+        name: "Law Enforcement",
+        image: "../../public/Assets/law.png",
+    },
+    {
+        name: "Transportation",
+        image: "../../public/Assets/trafic.png",
+    },
+    { name: "Health", image: "../../public/Assets/health.png" },
+]
 
+const contentCards = [
+    {
+        id: 1,
+        image: "../../public/Assets/ai1.png",
+        logo: "../../public/Assets/efp.png",
+        timestamp: "July 2024",
+        title: "Learn and Transcribe ET",
+        description:
+            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
+        category: "RECENT",
+    },
+    {
+        id: 2,
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120&h=120&fit=crop",
+        logo: "../../public/Assets/AI-Readiness.png",
+        timestamp: "July 2024",
+        title: "EFTApp",
+        description:
+            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
+        category: "RECENT",
+    },
+    {
+        id: 3,
+        image: "../../public/Assets/69.jpg",
+        logo: "../../public/Assets/AI-Readiness.png",
+        timestamp: "July 2024",
+        title: "Learn and Transcribe ET",
+        description:
+            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
+        category: "RECENT",
+    },
+    {
+        id: 4,
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120&h=120&fit=crop",
+        logo: "../../public/Assets/AI-Readiness.png",
+        timestamp: "July 2024",
+        title: "EFTApp",
+        description:
+            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
+        category: "RECENT",
+    },
+]
+
+const sidebarItems = [
+    {
+        title: "Learn and Transcribe ET",
+        date: "2023-05-08T14:00:00Z",
+        category: "DEVELOPMENT",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+        image: "../../public/Assets/69.jpg",
+    },
+    {
+        title: "Learn and Transcribe ET",
+        image: "../../public/Assets/69.jpg",
+        date: "2025-05-12T14:00:00Z",
+        category: "DEVELOPMENT",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+
+    },
+    {
+        title: "EFTApp",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=60&h=60&fit=crop",
+        date: "2025-04-20T14:00:00Z",
+        category: "research",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+
+    },
+    {
+        title: "Learn and Transcribe ET",
+        image: "../../public/Assets/69.jpg",
+        date: "2025-02-10T14:00:00Z",
+        category: "DEVELOPMENT",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+
+    },
+    {
+        title: "EFTApp",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=60&h=60&fit=crop",
+        date: "2025-03-25T14:00:00Z",
+        category: "research",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+
+    },
+    {
+        title: "Learn and Transcribe ET",
+        image: "../../public/Assets/69.jpg",
+        date: "2025-01-25T14:00:00Z",
+        category: "DEVELOPMENT",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+
+    },
+    {
+        title: "EFTApp",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=60&h=60&fit=crop",
+        date: "2024-05-25T14:00:00Z",
+        category: "case-study",
+        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
+
+    },
+]
+
+
+
+const tabItems = [
+    { label: "LATEST", value: "latest" },
+    { label: "RESEARCH", value: "research" },
+    { label: "CASE STUDIES", value: "case-study" },
+];
 const Research = () => {
   const [activeTab, setActiveTab] = useState("latest");
 
