@@ -23,13 +23,13 @@ const Header = () => {
         </Link>
 
         {/* Navigation Menu */}
-        <div className=" bg-[#202024] border border-white/20 rounded-3xl px-5 py-2 shadow-2xl hidden lg:flex items-center space-x-8" style={{ boxShadow: '0 8px 10px 2px rgba(255, 153, 51, 0.15)' }}>
+        <div className=" bg-[#202024] border border-white/20 rounded-3xl px-3 py-2 shadow-2xl hidden lg:flex items-center space-x-8" style={{ boxShadow: '0 8px 10px 2px rgba(255, 153, 51, 0.15)' }}>
           {navItems.map((item, index) => (
             <Link
               key={index}
               to={item.path}
               className={`transition-colors duration-200 text-sm font-medium ${
-                location.pathname === item.path ? "text-white bg-gray-700 rounded-3xl px-5 py-2" : "text-gray-300 hover:text-white"
+                location.pathname === item.path ? "text-white bg-[#363639] rounded-3xl px-5 py-2" : "text-gray-300 hover:text-white px-1"
               }`}
             >
               {item.name}
