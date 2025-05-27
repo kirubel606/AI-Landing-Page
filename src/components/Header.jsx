@@ -1,41 +1,28 @@
-import { Link, useLocation } from "react-router-dom"
-
 const Header = () => {
-  const location = useLocation()
-
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Research & Development", path: "/research" },
-    { name: "News", path: "/news" },
-    { name: "Events", path: "/events" },
-    { name: "About Us", path: "/about" },
-    { name: "Resource & Publications", path: "/resources" },
-  ]
+  const navItems = ["Home", "Research & Development", "News", "Events", "About Us", "Resource & Publications"]
 
   return (
     <header className="relative z-10 px-6 py-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <div className="flex items-center">
           <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
             <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
               <span className="text-white text-xs font-bold">AI</span>
             </div>
           </div>
-        </Link>
+        </div>
 
         {/* Navigation Menu */}
         <div className="hidden lg:flex items-center space-x-8">
           {navItems.map((item, index) => (
-            <Link
+            <a
               key={index}
-              to={item.path}
-              className={`transition-colors duration-200 text-sm font-medium ${
-                location.pathname === item.path ? "text-white" : "text-gray-300 hover:text-white"
-              }`}
+              href="#"
+              className="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium"
             >
-              {item.name}
-            </Link>
+              {item}
+            </a>
           ))}
         </div>
 
