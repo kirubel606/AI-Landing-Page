@@ -1,6 +1,10 @@
 import { Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react"
+import React,{useContext} from "react"
+import { AppContext } from "../context/Appcontext"
 
 const Footer = () => {
+  const { settings, loading } = useContext(AppContext)
+  console.log("Here is Setting:",settings);
   return (
     <footer className="bg-slate-900 text-white">
       <div className="container mx-auto px-4 py-12">
@@ -14,10 +18,10 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-2 text-gray-300">
-              <p>Address:</p>
-              <p>Addis Ababa, Ethiopia</p>
-              <p>Phone: +251-11-XXX-XXXX</p>
-              <p>Email: info@ethiopianai.org</p>
+              <p>Address: {settings.location}</p>
+              <p>Phone: {settings.line1}</p>
+              <p>Email: {settings.email}</p>
+              <p>Location: <a href={settings.map_link}>Click Here</a></p>
             </div>
           <div>
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
