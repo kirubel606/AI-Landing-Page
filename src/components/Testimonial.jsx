@@ -29,7 +29,7 @@ const Testimonial = () => {
       author: "Ambassador Evgeny Terekhin",
       position: "Russian Ambassador to Ethiopia",
       avatar: "/placeholder.svg?height=40&width=40",
-      bgColor: "bg-blue-600",
+      bgColor: "bg-gradient-to-r from-blue-500 to-blue-300",
       isMain: true,
     },
     {
@@ -103,16 +103,15 @@ const Testimonial = () => {
                   key={`${testimonial.id}-${index}`}
                   className={`
                     transition-all duration-500 ease-in-out rounded-2xl p-3 shadow-lg
-                    ${testimonial.bgColor}
                     ${testimonial.isMain && isCenter ? "text-white" : "text-gray-800"}
                     ${
                       isCenter
-                        ? "w-80 h-64 opacity-100 scale-100 z-20"
+                        ? "w-80 h-64 opacity-100 scale-100 z-20 bg-gradient-to-br from-blue-900 via-blue-700 to-violet-700"
                         : isAdjacent
-                          ? "w-64 h-56 opacity-80 scale-90 z-10"
-                          : "w-48 h-48 opacity-60 scale-75 z-0"
+                          ? "w-64 h-56 opacity-80 scale-90 z-10 bg-gradient-to-br from-orange-500 via-orange-300 to-orange-100"
+                          : "w-48 h-48 opacity-60 scale-75 z-0 "
                     }
-                    ${isEdge ? "hidden md:block blur-sm" : ""}
+                    ${isEdge ? "hidden md:block blur-sm bg-orange-200" : ""}
                   `}
                 >
                   <div className="h-full flex flex-col justify-between">
