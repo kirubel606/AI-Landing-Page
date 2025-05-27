@@ -5,7 +5,7 @@ const CoolSvg = () => {
   return (
     <>
                 {/* Animated Circuit SVG Background */}
-                <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
           <svg
             className="absolute inset-0 w-full h-full"
             viewBox="0 0 1920 1080"
