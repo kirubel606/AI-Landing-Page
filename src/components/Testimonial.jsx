@@ -92,7 +92,7 @@ const Testimonial = () => {
           </button>
 
           {/* Testimonial Cards */}
-          <div className="flex items-center justify-center space-x-4 overflow-hidden px-16">
+          <div className="flex items-center justify-center space-x-4 overflow-hidden px-2">
             {getVisibleTestimonials().map((testimonial, index) => {
               const isCenter = testimonial.position === 0
               const isAdjacent = Math.abs(testimonial.position) === 1
@@ -102,7 +102,7 @@ const Testimonial = () => {
                 <div
                   key={`${testimonial.id}-${index}`}
                   className={`
-                    transition-all duration-500 ease-in-out rounded-2xl p-6 shadow-lg
+                    transition-all duration-500 ease-in-out rounded-2xl p-3 shadow-lg
                     ${testimonial.bgColor}
                     ${testimonial.isMain && isCenter ? "text-white" : "text-gray-800"}
                     ${
@@ -112,15 +112,15 @@ const Testimonial = () => {
                           ? "w-64 h-56 opacity-80 scale-90 z-10"
                           : "w-48 h-48 opacity-60 scale-75 z-0"
                     }
-                    ${isEdge ? "hidden md:block" : ""}
+                    ${isEdge ? "hidden md:block blur-sm" : ""}
                   `}
                 >
                   <div className="h-full flex flex-col justify-between">
                     <blockquote
                       className={`
                         leading-relaxed mb-4
-                        ${isCenter ? "text-base" : "text-sm"}
-                        ${testimonial.isMain && isCenter ? "text-white" : "text-gray-700"}
+                        ${isCenter ? "text-base font-semibold" : "text-xs"}
+                        ${testimonial.isMain && isCenter ? "text-white" : "text-gray-700 text-xs"}
                       `}
                     >
                       "{testimonial.text}"
@@ -136,8 +136,8 @@ const Testimonial = () => {
                         <p
                           className={`
                             font-semibold
-                            ${isCenter ? "text-base" : "text-sm"}
-                            ${testimonial.isMain && isCenter ? "text-white" : "text-gray-900"}
+                            ${isCenter ? "text-base font-bold" : "text-xs"}
+                            ${testimonial.isMain && isCenter ? "text-white" : "text-gray-900 text-xs"}
                           `}
                         >
                           {testimonial.author}
@@ -145,7 +145,7 @@ const Testimonial = () => {
                         <p
                           className={`
                             ${isCenter ? "text-sm" : "text-xs"}
-                            ${testimonial.isMain && isCenter ? "text-blue-100" : "text-gray-600"}
+                            ${testimonial.isMain && isCenter ? "text-blue-100" : "text-gray-600 text-xs"}
                           `}
                         >
                           {testimonial.position}
