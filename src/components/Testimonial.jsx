@@ -1,50 +1,179 @@
+"use client"
+
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useState } from "react"
+
 const Testimonial = () => {
-    return (
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          {/* Orange accent bar */}
-          <div className="w-16 h-1 bg-white mx-auto mb-8"></div>
-  
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Unleashing AI's Potential in Ethiopia</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">
-              Leading voices in Ethiopian AI development share their insights
-            </p>
-          </div>
-  
-          <div className="max-w-4xl mx-auto bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg shadow-xl p-8">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-shrink-0">
-                <img
-                  src="/placeholder.svg?height=120&width=120"
-                  alt="Dr. Worku Gachena"
-                  className="w-32 h-32 rounded-full object-cover border-4 border-orange-200"
-                />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <blockquote className="text-lg text-gray-700 mb-4 italic">
-                  "AI has the potential to revolutionize Ethiopia's development trajectory. Through strategic
-                  implementation and capacity building, we can leverage artificial intelligence to address our most
-                  pressing challenges and create sustainable solutions for the future."
-                </blockquote>
-                <div className="text-gray-900">
-                  <p className="font-bold text-lg">Dr. Worku Gachena</p>
-                  <p className="text-gray-600">Director, Ethiopian AI Institute</p>
+  const [currentIndex, setCurrentIndex] = useState(2) // Start with the blue card in center
+
+  const testimonials = [
+    {
+      id: 1,
+      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
+      author: "Dr. Sarah Johnson",
+      position: "Research Director",
+      avatar: "/placeholder.svg?height=40&width=40",
+      bgColor: "bg-orange-300",
+    },
+    {
+      id: 2,
+      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
+      author: "Prof. Michael Chen",
+      position: "AI Research Lead",
+      avatar: "/placeholder.svg?height=40&width=40",
+      bgColor: "bg-orange-200",
+    },
+    {
+      id: 3,
+      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research, Development, And Implementation Within A Short Period.",
+      author: "Ambassador Evgeny Terekhin",
+      position: "Russian Ambassador to Ethiopia",
+      avatar: "/placeholder.svg?height=40&width=40",
+      bgColor: "bg-blue-600",
+      isMain: true,
+    },
+    {
+      id: 4,
+      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
+      author: "Dr. Maria Rodriguez",
+      position: "Technology Advisor",
+      avatar: "/placeholder.svg?height=40&width=40",
+      bgColor: "bg-orange-200",
+    },
+    {
+      id: 5,
+      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
+      author: "Prof. James Wilson",
+      position: "Innovation Director",
+      avatar: "/placeholder.svg?height=40&width=40",
+      bgColor: "bg-orange-300",
+    },
+  ]
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
+  }
+
+  const getVisibleTestimonials = () => {
+    const visible = []
+    for (let i = -2; i <= 2; i++) {
+      const index = (currentIndex + i + testimonials.length) % testimonials.length
+      visible.push({
+        ...testimonials[index],
+        position: i,
+      })
+    }
+    return visible
+  }
+
+  return (
+    <section className="py-16 bg-gray-50 w-full">
+      <div className="container mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Testimonial</h2>
+
+        <div className="relative max-w-6xl mx-auto">
+          {/* Navigation Buttons */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <ChevronLeft size={24} className="text-gray-600" />
+          </button>
+
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <ChevronRight size={24} className="text-gray-600" />
+          </button>
+
+          {/* Testimonial Cards */}
+          <div className="flex items-center justify-center space-x-4 overflow-hidden px-16">
+            {getVisibleTestimonials().map((testimonial, index) => {
+              const isCenter = testimonial.position === 0
+              const isAdjacent = Math.abs(testimonial.position) === 1
+              const isEdge = Math.abs(testimonial.position) === 2
+
+              return (
+                <div
+                  key={`${testimonial.id}-${index}`}
+                  className={`
+                    transition-all duration-500 ease-in-out rounded-2xl p-6 shadow-lg
+                    ${testimonial.bgColor}
+                    ${testimonial.isMain && isCenter ? "text-white" : "text-gray-800"}
+                    ${
+                      isCenter
+                        ? "w-80 h-64 opacity-100 scale-100 z-20"
+                        : isAdjacent
+                          ? "w-64 h-56 opacity-80 scale-90 z-10"
+                          : "w-48 h-48 opacity-60 scale-75 z-0"
+                    }
+                    ${isEdge ? "hidden md:block" : ""}
+                  `}
+                >
+                  <div className="h-full flex flex-col justify-between">
+                    <blockquote
+                      className={`
+                        leading-relaxed mb-4
+                        ${isCenter ? "text-base" : "text-sm"}
+                        ${testimonial.isMain && isCenter ? "text-white" : "text-gray-700"}
+                      `}
+                    >
+                      "{testimonial.text}"
+                    </blockquote>
+
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={testimonial.avatar || "/placeholder.svg"}
+                        alt={testimonial.author}
+                        className={`rounded-full object-cover ${isCenter ? "w-12 h-12" : "w-10 h-10"}`}
+                      />
+                      <div>
+                        <p
+                          className={`
+                            font-semibold
+                            ${isCenter ? "text-base" : "text-sm"}
+                            ${testimonial.isMain && isCenter ? "text-white" : "text-gray-900"}
+                          `}
+                        >
+                          {testimonial.author}
+                        </p>
+                        <p
+                          className={`
+                            ${isCenter ? "text-sm" : "text-xs"}
+                            ${testimonial.isMain && isCenter ? "text-blue-100" : "text-gray-600"}
+                          `}
+                        >
+                          {testimonial.position}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              )
+            })}
           </div>
-  
-          {/* Pagination dots */}
+
+          {/* Pagination Dots */}
           <div className="flex justify-center mt-8 space-x-2">
-            {[1, 2, 3, 4, 5].map((dot) => (
-              <button key={dot} className={`w-3 h-3 rounded-full ${dot === 1 ? "bg-white" : "bg-orange-300"}`}></button>
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-3 h-3 rounded-full transition-colors ${
+                  index === currentIndex ? "bg-blue-600" : "bg-gray-300"
+                }`}
+              />
             ))}
           </div>
         </div>
-      </section>
-    )
-  }
-  
-  export default Testimonial
-  
+      </div>
+    </section>
+  )
+}
+
+export default Testimonial

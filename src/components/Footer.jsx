@@ -8,7 +8,7 @@ const Footer = () => {
           {/* Logo and Contact */}
           <div className="space-y-4 items-center justify-center flex">
             <div className="flex w-1/2 items-center space-x-3">
-                <img src='/public/logo.png' className=" rounded-full"/>
+                <img src='/public/logo.png' className=" rounded-full" style={{ boxShadow: '0 8px 90px 60px rgba(255, 153, 51, 0.3)' }}/>
             </div>
           </div>
 
@@ -44,6 +44,11 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
+                  Meet the developers
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-orange-400 transition-colors">
                   Careers
                 </a>
               </li>
@@ -71,7 +76,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-slate-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Ethiopian Artificial Intelligence Institute. All rights reserved.
+            © 2025 Ethiopian Artificial Intelligence Institute. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">

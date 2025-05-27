@@ -1,5 +1,9 @@
+import CoolSvg from "../components/CoolSVg"
+
 const Resources = () => {
   return (
+    <div className="min-h-screen bg-gray-900 relative overflow-hidden">
+      <CoolSvg/>
     <section className="flex items-center justify-center min-h-[80vh] px-6">
       <div className="text-center max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-6xl font-bold mb-8 text-white">
@@ -40,6 +44,7 @@ const Resources = () => {
         </div>
       </div>
     </section>
+    </div>
   )
 }
 
