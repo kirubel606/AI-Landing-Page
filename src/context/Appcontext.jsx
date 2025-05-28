@@ -9,6 +9,7 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [newsloading, setnewsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [collabs,setCollabs] = useState(null)
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/settings/')
@@ -33,9 +34,18 @@ export const AppProvider = ({ children }) => {
         setLoading(false)
       })
   }, [])
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/collaborations/')
+      .then(res => {
+        setCollabs(res.data)
+      })
+      .catch(err => {
+        setError(err.message)
+      })
+  }, [])
 
   return (
-    <AppContext.Provider value={{ settings, loading,news,newsloading, error }}>
+    <AppContext.Provider value={{ settings,loading,news,collabs,newsloading, error }}>
       {children}
     </AppContext.Provider>
   )
