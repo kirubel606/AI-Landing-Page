@@ -1,5 +1,7 @@
 import CoolSvg from "../components/CoolSVg"
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
+import axios from "axios"
+import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 
 const Research = () => {
   const [activeTab, setActiveTab] = useState("latest");
@@ -24,19 +26,24 @@ const Research = () => {
     if (months < 12) return `${months} month${months !== 1 ? "s" : ""} ago`;
     return `${years} year${years !== 1 ? "s" : ""} ago`;
   };
-  const categories = [
-    { name: "Health", image: "../../public/Assets/health.png" },
-    { name: "Agriculture", image: "../../public/Assets/agri.png" },
-    {
-        name: "Law Enforcement",
-        image: "../../public/Assets/law.png",
-    },
-    {
-        name: "Transportation",
-        image: "../../public/Assets/trafic.png",
-    },
-    { name: "Health", image: "../../public/Assets/health.png" },
-]
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/categories/");
+        // Assuming response.data is an array of category objects
+        // and you want to take only the first 4
+        setCategories(response.data.slice(0, 4));
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+    console.log("Categories fetched:", categories);
+  }, []);
 
 const contentCards = [
     {
@@ -80,6 +87,20 @@ const contentCards = [
         category: "RECENT",
     },
 ]
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/rnd/");
+        setProjects(response.data.slice(0, 3)); // take first 3 projects
+      } catch (error) {
+        console.error("Failed to fetch R&D projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
 const sidebarItems = [
     {
@@ -138,6 +159,12 @@ const sidebarItems = [
 
     },
 ]
+    // Add this definition for tabItems
+    const tabItems = [
+        { label: "Latest", value: "latest" },
+        { label: "Research", value: "research" },
+        { label: "Case Study", value: "case-study" },
+    ];
 
   return (
 
@@ -193,7 +220,7 @@ const sidebarItems = [
               Health
             </h1>
             <div className="space-y-4">
-              {contentCards.map((div) => (
+              {projects.map((div) => (
                 <div key={div.id} className="overflow-hidden shadow-sm">
                   <div className="p-4">
                     <div className="flex gap-4">
@@ -250,165 +277,165 @@ const sidebarItems = [
             </div>
           </div>
 
-          {/* Sidebar - Related Topics */}
-          <aside className="lg:col-span-1">
-            <div className="shadow-sm">
-              <div className="p-4">
-                {/* Tab Headers */}
-                <div className="flex gap-2 mb-4">
-                  {sidebarItems.map((tab) => (
-                    <button
-                      key={tab.value}
-                      onClick={() => setActiveTab(tab.value)}
-                      className={`px-4 py-2 text-xs font-medium transition-colors transform -skew-x-12 ${activeTab === tab.value
-                        ? "bg-orange-500 text-white"
-                        : " text-gray-600 hover:text-gray-900"
-                        }`}
-                    >
-                      <span className="-skew-x-12 inline-block">{tab.label}</span>
-                    </button>
+           {/* Sidebar - Related Topics */}
+                    <aside className="lg:col-span-1">
+                        <Card className="shadow-sm">
+                            <CardBody className="p-4">
+                                {/* Tab Headers */}
+                                <div className="flex gap-2 mb-4">
+                                    {tabItems.map((tab) => (
+                                        <button
+                                            key={tab.value}
+                                            onClick={() => setActiveTab(tab.value)}
+                                            className={`px-4 py-2 text-xs font-medium transition-colors transform -skew-x-12 ${activeTab === tab.value
+                                                ? "bg-orange-500 text-white"
+                                                : " text-gray-600 hover:text-gray-900"
+                                                }`}
+                                        >
+                                            <span className="-skew-x-12 inline-block">{tab.label}</span>
+                                        </button>
 
-                  ))}
-                </div>
+                                    ))}
+                                </div>
 
-                {/* Tab Content */}
-                {activeTab === "latest" && (
-                  <div className="space-y-3">
-                    {[...sidebarItems]
-                      .sort((a, b) => new Date(b.date) - new Date(a.date))
-                      .slice(0, 6)
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                        >
-                          <div className="flex-shrink-0">
-                            <img
-                              src={item.image || "/placeholder.svg"}
-                              alt={item.title}
-                              className="w-[110px] h-[110px] rounded object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h1 variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                              {item.category} /
-                            </h1>
-                            <h1 variant="small" className="text-gray-500 text-xs mb-1 inline">
-                              {timeAgo(item.date)}
-                            </h1>
+                                {/* Tab Content */}
+                                {activeTab === "latest" && (
+                                    <div className="space-y-3">
+                                        {[...projects]
+                                            .sort((a, b) => new Date(b.date) - new Date(a.date))
+                                            .slice(0, 6)
+                                            .map((item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                                                >
+                                                    <div className="flex-shrink-0">
+                                                        <img
+                                                            src={item.image || "/placeholder.svg"}
+                                                            alt={item.title}
+                                                            className="w-[110px] h-[110px] rounded object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
+                                                            {item.category} /
+                                                        </Typography>
+                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
+                                                            {timeAgo(item.date)}
+                                                        </Typography>
 
-                            <h1
-                              variant="small"
-                              className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                                            style={{ width: "500px" }}
+                                                        >
+                                                            {item.title}
+                                                        </Typography>
 
-                            >
-                              {item.title}
-                            </h1>
-
-                            <h1
-                              variant="small"
-                              className="text-gray-500 text-xs block"
-                              
-                            >
-                              {item.description}
-                            </h1>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                )}
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-500 text-xs block"
+                                                            style={{ maxWidth: "500px" }}
+                                                        >
+                                                            {item.description}
+                                                        </Typography>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                )}
 
 
 
-                {activeTab === "research" && (
-                  <div className="space-y-3">
-                    {sidebarItems
-                      .filter((item) => item.category === "research")
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                        >
-                          <div className="flex-shrink-0">
-                            <img
-                              src={item.image || "/placeholder.svg"}
-                              alt={item.title}
-                              className="w-[110px] h-[110px] rounded object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h1 variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                              {item.category} /
-                            </h1>
-                            <h1 variant="small" className="text-gray-500 text-xs mb-1 inline">
-                              {timeAgo(item.date)}
-                            </h1>
-                            <h1
-                              variant="small"
-                              className="text-gray-900 font-extrabold text-lg mb-1 block"
-                              
-                            >
-                              {item.title}
-                            </h1>
-                            <h1
-                              variant="small"
-                              className="text-gray-500 text-xs block"
-                              
-                            >
-                              {item.description}
-                            </h1>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                )}
+                                {activeTab === "research" && (
+                                    <div className="space-y-3">
+                                        {projects
+                                            .filter((item) => item.type === "research")
+                                            .map((item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                                                >
+                                                    <div className="flex-shrink-0">
+                                                        <img
+                                                            src={item.image || "/placeholder.svg"}
+                                                            alt={item.title}
+                                                            className="w-[110px] h-[110px] rounded object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
+                                                            {item.category} /
+                                                        </Typography>
+                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
+                                                            {timeAgo(item.date)}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                                            style={{ width: "500px" }}
+                                                        >
+                                                            {item.title}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-500 text-xs block"
+                                                            style={{ maxWidth: "500px" }}
+                                                        >
+                                                            {item.description}
+                                                        </Typography>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                )}
 
-                {activeTab === "case-study" && (
-                  <div className="space-y-3">
-                    {sidebarItems
-                      .filter((item) => item.category === "case-study")
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                        >
-                          <div className="flex-shrink-0">
-                            <img
-                              src={item.image || "/placeholder.svg"}
-                              alt={item.title}
-                              className="w-[110px] h-[110px] rounded object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h1 variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                              {item.category} /
-                            </h1>
-                            <h1 variant="small" className="text-gray-500 text-xs mb-1 inline">
-                              {timeAgo(item.date)}
-                            </h1>
-                            <h1
-                              variant="small"
-                              className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                {activeTab === "case-study" && (
+                                    <div className="space-y-3">
+                                        {projects
+                                            .filter((item) => item.type === "case-study")
+                                            .map((item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                                                >
+                                                    <div className="flex-shrink-0">
+                                                        <img
+                                                            src={item.image || "/placeholder.svg"}
+                                                            alt={item.title}
+                                                            className="w-[110px] h-[110px] rounded object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
+                                                            {item.category} /
+                                                        </Typography>
+                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
+                                                            {timeAgo(item.date)}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                                            style={{ width: "500px" }}
+                                                        >
+                                                            {item.title}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-500 text-xs block"
+                                                            style={{ maxWidth: "500px" }}
+                                                        >
+                                                            {item.description}
+                                                        </Typography>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                )}
 
-                            >
-                              {item.title}
-                            </h1>
-                            <h1
-                              variant="small"
-                              className="text-gray-500 text-xs block"
-                              
-                            >
-                              {item.description}
-                            </h1>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                )}
-
-              </div>
-            </div>
-          </aside>
+                            </CardBody>
+                        </Card>
+                    </aside>
         </div>
       </div>
       
