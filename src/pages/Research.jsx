@@ -64,6 +64,7 @@ const Research = () => {
         { label: "Latest", value: "latest" },
         { label: "Research", value: "research" },
         { label: "Case Study", value: "case-study" },
+        { label: "Development", value: "development" }
     ];
 
   return (
@@ -216,7 +217,7 @@ const Research = () => {
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
+                                                    <div className="flex-1 overflow-clip min-w-0">
                                                         <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
                                                             {item.category} /
                                                         </Typography>
@@ -226,7 +227,7 @@ const Research = () => {
 
                                                         <Typography
                                                             variant="small"
-                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                                            className="text-gray-900 font-extrabold text-lg  mb-1 block"
                                                             style={{ width: "500px" }}
                                                         >
                                                             {item.title}
@@ -263,7 +264,7 @@ const Research = () => {
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
+                                                    <div className="flex-1 overflow-clip min-w-0">
                                                         <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
                                                             {item.category} /
                                                         </Typography>
@@ -306,7 +307,49 @@ const Research = () => {
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
+                                                    <div className="flex-1 overflow-clip min-w-0">
+                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
+                                                            {item.category} /
+                                                        </Typography>
+                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
+                                                            {timeAgo(item.date)}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
+                                                            style={{ width: "500px" }}
+                                                        >
+                                                            {item.title}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="small"
+                                                            className="text-gray-500 text-xs block"
+                                                            style={{ maxWidth: "500px" }}
+                                                        >
+                                                            {item.description}
+                                                        </Typography>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                )}
+                                {activeTab === "development" && (
+                                    <div className="space-y-3">
+                                        {projects
+                                            .filter((item) => item.type === "development")
+                                            .map((item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                                                >
+                                                    <div className="flex-shrink-0">
+                                                        <img
+                                                            src={item.coverimage || "/placeholder.svg"}
+                                                            alt={item.title}
+                                                            className="w-[110px] h-[110px] rounded object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1 overflow-clip min-w-0">
                                                         <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
                                                             {item.category} /
                                                         </Typography>
