@@ -35,7 +35,7 @@ const Research = () => {
         const response = await axios.get("http://127.0.0.1:8000/categories/");
         // Assuming response.data is an array of category objects
         // and you want to take only the first 4
-        setCategories(response.data.slice(0, 4));
+        setCategories(response.data.slice(0, 5));
       } catch (error) {
         console.error("Failed to fetch categories:", error);
       }
