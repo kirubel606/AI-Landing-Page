@@ -1,54 +1,24 @@
-"use client"
-
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import axios from "axios"
 
 const Testimonial = () => {
-  const [currentIndex, setCurrentIndex] = useState(2) // Start with the blue card in center
+  const [testimonials, setTestimonials] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
 
-  const testimonials = [
-    {
-      id: 1,
-      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
-      author: "Dr. Sarah Johnson",
-      position: "Research Director",
-      avatar: "/placeholder.svg?height=40&width=40",
-      bgColor: "bg-orange-300",
-    },
-    {
-      id: 2,
-      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
-      author: "Prof. Michael Chen",
-      position: "AI Research Lead",
-      avatar: "/placeholder.svg?height=40&width=40",
-      bgColor: "bg-orange-200",
-    },
-    {
-      id: 3,
-      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research, Development, And Implementation Within A Short Period.",
-      author: "Ambassador Evgeny Terekhin",
-      position: "Russian Ambassador to Ethiopia",
-      avatar: "/placeholder.svg?height=40&width=40",
-      bgColor: "bg-gradient-to-r from-blue-500 to-blue-300",
-      isMain: true,
-    },
-    {
-      id: 4,
-      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
-      author: "Dr. Maria Rodriguez",
-      position: "Technology Advisor",
-      avatar: "/placeholder.svg?height=40&width=40",
-      bgColor: "bg-orange-200",
-    },
-    {
-      id: 5,
-      text: "We Have Gained Valuable Insight Into The Significant Work Ethiopia Has Done In Deploying AI For Research.",
-      author: "Prof. James Wilson",
-      position: "Innovation Director",
-      avatar: "/placeholder.svg?height=40&width=40",
-      bgColor: "bg-orange-300",
-    },
-  ]
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/quotes/testimonials/")
+        setTestimonials(response.data)
+      } catch (error) {
+        console.error("Failed to fetch testimonials:", error)
+      }
+    }
+
+    fetchTestimonials()
+  }, [])
+
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
@@ -103,7 +73,7 @@ const Testimonial = () => {
                   key={`${testimonial.id}-${index}`}
                   className={`
                     transition-all duration-500 ease-in-out rounded-2xl p-3 shadow-lg
-                    ${testimonial.isMain && isCenter ? "" : ""}
+                    ${isCenter ? "" : ""}
                     ${
                       isCenter
                         ? "w-80 h-64 opacity-100 scale-100 z-20 bg-gradient-to-br text-white from-blue-900 via-blue-700 to-violet-700"
@@ -117,18 +87,18 @@ const Testimonial = () => {
                   <div className="h-full flex flex-col justify-between">
                     <blockquote
                       className={`
-                        leading-relaxed mb-4
+                        leading-relaxed mb-4 overflow-hidden
                         ${isCenter ? "text-base font-semibold" : "text-xs"}
-                        ${testimonial.isMain && isCenter ? "" : " text-xs"}
+                        ${isCenter ? "" : " text-xs"}
                       `}
                     >
-                      "{testimonial.text}"
+                      "{testimonial.quote}"
                     </blockquote>
 
                     <div className="flex items-center space-x-3">
                       <img
-                        src={testimonial.avatar || "/placeholder.svg"}
-                        alt={testimonial.author}
+                        src={testimonial.image || "/placeholder.svg"}
+                        alt={testimonial.name}
                         className={`rounded-full object-cover ${isCenter ? "w-12 h-12 text-white" : "w-10 h-10"}`}
                       />
                       <div>
@@ -136,18 +106,10 @@ const Testimonial = () => {
                           className={`
                             font-semibold
                             ${isCenter ? "text-base font-bold text-white" : "text-gray-900 text-xs"}
-                            ${testimonial.isMain && isCenter ? "" : " text-xs"}
+                            ${isCenter ? "" : " text-xs"}
                           `}
                         >
-                          {testimonial.author}
-                        </p>
-                        <p
-                          className={`
-                            ${isCenter ? "text-sm" : "text-xs"}
-                            ${testimonial.isMain && isCenter ? "text-blue-100" : "text-gray-600 text-xs"}
-                          `}
-                        >
-                          {testimonial.position}
+                          {testimonial.name}
                         </p>
                       </div>
                     </div>
