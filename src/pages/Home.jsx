@@ -1,4 +1,4 @@
-import ApplicationsGrid from "../components/Applicationsgrid"
+import ApplicationsGrid from "../components/ApplicationsGrid"
 import Collaborations from "../components/Collaborations"
 import ContentSection from "../components/ContentSection"
 import CoolSvg from "../components/CoolSVg"

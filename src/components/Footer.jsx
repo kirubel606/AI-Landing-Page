@@ -1,6 +1,6 @@
 import { Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react"
 import React,{useContext} from "react"
-import { AppContext } from "../context/AppContext"
+import { AppContext } from "../context/Appcontext"
 
 const Footer = () => {
   const { settings, loading } = useContext(AppContext)

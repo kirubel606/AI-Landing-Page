@@ -1,8 +1,7 @@
 import React from 'react'
 import Logo from '/public/logo.png'
 import { Player } from '@lottiefiles/react-lottie-player'
-import splashAnimation from '../../public/assets/BrainLottie.json' // adjust if in another path
-
+import splashAnimation from '../../public/Assets/BrainLottie.json' // adjust if in another path
 
 const Splashscreen = () => {
   return (

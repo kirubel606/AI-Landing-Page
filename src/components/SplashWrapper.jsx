@@ -1,6 +1,6 @@
 // components/SplashWrapper.jsx
 import React, { useEffect, useState } from 'react';
-import Splashscreen from './SplashScreen';
+import Splashscreen from './Splashscreen';
 
 
 const SplashWrapper = ({ children }) => {
