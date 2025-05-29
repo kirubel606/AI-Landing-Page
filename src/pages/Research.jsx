@@ -30,7 +30,7 @@ const Research = () => {
 
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedCategoryName,setSelectedCategoryName] = useState("All Categories");
+    const [selectedCategoryName, setSelectedCategoryName] = useState("All Categories");
     console.log("Selected Category:", selectedCategory);
     const [startIndex, setStartIndex] = useState(0);
 
@@ -98,6 +98,14 @@ const Research = () => {
         { label: "Case Study", value: "case-study" },
         { label: "Development", value: "development" }
     ];
+    const getFilteredProjects = () => {
+  if (activeTab === "latest") {
+    return [...projects]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 6);
+  }
+  return projects.filter((item) => item.type === activeTab);
+};
 
     return (
 
@@ -128,7 +136,7 @@ const Research = () => {
             <div className="container mx-auto px-4 py-8 overflow-y-clip">
                 <div className="relative mb-8">
                     {overflow && (
-                        <div className="absolute top-1/2 -left-4 z-10">
+                        <div className="absolute top-1/2 -left-4 z-10 scro">
                             <button onClick={goPrev} className="bg-white rounded-full shadow p-2">
                                 ◀
                             </button>
@@ -169,71 +177,71 @@ const Research = () => {
                 </div>
 
                 {/* Main Content Area */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Content divs */}
-                    <div className="w-full">
-  {selectedCategoryName && (
-    <h1 className="text-2xl font-bold mb-6 text-gray-900">
-      {selectedCategoryName}
-    </h1>
-  )}
+                    <div className="lg:col-span-2">
+                        {selectedCategoryName && (
+                            <h1 className="text-2xl font-bold mb-6 text-gray-900">
+                                {selectedCategoryName}
+                            </h1>
+                        )}
 
-  {projects
-    .filter((div) => !selectedCategory || div.category === selectedCategory)
-    .map((div, index) => (
-      <div key={div.id} className="lg:col-span-2">
-        <div className="space-y-4">
-          <div className="overflow-hidden shadow-sm">
-            <div className="p-4">
-              <div className="flex gap-4">
-                {/* Image */}
-                <div className="relative flex-shrink-0 w-40 h-36">
-                  <img
-                    src={div.coverimage || "/placeholder.svg"}
-                    alt={div.title}
-                    className="w-full h-full rounded-lg object-cover"
-                  />
-                  {div.logo && (
-                    <img
-                      src={div.logo}
-                      alt={`${div.title} logo`}
-                      className="absolute bottom-1 right-1 w-8 h-8 rounded-full border-2 border-white shadow-md object-cover"
-                    />
-                  )}
-                </div>
+                        {projects
+                            .filter((div) => !selectedCategory || div.category === selectedCategory)
+                            .map((div, index) => (
+                                <div key={div.id} className="lg:col-span-2">
+                                    <div className="space-y-4">
+                                        <div className="overflow-hidden shadow-sm">
+                                            <div className="p-4">
+                                                <div className="flex gap-4">
+                                                    {/* Image */}
+                                                    <div className="relative flex-shrink-0 w-40 h-36">
+                                                        <img
+                                                            src={div.coverimage || "/placeholder.svg"}
+                                                            alt={div.title}
+                                                            className="w-full h-full rounded-lg object-cover"
+                                                        />
+                                                        {div.logo && (
+                                                            <img
+                                                                src={div.logo}
+                                                                alt={`${div.title} logo`}
+                                                                className="absolute bottom-1 right-1 w-8 h-8 rounded-full border-2 border-white shadow-md object-cover"
+                                                            />
+                                                        )}
+                                                    </div>
 
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h1 className="text-orange-500 text-xs">
-                      {div.timestamp}
-                    </h1>
-                  </div>
-                  <h1 className="text-gray-900 font-semibold mb-2 text-sm leading-tight">
-                    {div.title}
-                  </h1>
-                  <h1 className="text-gray-600 text-xs leading-relaxed mb-3 line-clamp-3">
-                    {div.description}
-                  </h1>
-                  <button
-                    className="bg-indigo-950 hover:bg-indigo-700 rounded-md text-white flex items-center gap-2 text-sm px-4 py-2"
-                  >
-                    Download
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
-</div>
+                                                    {/* Content */}
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <h1 className="text-orange-500 text-xs">
+                                                                {div.timestamp}
+                                                            </h1>
+                                                        </div>
+                                                        <h1 className="text-gray-900 font-semibold mb-2 text-sm leading-tight">
+                                                            {div.title}
+                                                        </h1>
+                                                        <h1 className="text-gray-600 text-xs leading-relaxed mb-3 line-clamp-3">
+                                                            {div.description}
+                                                        </h1>
+                                                        <button
+                                                            className="bg-indigo-950 hover:bg-indigo-700 rounded-md text-white flex items-center gap-2 text-sm px-4 py-2"
+                                                        >
+                                                            Download
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
 
 
                     {/* Sidebar - Related Topics */}
                     <aside className="lg:col-span-1">
                         <Card className="shadow-sm">
-                            <CardBody className="p-4">
+                            <CardBody className="p-4 max-h-[500px] overflow-y-auto">
                                 {/* Tab Headers */}
                                 <div className="flex gap-2 mb-4">
                                     {tabItems.map((tab) => (
@@ -252,181 +260,56 @@ const Research = () => {
                                 </div>
 
                                 {/* Tab Content */}
-                                {activeTab === "latest" && (
-                                    <div className="space-y-3">
-                                        {[...projects]
-                                            .sort((a, b) => new Date(b.date) - new Date(a.date))
-                                            .slice(0, 6)
-                                            .map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                                                >
-                                                    <div className="flex-shrink-0">
-                                                        <img
-                                                            src={item.coverimage || "/placeholder.svg"}
-                                                            alt={item.title}
-                                                            className="w-[110px] h-[110px] rounded object-cover"
-                                                        />
-                                                    </div>
-                                                    <div className="flex-1 overflow-hide w-full min-w-0">
-                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                                                            {item.category} /
-                                                        </Typography>
-                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
-                                                            {timeAgo(item.date)}
-                                                        </Typography>
-
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-900 font-extrabold text-lg   mb-1 block"
-                                                            style={{ width: "500px" }}
-                                                        >
-                                                            {item.title}
-                                                        </Typography>
-
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-500 text-xs block overflow-hidden"
-                                                            style={{ maxWidth: "500px" }}
-                                                        >
-                                                            {item.description}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                )}
-
-
-
-                                {activeTab === "research" && (
-                                    <div className="space-y-3">
-                                        {projects
-                                            .filter((item) => item.type === "research")
-                                            .map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                                                >
-                                                    <div className="flex-shrink-0">
-                                                        <img
-                                                            src={item.coverimage || "/placeholder.svg"}
-                                                            alt={item.title}
-                                                            className="w-[110px] h-[110px] rounded object-cover"
-                                                        />
-                                                    </div>
-                                                    <div className="flex-1 overflow-clip min-w-0">
-                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                                                            {item.category} /
-                                                        </Typography>
-                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
-                                                            {timeAgo(item.date)}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
-                                                            style={{ width: "500px" }}
-                                                        >
-                                                            {item.title}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-500 text-xs block"
-                                                            style={{ maxWidth: "500px" }}
-                                                        >
-                                                            {item.description}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                )}
-
-                                {activeTab === "case-study" && (
-                                    <div className="space-y-3">
-                                        {projects
-                                            .filter((item) => item.type === "case-study")
-                                            .map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                                                >
-                                                    <div className="flex-shrink-0">
-                                                        <img
-                                                            src={item.coverimage || "/placeholder.svg"}
-                                                            alt={item.title}
-                                                            className="w-[110px] h-[110px] rounded object-cover"
-                                                        />
-                                                    </div>
-                                                    <div className="flex-1 overflow-clip min-w-0">
-                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                                                            {item.category} /
-                                                        </Typography>
-                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
-                                                            {timeAgo(item.date)}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
-                                                            style={{ width: "500px" }}
-                                                        >
-                                                            {item.title}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-500 text-xs block"
-                                                            style={{ maxWidth: "500px" }}
-                                                        >
-                                                            {item.description}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                )}
-                                {activeTab === "development" && (
-                                    <div className="space-y-3">
-                                        {projects
-                                            .filter((item) => item.type === "development")
-                                            .map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                                                >
-                                                    <div className="flex-shrink-0">
-                                                        <img
-                                                            src={item.coverimage || "/placeholder.svg"}
-                                                            alt={item.title}
-                                                            className="w-[110px] h-[110px] rounded object-cover"
-                                                        />
-                                                    </div>
-                                                    <div className="flex-1 overflow-clip min-w-0">
-                                                        <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
-                                                            {item.category} /
-                                                        </Typography>
-                                                        <Typography variant="small" className="text-gray-500 text-xs mb-1 inline">
-                                                            {timeAgo(item.date)}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-900 font-extrabold text-lg mb-1 block"
-                                                            style={{ width: "500px" }}
-                                                        >
-                                                            {item.title}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            className="text-gray-500 text-xs block"
-                                                            style={{ maxWidth: "500px" }}
-                                                        >
-                                                            {item.description}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                )}
+                                <div className="space-y-3">
+  {getFilteredProjects().map((item, index) => (
+    <div
+      key={index}
+      className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+    >
+      <div className="flex-shrink-0">
+        <img
+          src={item.coverimage || "/placeholder.svg"}
+          alt={item.title}
+          className="w-[110px] h-[110px] rounded object-cover"
+        />
+      </div>
+      <div className="flex-1 overflow-hidden min-w-0">
+        <Typography
+          variant="small"
+          className="text-gray-800 text-xs mb-1 inline-block"
+        >
+          {item.category} /
+        </Typography>
+        <Typography
+          variant="small"
+          className="text-gray-500 text-xs mb-1 inline"
+        >
+          {timeAgo(item.date)}
+        </Typography>
+        <Typography
+          variant="small"
+          className="text-gray-900 font-extrabold text-lg truncate block"
+          style={{ width: "500px" }}
+        >
+          {item.title}
+        </Typography>
+        <Typography
+          variant="small"
+          className="text-gray-500 text-xs block"
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            maxWidth: "500px",
+          }}
+        >
+          {item.description}
+        </Typography>
+      </div>
+    </div>
+  ))}
+</div>
 
                             </CardBody>
                         </Card>
