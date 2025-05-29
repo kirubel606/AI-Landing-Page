@@ -114,14 +114,18 @@ const Research = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+
           {/* Content divs */}
-          <div className="lg:col-span-2">
+            <div className="w-full">
+          {projects.map((div, index) => (
+          <div key={div.id} className="lg:col-span-2">
+            
             <h1 variant="h2" className="text-2xl font-bold mb-6 text-gray-900">
-              Health
+                {div.category}
             </h1>
             <div className="space-y-4">
-              {projects.map((div) => (
                 <div key={div.id} className="overflow-hidden shadow-sm">
                   <div className="p-4">
                     <div className="flex gap-4">
@@ -174,9 +178,11 @@ const Research = () => {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+         
+            </div> 
           </div>
+ ))}
+ </div>
 
            {/* Sidebar - Related Topics */}
                     <aside className="lg:col-span-1">
@@ -217,7 +223,7 @@ const Research = () => {
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />
                                                     </div>
-                                                    <div className="flex-1 overflow-clip min-w-0">
+                                                    <div className="flex-1 overflow-hide w-full min-w-0">
                                                         <Typography variant="small" className="text-gray-800 text-xs mb-1 inline-block">
                                                             {item.category} /
                                                         </Typography>
@@ -227,7 +233,7 @@ const Research = () => {
 
                                                         <Typography
                                                             variant="small"
-                                                            className="text-gray-900 font-extrabold text-lg  mb-1 block"
+                                                            className="text-gray-900 font-extrabold text-lg   mb-1 block"
                                                             style={{ width: "500px" }}
                                                         >
                                                             {item.title}
@@ -235,7 +241,7 @@ const Research = () => {
 
                                                         <Typography
                                                             variant="small"
-                                                            className="text-gray-500 text-xs block"
+                                                            className="text-gray-500 text-xs block overflow-hidden"
                                                             style={{ maxWidth: "500px" }}
                                                         >
                                                             {item.description}
