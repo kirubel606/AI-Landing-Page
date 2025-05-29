@@ -51,7 +51,7 @@ const Research = () => {
     const fetchProjects = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/rnd/");
-        setProjects(response.data.slice(0, 3)); // take first 3 projects
+        setProjects(response.data.slice(0, 4)); // take first 3 projects
       } catch (error) {
         console.error("Failed to fetch R&D projects:", error);
       }
@@ -59,64 +59,6 @@ const Research = () => {
 
     fetchProjects();
   }, []);
-
-const sidebarItems = [
-    {
-        title: "Learn and Transcribe ET",
-        date: "2023-05-08T14:00:00Z",
-        category: "DEVELOPMENT",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-        image: "../../public/Assets/69.jpg",
-    },
-    {
-        title: "Learn and Transcribe ET",
-        image: "../../public/Assets/69.jpg",
-        date: "2025-05-12T14:00:00Z",
-        category: "DEVELOPMENT",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-
-    },
-    {
-        title: "EFTApp",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=60&h=60&fit=crop",
-        date: "2025-04-20T14:00:00Z",
-        category: "research",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-
-    },
-    {
-        title: "Learn and Transcribe ET",
-        image: "../../public/Assets/69.jpg",
-        date: "2025-02-10T14:00:00Z",
-        category: "DEVELOPMENT",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-
-    },
-    {
-        title: "EFTApp",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=60&h=60&fit=crop",
-        date: "2025-03-25T14:00:00Z",
-        category: "research",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-
-    },
-    {
-        title: "Learn and Transcribe ET",
-        image: "../../public/Assets/69.jpg",
-        date: "2025-01-25T14:00:00Z",
-        category: "DEVELOPMENT",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-
-    },
-    {
-        title: "EFTApp",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=60&h=60&fit=crop",
-        date: "2024-05-25T14:00:00Z",
-        category: "case-study",
-        description: "EFPApp, developed by EAII for the Federal Police, is a secure and efficient platform that enables...",
-
-    },
-]
     // Add this definition for tabItems
     const tabItems = [
         { label: "Latest", value: "latest" },
