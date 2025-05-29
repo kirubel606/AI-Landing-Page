@@ -8,13 +8,29 @@ import {
 } from "@heroicons/react/24/solid";
 const About = () => {
   return (
-    <div className="relative"> {/* Ensures absolute children are positioned relative to this */}
-      <div className=" h-[400px] w-full">
-        <CoolSvg />
-      </div>
-
-
-      <div className="max-w-6xl mx-auto space-y-8 mt-10">
+    <div className="min-h-screen relative overflow-hidden">
+<div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
+                <div className="absolute h-dvh w-full">
+                    <CoolSvg />
+                </div>
+                <div className="relative h-64 bg-transparent mx-20">
+                    <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
+                    <div className="z-20 flex items-center justify-center h-full">
+                        <div className="text-center text-white h-full">
+                            <h1 variant="h1" className="text-4xl font-bold mt-36 mb-2 text-white">
+                                About Us
+                            </h1>
+                            <h1 variant="lead" className="text-lg opacity-90 text-white">
+                                Advancing Innovation Through Technology
+                            </h1>
+                        </div>
+                    </div>
+                    {/* Decorative elements */}
+                    <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"></div>
+                    <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
+                </div>
+    </div>
+    <div className="max-w-6xl mx-auto space-y-8 mt-10">
         {/* Header Section with Blue Border */}
         <Card className="border-4 border-blue-600">
           <CardBody className="p-6">
@@ -155,8 +171,7 @@ const About = () => {
         </div>
       </div>
     </div>
-
-  );
+  )
 }
 
 export default About
