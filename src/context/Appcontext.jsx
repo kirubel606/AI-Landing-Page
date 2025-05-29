@@ -24,9 +24,9 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/news/')
+    axios.get('http://127.0.0.1:8000/news/all/')
       .then(res => {
-        setNews(res.data[0])
+        setNews(res.data)
         setnewsLoading(false)
       })
       .catch(err => {

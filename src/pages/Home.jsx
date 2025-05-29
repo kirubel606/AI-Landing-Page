@@ -7,9 +7,13 @@ import Header from "../components/Header"
 import ProjectsGrid from "../components/ProjectsGrid"
 import Quotes from "../components/Quotes"
 import Testimonial from "../components/Testimonial"
+import React,{useContext} from "react"
+import { AppContext } from "../context/Appcontext"
 
 const Home = () => {
-  const dummyImages = [
+  const { news } = useContext(AppContext)
+  const singleNews = news.results.result[0]
+  const dummyImages2 = [
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1497493292307-31c376b6e479?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80",
@@ -58,15 +62,15 @@ const Home = () => {
       </section>
     </div>
       <ContentSection
-        title="Our Gallery"
-        subtitle="A glimpse into our vibrant events and passionate community."
-        images={dummyImages.slice(0, 4)}
+        title={singleNews.title}
+        subtitle={singleNews.subtitle}
+        images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
         large={false}
       />
       <ContentSection
-        title="Our Events"
-        subtitle="A glimpse into our vibrant events and passionate community."
-        images={dummyImages.slice(0, 4)}
+        title={singleNews.title}
+        subtitle={singleNews.subtitle}
+        images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
         large={true}
       />
       <ApplicationsGrid />
