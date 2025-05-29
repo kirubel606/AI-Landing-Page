@@ -33,7 +33,7 @@ const ProjectsGrid = () => {
         </div>
       <div className="justify-center flex" >
          <div
-            className={`grid gap-8 ${
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto${
               projects.length === 1 ? "grid-cols-1" :
               projects.length === 2 ? "grid-cols-2" :
               "grid-cols-1 md:grid-cols-3"
