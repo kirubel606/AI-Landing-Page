@@ -1,38 +1,162 @@
 import CoolSvg from "../components/CoolSVg"
-
+import { Card, CardBody, Typography } from "@material-tailwind/react";
+import {
+  LightBulbIcon,
+  CogIcon,
+  HandThumbUpIcon,
+  AcademicCapIcon,
+} from "@heroicons/react/24/solid";
 const About = () => {
   return (
-    <div className="min-h-screen bg-gray-900 relative overflow-hidden">
-      <CoolSvg/>
-    <section className="flex items-center justify-center min-h-[80vh] px-6">
-      <div className="text-center max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-6xl font-bold mb-8 text-white">
-          About <span className="text-orange-400">Us</span>
-        </h1>
-        <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-10">
-          The Ethiopian Artificial Intelligence Institute is dedicated to advancing AI research and development for the
-          benefit of society.
-        </p>
-        <div className="grid md:grid-cols-3 gap-8 mt-12">
-          <div className="bg-gray-800/30 border border-gray-700 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Our Mission</h3>
-            <p className="text-gray-300">
-              To lead AI innovation and create solutions that address real-world challenges.
-            </p>
+    <div className="relative"> {/* Ensures absolute children are positioned relative to this */}
+      <div className=" h-[400px] w-full">
+        <CoolSvg />
+      </div>
+
+
+      <div className="max-w-6xl mx-auto space-y-8 mt-10">
+        {/* Header Section with Blue Border */}
+        <Card className="border-4 border-blue-600">
+          <CardBody className="p-6">
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Speaker Image */}
+              <div className="lg:w-1/3">
+                <img
+                  src="../Assets/speaker.png"
+                  alt="EAII Speaker"
+                  className="w-full h-64 lg:h-80 object-cover rounded-lg"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="lg:w-2/3 space-y-4">
+                <Typography variant="h2" className="text-2xl lg:text-3xl font-bold text-gray-900">
+                  Ethiopian Artificial Intelligence Institute (EAII)
+                </Typography>
+                <div className="space-y-3 text-gray-700 text-sm lg:text-base leading-relaxed">
+                  <Typography className="text-gray-700">
+                    The Ethiopian Artificial Intelligence Institute is a leading research and development organization dedicated to advancing AI technologies and applications in Ethiopia. Our mission is to foster innovation, conduct cutting-edge research, and develop AI solutions that address local and global challenges.
+                  </Typography>
+                  <Typography className="text-gray-700">
+                    We are committed to building Ethiopia's capacity in artificial intelligence through research, education, and collaboration with international partners. Our institute serves as a hub for AI innovation, bringing together researchers, practitioners, and stakeholders to drive technological advancement.
+                  </Typography>
+                  <Typography className="text-gray-700">
+                    Through our comprehensive programs, we aim to position Ethiopia as a leader in AI research and development in Africa, while ensuring that AI technologies are developed and deployed responsibly for the benefit of society.
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Mission and Vision Section */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Our Mission */}
+          <Card className="bg-amber-500">
+            <CardBody className="p-6">
+              <Typography variant="h3" className="text-xl font-bold mb-3 text-white">
+                Our Mission
+              </Typography>
+              <Typography className="text-sm leading-relaxed text-white">
+                To advance artificial intelligence research and applications through innovative solutions, collaborative partnerships, and capacity building initiatives that drive technological progress and societal impact in Ethiopia and beyond.
+              </Typography>
+            </CardBody>
+          </Card>
+
+          {/* Our Vision */}
+          <Card className="bg-blue-900">
+            <CardBody className="p-6">
+              <Typography variant="h3" className="text-xl font-bold mb-3 text-white">
+                Our Vision
+              </Typography>
+              <Typography className="text-sm leading-relaxed text-white">
+                To become a world-class AI research institute that drives innovation, fosters collaboration, and develops cutting-edge solutions that transform industries and improve lives across Ethiopia and the African continent.
+              </Typography>
+            </CardBody>
+          </Card>
+        </div>
+
+        {/* Subtitle */}
+        <div className="text-center">
+          <Typography className="text-gray-600 text-sm">
+            At EAII, we believe in the power of AI to transform society, drive efficiency, and accelerate future. Join us in transforming Ethiopia through artificial intelligence.
+          </Typography>
+        </div>
+
+        {/* Four Pillars Section */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Advancing AI Research */}
+          <div className="flex gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
+                <LightBulbIcon className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div>
+              <Typography variant="h4" className="font-bold text-gray-900 mb-2">
+                Advancing AI Research for Real-World Impact
+              </Typography>
+              <Typography className="text-gray-600 text-sm leading-relaxed">
+                We conduct cutting-edge research in artificial intelligence, machine learning, and data science to develop innovative solutions that address real-world challenges and create meaningful impact for communities and industries.
+              </Typography>
+            </div>
           </div>
-          <div className="bg-gray-800/30 border border-gray-700 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Our Vision</h3>
-            <p className="text-gray-300">To be a world-class AI research center driving technological advancement.</p>
+
+          {/* Developing AI-Powered Tools */}
+          <div className="flex gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
+                <CogIcon className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div>
+              <Typography variant="h4" className="font-bold text-gray-900 mb-2">
+                Developing AI-Powered Tools for Public and Private Sectors
+              </Typography>
+              <Typography className="text-gray-600 text-sm leading-relaxed">
+                We create sophisticated AI applications and tools that enhance efficiency, improve decision-making, and drive innovation across various sectors including healthcare, agriculture, finance, and government services.
+              </Typography>
+            </div>
           </div>
-          <div className="bg-gray-800/30 border border-gray-700 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Our Values</h3>
-            <p className="text-gray-300">Excellence, innovation, collaboration, and ethical AI development.</p>
+
+          {/* Fostering Collaboration */}
+          <div className="flex gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
+                <HandThumbUpIcon className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div>
+              <Typography variant="h4" className="font-bold text-gray-900 mb-2">
+                Fostering Collaboration with Academia, Businesses, and Government
+              </Typography>
+              <Typography className="text-gray-600 text-sm leading-relaxed">
+                We build strategic partnerships and collaborative networks with universities, research institutions, private companies, and government agencies to accelerate AI adoption and create synergistic opportunities for innovation.
+              </Typography>
+            </div>
+          </div>
+
+          {/* Cultivating Next Generation */}
+          <div className="flex gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
+                <AcademicCapIcon className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div>
+              <Typography variant="h4" className="font-bold text-gray-900 mb-2">
+                Cultivating Ethiopia's Next Generation of AI Experts
+              </Typography>
+              <Typography className="text-gray-600 text-sm leading-relaxed">
+                We provide comprehensive education, training, and mentorship programs to develop skilled AI professionals, researchers, and practitioners who will lead Ethiopia's technological advancement and innovation ecosystem.
+              </Typography>
+            </div>
           </div>
         </div>
       </div>
-    </section>
     </div>
-  )
+
+  );
 }
 
 export default About
