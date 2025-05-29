@@ -11,18 +11,15 @@ const About = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
-        <div className="absolute h-dvh w-full">
+        <div className="absolute h-lvh w-full">
           <CoolSvg />
         </div>
         <div className="relative h-64 bg-transparent mx-20">
           <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white h-full">
-              <h1 variant="h1" className="text-4xl font-bold mt-36 mb-2 text-white">
+              <h1 variant="h1" className="text-5xl underline font-bold mt-36 mb-2 text-white">
                 About Us
-              </h1>
-              <h1 variant="lead" className="text-lg opacity-90 text-white">
-                Advancing Innovation Through Technology
               </h1>
             </div>
           </div>
@@ -71,7 +68,7 @@ const About = () => {
           {/* Our Mission */}
           <Card className="bg-amber-500">
             <CardBody className="p-6">
-              <Typography variant="h3" className="text-xl font-bold mb-3 text-white">
+              <Typography variant="h3" className="text-xl font-extrabold mb-3 text-white">
                 Our Mission
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
@@ -94,8 +91,8 @@ const About = () => {
         </div>
 
         {/* Subtitle */}
-        <div className="text-center">
-          <Typography className="text-gray-600 text-xl ">
+        <div className="text-center ">
+          <Typography className="text-gray-700 text-xl italic mb-4">
             At EAII, we believe in the power of AI to transform society, drive efficiency, and accelerate future. Join us in transforming Ethiopia through artificial intelligence.
           </Typography>
         </div>
