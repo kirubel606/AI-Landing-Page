@@ -83,7 +83,7 @@ const Research = () => {
         const fetchProjects = async () => {
             try {
                 const response = await axios.get("http://127.0.0.1:8000/rnd/");
-                setProjects(response.data.slice(0, 4)); // take first 3 projects
+                setProjects(response.data.slice(0, 4));
             } catch (error) {
                 console.error("Failed to fetch R&D projects:", error);
             }
@@ -91,6 +91,18 @@ const Research = () => {
 
         fetchProjects();
     }, []);
+    const itemsPerPage = 2;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const filteredProjects = projects.filter(
+        (div) => !selectedCategory || div.category === selectedCategory
+    );
+
+    const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+    const paginatedProjects = filteredProjects.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
     // Add this definition for tabItems
     const tabItems = [
         { label: "Latest", value: "latest" },
@@ -186,7 +198,7 @@ const Research = () => {
                             </h1>
                         )}
 
-                        {projects
+                        {paginatedProjects
                             .filter((div) => !selectedCategory || div.category === selectedCategory)
                             .map((div, index) => (
                                 <div key={div.id} className="lg:col-span-2">
@@ -315,8 +327,40 @@ const Research = () => {
                         </Card>
                     </aside>
                 </div>
+                <div className="flex justify-center mt-6 gap-2">
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        className={`px-4 py-2 rounded text-white ${currentPage === 1 ? "bg-orange-300 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
+                            }`}
+                    >
+                        Prev
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => setCurrentPage(i + 1)}
+                            className={`px-3 py-2 rounded-full text-sm font-medium ${currentPage === i + 1
+                                    ? "bg-orange-600 text-white"
+                                    : "bg-orange-100 text-orange-700 hover:bg-orange-200"
+                                }`}
+                        >
+                            {i + 1}
+                        </button>
+                    ))}
+
+                    <button
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        className={`px-4 py-2 rounded text-white ${currentPage === totalPages ? "bg-orange-300 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
+                            }`}
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
-<Footer/>
+            <Footer />
         </div>
     )
 }
