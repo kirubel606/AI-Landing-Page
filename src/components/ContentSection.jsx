@@ -14,7 +14,7 @@ const ContentSection = ({ title, subtitle, images, large = false }) => {
             {large ? (
               <div className="grid gap-6">
                 <img
-                  src={images[0] || "/placeholder.svg"}
+                  src={'http://127.0.0.1:8000/'+images[0] || "/placeholder.svg"}
                   alt="AI Conference"
                   className="w-full h-96 object-cover rounded-lg shadow-lg"
                 />
@@ -22,7 +22,7 @@ const ContentSection = ({ title, subtitle, images, large = false }) => {
                   {[1, 2, 3,4].map((i) => (
                     <img
                       key={i}
-                      src={images[i]||`/placeholder.svg?height=150&width=200`}
+                      src={'http://127.0.0.1:8000/'+images[i]||`/placeholder.svg?height=150&width=200`}
                       alt={`Event ${i}`}
                       className="w-full h-32 object-cover rounded-lg shadow-md"
                     />
@@ -34,7 +34,7 @@ const ContentSection = ({ title, subtitle, images, large = false }) => {
                 {images.map((image, index) => (
                   <img
                     key={index}
-                    src={image || "/placeholder.svg"}
+                    src={'http://127.0.0.1:8000/'+image || "/placeholder.svg"}
                     alt={`Gallery ${index + 1}`}
                     className="w-full h-64 object-cover rounded-lg shadow-lg"
                   />
