@@ -8,7 +8,7 @@ const ApplicationsGrid = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/categories/")
-        setApplications(response.data.slice(0, 4))
+        setApplications(response.data.slice(0, 5))
       } catch (error) {
         console.error("Failed to fetch categories:", error)
       }
@@ -30,7 +30,7 @@ const ApplicationsGrid = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {applications.map((app) => (
             <div key={app.id} className="group cursor-pointer hover:scale-105 transition-transform duration-300">
               <div className="relative overflow-hidden rounded-lg shadow-lg">

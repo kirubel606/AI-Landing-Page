@@ -2,6 +2,7 @@ import CoolSvg from "../components/CoolSVg"
 import React, { useState, useEffect } from "react";
 import axios from "axios"
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
+import Footer from "../components/Footer";
 
 const Research = () => {
     const [activeTab, setActiveTab] = useState("latest");
