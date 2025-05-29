@@ -99,13 +99,13 @@ const Research = () => {
         { label: "Development", value: "development" }
     ];
     const getFilteredProjects = () => {
-  if (activeTab === "latest") {
-    return [...projects]
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 6);
-  }
-  return projects.filter((item) => item.type === activeTab);
-};
+        if (activeTab === "latest") {
+            return [...projects]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 6);
+        }
+        return projects.filter((item) => item.type === activeTab);
+    };
 
     return (
 
@@ -261,62 +261,62 @@ const Research = () => {
 
                                 {/* Tab Content */}
                                 <div className="space-y-3">
-  {getFilteredProjects().map((item, index) => (
-    <div
-      key={index}
-      className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-    >
-      <div className="flex-shrink-0">
-        <img
-          src={item.coverimage || "/placeholder.svg"}
-          alt={item.title}
-          className="w-[110px] h-[110px] rounded object-cover"
-        />
-      </div>
-      <div className="flex-1 overflow-hidden min-w-0">
-        <Typography
-          variant="small"
-          className="text-gray-800 text-xs mb-1 inline-block"
-        >
-          {item.category} /
-        </Typography>
-        <Typography
-          variant="small"
-          className="text-gray-500 text-xs mb-1 inline"
-        >
-          {timeAgo(item.date)}
-        </Typography>
-        <Typography
-          variant="small"
-          className="text-gray-900 font-extrabold text-lg truncate block"
-          style={{ width: "500px" }}
-        >
-          {item.title}
-        </Typography>
-        <Typography
-          variant="small"
-          className="text-gray-500 text-xs block"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            maxWidth: "500px",
-          }}
-        >
-          {item.description}
-        </Typography>
-      </div>
-    </div>
-  ))}
-</div>
+                                    {getFilteredProjects().map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                                        >
+                                            <div className="flex-shrink-0">
+                                                <img
+                                                    src={item.coverimage || "/placeholder.svg"}
+                                                    alt={item.title}
+                                                    className="w-[110px] h-[110px] rounded object-cover"
+                                                />
+                                            </div>
+                                            <div className="flex-1 overflow-hidden min-w-0">
+                                                <Typography
+                                                    variant="small"
+                                                    className="text-gray-800 text-xs mb-1 inline-block"
+                                                >
+                                                    {item.category} /
+                                                </Typography>
+                                                <Typography
+                                                    variant="small"
+                                                    className="text-gray-500 text-xs mb-1 inline"
+                                                >
+                                                    {timeAgo(item.date)}
+                                                </Typography>
+                                                <Typography
+                                                    variant="small"
+                                                    className="text-gray-900 font-extrabold text-lg truncate block"
+                                                    style={{ width: "500px" }}
+                                                >
+                                                    {item.title}
+                                                </Typography>
+                                                <Typography
+                                                    variant="small"
+                                                    className="text-gray-500 text-xs block"
+                                                    style={{
+                                                        display: "-webkit-box",
+                                                        WebkitLineClamp: 3,
+                                                        WebkitBoxOrient: "vertical",
+                                                        overflow: "hidden",
+                                                        maxWidth: "500px",
+                                                    }}
+                                                >
+                                                    {item.description}
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
 
                             </CardBody>
                         </Card>
                     </aside>
                 </div>
             </div>
-
+<Footer/>
         </div>
     )
 }
