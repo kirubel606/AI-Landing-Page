@@ -45,48 +45,6 @@ const Research = () => {
     console.log("Categories fetched:", categories);
   }, []);
 
-const contentCards = [
-    {
-        id: 1,
-        image: "../../public/Assets/ai1.png",
-        logo: "../../public/Assets/efp.png",
-        timestamp: "July 2024",
-        title: "Learn and Transcribe ET",
-        description:
-            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
-        category: "RECENT",
-    },
-    {
-        id: 2,
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120&h=120&fit=crop",
-        logo: "../../public/Assets/AI-Readiness.png",
-        timestamp: "July 2024",
-        title: "EFTApp",
-        description:
-            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
-        category: "RECENT",
-    },
-    {
-        id: 3,
-        image: "../../public/Assets/69.jpg",
-        logo: "../../public/Assets/AI-Readiness.png",
-        timestamp: "July 2024",
-        title: "Learn and Transcribe ET",
-        description:
-            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
-        category: "RECENT",
-    },
-    {
-        id: 4,
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120&h=120&fit=crop",
-        logo: "../../public/Assets/AI-Readiness.png",
-        timestamp: "July 2024",
-        title: "EFTApp",
-        description:
-            "EFTApp, developed by ELI for the Federal Police, is a secure and efficient platform that enables citizens to report crimes in real time. Designed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information, ensuring swift action by law enforcement. Developed to enhance public safety, EFTApp provides intuitive interfaces for submitting critical information ensuring swift action by law enforcement.",
-        category: "RECENT",
-    },
-]
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -227,7 +185,7 @@ const sidebarItems = [
                       {/* div Image */}
                       <div className="relative flex-shrink-0 w-40 h-36">
                         <img
-                          src={div.image || "/placeholder.svg"}
+                          src={div.coverimage || "/placeholder.svg"}
                           alt={div.title}
                           className="w-full h-full rounded-lg object-cover"
                         />
@@ -311,7 +269,7 @@ const sidebarItems = [
                                                 >
                                                     <div className="flex-shrink-0">
                                                         <img
-                                                            src={item.image || "/placeholder.svg"}
+                                                            src={item.coverimage || "/placeholder.svg"}
                                                             alt={item.title}
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />
@@ -358,7 +316,7 @@ const sidebarItems = [
                                                 >
                                                     <div className="flex-shrink-0">
                                                         <img
-                                                            src={item.image || "/placeholder.svg"}
+                                                            src={item.coverimage || "/placeholder.svg"}
                                                             alt={item.title}
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />
@@ -401,7 +359,7 @@ const sidebarItems = [
                                                 >
                                                     <div className="flex-shrink-0">
                                                         <img
-                                                            src={item.image || "/placeholder.svg"}
+                                                            src={item.coverimage || "/placeholder.svg"}
                                                             alt={item.title}
                                                             className="w-[110px] h-[110px] rounded object-cover"
                                                         />

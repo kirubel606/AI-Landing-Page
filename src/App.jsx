@@ -13,9 +13,9 @@ function App() {
   const location = useLocation(); // <-- This now works correctly
 
   return (
-      <SplashWrapper key={location.pathname}>
+      <SplashWrapper >
         <main className="relative z-10">
-          <Routes location={location}>
+          <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/research" element={<Research />} />
               <Route path="/news" element={<News />} />
