@@ -1,5 +1,6 @@
 import CoolSvg from "../components/CoolSVg"
 import { Card, CardBody, Typography } from "@material-tailwind/react";
+import Footer from "../components/Footer";
 import {
   LightBulbIcon,
   CogIcon,
@@ -9,47 +10,47 @@ import {
 const About = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
-<div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
-                <div className="absolute h-dvh w-full">
-                    <CoolSvg />
-                </div>
-                <div className="relative h-64 bg-transparent mx-20">
-                    <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
-                    <div className="z-20 flex items-center justify-center h-full">
-                        <div className="text-center text-white h-full">
-                            <h1 variant="h1" className="text-4xl font-bold mt-36 mb-2 text-white">
-                                About Us
-                            </h1>
-                            <h1 variant="lead" className="text-lg opacity-90 text-white">
-                                Advancing Innovation Through Technology
-                            </h1>
-                        </div>
-                    </div>
-                    {/* Decorative elements */}
-                    <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"></div>
-                    <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
-                </div>
-    </div>
-    <div className="max-w-6xl mx-auto space-y-8 mt-10">
+      <div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
+        <div className="absolute h-dvh w-full">
+          <CoolSvg />
+        </div>
+        <div className="relative h-64 bg-transparent mx-20">
+          <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
+          <div className="z-20 flex items-center justify-center h-full">
+            <div className="text-center text-white h-full">
+              <h1 variant="h1" className="text-4xl font-bold mt-36 mb-2 text-white">
+                About Us
+              </h1>
+              <h1 variant="lead" className="text-lg opacity-90 text-white">
+                Advancing Innovation Through Technology
+              </h1>
+            </div>
+          </div>
+          {/* Decorative elements */}
+          <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"></div>
+          <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
+        </div>
+      </div>
+      <div className="max-w-7xl mb-28 mx-auto space-y-24 mt-10">
         {/* Header Section with Blue Border */}
-        <Card className="border-4 border-blue-600">
+        <Card className="">
           <CardBody className="p-6">
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col h-fit lg:flex-row gap-6">
               {/* Speaker Image */}
-              <div className="lg:w-1/3">
+              <div className="lg:w-2/3  h-full flex ">
                 <img
                   src="../Assets/speaker.png"
                   alt="EAII Speaker"
-                  className="w-full h-64 lg:h-80 object-cover rounded-lg"
+                  className="w-full lg:h-[550px] object-cover rounded-lg"
                 />
               </div>
 
               {/* Content */}
-              <div className="lg:w-2/3 space-y-4">
+              <div className="lg:w-2/3 space-y-7">
                 <Typography variant="h2" className="text-2xl lg:text-3xl font-bold text-gray-900">
                   Ethiopian Artificial Intelligence Institute (EAII)
                 </Typography>
-                <div className="space-y-3 text-gray-700 text-sm lg:text-base leading-relaxed">
+                <div className="space-y-3 text-gray-700 text-sm lg:text-lg leading-relaxed">
                   <Typography className="text-gray-700">
                     The Ethiopian Artificial Intelligence Institute is a leading research and development organization dedicated to advancing AI technologies and applications in Ethiopia. Our mission is to foster innovation, conduct cutting-edge research, and develop AI solutions that address local and global challenges.
                   </Typography>
@@ -94,7 +95,7 @@ const About = () => {
 
         {/* Subtitle */}
         <div className="text-center">
-          <Typography className="text-gray-600 text-sm">
+          <Typography className="text-gray-600 text-xl ">
             At EAII, we believe in the power of AI to transform society, drive efficiency, and accelerate future. Join us in transforming Ethiopia through artificial intelligence.
           </Typography>
         </div>
@@ -104,8 +105,8 @@ const About = () => {
           {/* Advancing AI Research */}
           <div className="flex gap-4">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
-                <LightBulbIcon className="w-6 h-6 text-white" />
+              <div className="w-12 h-12rounded-full flex items-center justify-center">
+                <img src="../public/Assets/impact.png"/>
               </div>
             </div>
             <div>
@@ -121,8 +122,8 @@ const About = () => {
           {/* Developing AI-Powered Tools */}
           <div className="flex gap-4">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
-                <CogIcon className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center">
+                <img src="../public/Assets/develop.png"/>
               </div>
             </div>
             <div>
@@ -138,8 +139,8 @@ const About = () => {
           {/* Fostering Collaboration */}
           <div className="flex gap-4">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
-                <HandThumbUpIcon className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center">
+                <img src="../public/Assets/foster.png"/>
               </div>
             </div>
             <div>
@@ -155,8 +156,8 @@ const About = () => {
           {/* Cultivating Next Generation */}
           <div className="flex gap-4">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
-                <AcademicCapIcon className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center">
+                <img src="../public/Assets/cultivate.png"/>
               </div>
             </div>
             <div>
@@ -170,6 +171,7 @@ const About = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
