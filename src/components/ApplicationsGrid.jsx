@@ -35,7 +35,7 @@ const ApplicationsGrid = () => {
             <div key={app.id} className="group cursor-pointer hover:scale-105 transition-transform duration-300">
               <div className="relative overflow-hidden rounded-lg shadow-lg">
                 <img
-                  src={app.coverimage || "/placeholder.svg"}
+                  src={app.image || "/placeholder.svg"}
                   alt={app.name}
                   className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
