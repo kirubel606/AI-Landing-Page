@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/collaborations/')
       .then(res => {
-        setCollabs(res.data)
+        setCollabs(res.data.slice(0, 6))
       })
       .catch(err => {
         setError(err.message)

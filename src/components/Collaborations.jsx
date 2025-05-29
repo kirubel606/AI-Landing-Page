@@ -21,7 +21,7 @@ const Collaborations = () => {
                 <img
                   src={collab.logo}
                   alt={`Collaboration logo ${collab.id}`}
-                  className="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                  className="h-24 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
                 />
               </div>
             ))
