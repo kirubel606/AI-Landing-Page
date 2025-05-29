@@ -1,12 +1,6 @@
 import CoolSvg from "../components/CoolSVg"
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import Footer from "../components/Footer";
-import {
-  LightBulbIcon,
-  CogIcon,
-  HandThumbUpIcon,
-  AcademicCapIcon,
-} from "@heroicons/react/24/solid";
 const About = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -18,8 +12,8 @@ const About = () => {
           <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white h-full">
-              <h1 variant="h1" className="text-5xl underline font-bold mt-36 mb-2 text-white">
-                About Us
+              <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
+                About <p className="text-orange-400 ml-1">Us</p>
               </h1>
             </div>
           </div>
