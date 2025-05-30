@@ -320,11 +320,11 @@ function News() {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <div className="w-full">
-                <div className="grid grid-cols-3 bg-gray-100 rounded-lg p-1 mb-6">
+                <div className="grid grid-cols-3 p-1 mb-6">
                   <button
-                    className={`text-xs font-medium py-2 px-3 rounded-md transition-all ${
+                    className={`text-xs font-medium py-2 px-3 transition-all ${
                       activeTab === "latest"
-                        ? "bg-white text-orange-600 shadow-sm"
+                        ? "bg-orange-400 text-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900"
                     }`}
                     onClick={() => setActiveTab("latest")}
@@ -332,21 +332,21 @@ function News() {
                     LATEST
                   </button>
                   <button
-                    className={`text-xs font-medium py-2 px-3 rounded-md transition-all ${
+                    className={`text-xs font-medium py-2 px-3 transition-all ${
                       activeTab === "trending"
-                        ? "bg-white text-orange-600 shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
+                      ? "bg-orange-400 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
                     onClick={() => setActiveTab("trending")}
                   >
                     TRENDING
                   </button>
                   <button
-                    className={`text-xs font-medium py-2 px-3 rounded-md transition-all ${
+                    className={`text-xs font-medium py-2 px-3 transition-all ${
                       activeTab === "videos"
-                        ? "bg-white text-orange-600 shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
+                      ? "bg-orange-400 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
                     onClick={() => setActiveTab("videos")}
                   >
                     VIDEOS
