@@ -4,7 +4,7 @@ import { AppContext } from "../context/Appcontext"
 
 const Footer = () => {
   const { settings, loading } = useContext(AppContext)
-  console.log("Here is Setting:",settings);
+  // console.log("Here is Setting:",settings);
   return (
     <footer className="bg-slate-900 text-white">
       <div className="container mx-auto px-4 py-12">
