@@ -112,11 +112,11 @@ function News() {
     switch (activeTab) {
       case "trending":
         // Filter trending news or use a different endpoint
-        displayData = newsData.slice(0, 6)
+        displayData = newsData.sort((a, b) => b.view_count - a.view_count);
         badgeColor = "bg-blue-100 text-blue-800"
         break
       case "videos":
-        displayData = videoData.slice(0, 6)
+        displayData = videoData.sort((a, b) => b.view_count - a.view_count);
         badgeColor = "bg-green-100 text-green-800"
         break
       default:
@@ -188,7 +188,8 @@ function News() {
   }
 
   // Get featured article (first non-video article)
-  const featuredArticle = newsData[0]
+  const Mostviewed = newsData.sort((a, b) => b.view_count - a.view_count);
+  const featuredArticle = Mostviewed[0]; 
 
   // Get articles for different sections
   const leftColumnNews = newsData
