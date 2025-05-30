@@ -191,9 +191,9 @@ function News() {
   const featuredArticle = newsData[0]
 
   // Get articles for different sections
-  const leftColumnNews = newsData.slice(1, 4)
-  const techNews = newsData.slice(4, 8)
-  const majorNews = newsData.find((article) => article.category === 4) || newsData[newsData.length - 1]
+  const leftColumnNews = newsData
+  const techNews = newsData
+  const majorNews = newsData.find((article) => article.category === 'Healthcare') || newsData[newsData.length - 1]
 
   return (
     <div className="min-h-screen bg-white">
@@ -312,39 +312,7 @@ function News() {
               ))}
             </div>
 
-            {/* Major News Article */}
-            {majorNews && (
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="relative">
-                  <img
-                    src={'http://127.0.0.1:8000'+majorNews.cover_image || "/placeholder.svg"}
-                    alt={majorNews.title}
-                    className="w-full h-64 md:h-80 object-cover"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/800x400"
-                    }}
-                  />
-                  {majorNews.iframe && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                        <PlayIcon size="w-6 h-6" />
-                      </div>
-                    </div>
-                  )}
-                  <span className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
-                    {majorNews.category}
-                  </span>
-                </div>
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 leading-tight">{majorNews.title}</h2>
-                  <p className="text-gray-600 mb-4">{majorNews.subtitle}</p>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <CalendarIcon size="w-3.5 h-3.5" />
-                    <span className="ml-1">{formatDate(majorNews.created_at)}</span>
-                  </div>
-                </div>
-              </div>
-            )}
+
           </div>
 
           {/* Right Sidebar */}
@@ -389,6 +357,39 @@ function News() {
             </div>
           </div>
         </div>
+            {/* Major News Article */}
+            {majorNews && (
+              <div className="bg-white overflow-hidden transition-shadow cursor-pointer">
+                <div className="relative flex">
+                  <img
+                    src={'http://127.0.0.1:8000'+majorNews.cover_image || "/placeholder.svg"}
+                    alt={majorNews.title}
+                    className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/800x400"
+                    }}
+                  />
+                  {majorNews.iframe && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <PlayIcon size="w-6 h-6" />
+                      </div>
+                    </div>
+                  )}
+                  <span className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
+                    {majorNews.category}
+                  </span>
+                  <div className="p-6">
+                  <h2 className="text-2xl font-bold mb-4 leading-tight">{majorNews.title}</h2>
+                  <p className="text-gray-600 mb-4">{majorNews.subtitle}</p>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <CalendarIcon size="w-3.5 h-3.5" />
+                    <span className="ml-1">{formatDate(majorNews.created_at)}</span>
+                  </div>
+                </div>
+                </div>
+              </div>
+            )}
       </main>
 
       {/* Video Section */}
