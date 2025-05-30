@@ -31,7 +31,7 @@ const ContentSection = ({ title, subtitle, images, large = false }) => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {images.map((image, index) => (
+                {images.slice(0,4).map((image, index) => (
                   <img
                     key={index}
                     src={'http://127.0.0.1:8000/'+image || "/placeholder.svg"}

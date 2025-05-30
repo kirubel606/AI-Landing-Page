@@ -54,7 +54,7 @@ const ProjectsGrid = () => {
               />
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{project.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{project.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{project.description.split(" ").slice(0, 20).join(" ") + (project.description.split(" ").length > 20 ? "..." : "")}</p>
               </div>
             </a>
           ))}
