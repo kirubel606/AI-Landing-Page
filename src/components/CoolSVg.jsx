@@ -1,10 +1,12 @@
 import Header from "../components/Header"
+import { Player } from '@lottiefiles/react-lottie-player'
+import splashAnimation from '../../public/Assets/globe.json' // adjust if in another path
 
 
 const CoolSvg = () => {
   return (
     <>
-                {/* Animated Circuit SVG Background */}
+        {/* Animated Circuit SVG Background */}
         <div className="absolute inset-0 overflow-hidden">
           <svg
             className="absolute inset-0 w-full h-full"
@@ -265,6 +267,14 @@ const CoolSvg = () => {
               </rect>
             </g>
           </svg>
+          <div className="absolute">
+          <Player
+            autoplay
+            loop
+            src={splashAnimation}
+            style={{ height: '900px', width: '1000px',opacity:'5%' }}
+          />
+          </div>
         </div>
 
         {/* Circuit board background pattern */}
