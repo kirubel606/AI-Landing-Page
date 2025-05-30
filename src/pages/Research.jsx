@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios"
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import Footer from "../components/Footer";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Research = () => {
     const [activeTab, setActiveTab] = useState("latest");
@@ -37,7 +38,7 @@ const Research = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/categories/");
+                const response = await axios.get(`${BASE_URL}`+"/categories/");
                 setCategories(response.data);
             } catch (error) {
                 console.error("Failed to fetch categories:", error);
@@ -82,7 +83,7 @@ const Research = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/rnd/");
+                const response = await axios.get(`${BASE_URL}`+"/rnd/");
                 setProjects(response.data.slice(0, 4));
             } catch (error) {
                 console.error("Failed to fetch R&D projects:", error);

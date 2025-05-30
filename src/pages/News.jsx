@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Icon components (simple SVG icons)
 const PlayIcon = ({ size = "w-6 h-6" }) => (
   <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@ function News() {
     try {
       setLoading(true)
       // Replace with your actual API endpoint
-      const response = await fetch("http://127.0.0.1:8000/news/all/") // Adjust this URL to match your backend
+      const response = await fetch(`${BASE_URL}/news/all/`) // Adjust this URL to match your backend
       const data = await response.json()
 
       if (data.results && data.results.result) {
@@ -136,7 +136,7 @@ function News() {
       <div key={article.id} className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
         <div className="relative flex-shrink-0">
           <img
-            src={activeTab === "videos" ? getVideoThumbnail(article.iframe, article.cover_image) : 'http://127.0.0.1:8000'+article.cover_image}
+            src={activeTab === "videos" ? getVideoThumbnail(article.iframe,`${BASE_URL}`+article.cover_image) : `${BASE_URL}`+article.cover_image}
             alt={article.title}
             className="w-20 h-20 object-cover rounded-lg"
             onError={(e) => {
@@ -237,7 +237,7 @@ function News() {
               >
                 <div className="relative">
                   <img
-                    src={'http://127.0.0.1:8000'+article.cover_image || "/placeholder.svg"}
+                    src={`${BASE_URL}`+article.cover_image || "/placeholder.svg"}
                     alt={article.title}
                     className="w-full h-48 object-cover"
                     onError={(e) => {
@@ -265,7 +265,7 @@ function News() {
               <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer mb-8">
                 <div className="relative">
                   <img
-                    src={'http://127.0.0.1:8000'+featuredArticle.cover_image || "/placeholder.svg"}
+                    src={`${BASE_URL}`+featuredArticle.cover_image || "/placeholder.svg"}
                     alt={featuredArticle.title}
                     className="w-full h-80 object-cover"
                     onError={(e) => {
@@ -297,7 +297,7 @@ function News() {
                 >
                   <div className="relative">
                     <img
-                      src={'http://127.0.0.1:8000'+article.cover_image || "/placeholder.svg"}
+                      src={`${BASE_URL}`+article.cover_image || "/placeholder.svg"}
                       alt={article.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
@@ -370,7 +370,7 @@ function News() {
               <div className="bg-white overflow-hidden transition-shadow cursor-pointer">
                 <div className="relative flex">
                   <img
-                    src={'http://127.0.0.1:8000'+majorNews.cover_image || "/placeholder.svg"}
+                    src={`${BASE_URL}`+majorNews.cover_image || "/placeholder.svg"}
                     alt={majorNews.title}
                     className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
                     onError={(e) => {

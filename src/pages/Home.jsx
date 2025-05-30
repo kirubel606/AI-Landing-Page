@@ -11,9 +11,9 @@ import React,{useContext} from "react"
 import { AppContext } from "../context/Appcontext"
 
 const Home = () => {
-  const { news } = useContext(AppContext)
+  const { news ,gallery} = useContext(AppContext)
   const singleNews = news.results.result[0]
-  
+  const singleGallery = gallery[0]
   return (
     <>
     <div className="min-h-screen bg-gray-900 relative overflow-hidden">
@@ -54,19 +54,25 @@ const Home = () => {
       </section>
     </div>
     
+
+    {singleGallery && (
+      <>
     <ContentSection
-      title={singleNews.title}
-      subtitle={singleNews.subtitle}
-      images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
-      large={false}
+      title='Our Gallery'
+      subtitle={singleGallery.title}
+      images={singleGallery.images.map(img => img.image)}
+      large={true}
     />
+    </>
+    )}
+
     {singleNews && (
       <>
     <ContentSection
       title={singleNews.title}
       subtitle={singleNews.subtitle}
       images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
-      large={true}
+      large={false}
     />
     </>
     )}

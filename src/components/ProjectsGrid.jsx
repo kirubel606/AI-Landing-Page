@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProjectsGrid = () => {
   const [projects, setProjects] = useState([])
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/rnd/")
+        const response = await axios.get(`${BASE_URL}`+"/rnd/")
         setProjects(response.data.slice(0, 3)) // Only take first 3
       } catch (error) {
         console.error("Failed to fetch R&D projects:", error)

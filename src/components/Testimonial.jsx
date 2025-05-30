@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import axios from "axios"
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Testimonial = () => {
   const [testimonials, setTestimonials] = useState([])
@@ -11,7 +12,7 @@ const Testimonial = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/quotes/testimonials/")
+        const response = await axios.get(`${BASE_URL}`+"/quotes/testimonials/")
         setTestimonials(response.data)
       } catch (error) {
         console.error("Failed to fetch testimonials:", error)

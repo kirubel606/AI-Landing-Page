@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ApplicationsGrid = () => {
   const [applications, setApplications] = useState([])
@@ -7,7 +8,7 @@ const ApplicationsGrid = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/categories/")
+        const response = await axios.get(`${BASE_URL}`+"/categories/")
         setApplications(response.data.slice(0, 5))
       } catch (error) {
         console.error("Failed to fetch categories:", error)

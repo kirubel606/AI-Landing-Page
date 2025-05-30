@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AUTO_ADVANCE_DELAY = 5000; // 5 seconds
 
 const Quotes = () => {
@@ -10,7 +10,7 @@ const Quotes = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/quotes/")
+      .get(`${BASE_URL}`+"/quotes/")
       .then((res) => setQuotes(res.data))
       .catch((err) => console.error("Failed to fetch quotes:", err));
   }, []);

@@ -1,18 +1,20 @@
 import { createContext, useEffect, useState } from "react"
 import axios from "axios"
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
   const [settings, setSettings] = useState([])
   const [news, setNews] = useState([])
+  const [gallery, setGallery] = useState([])
   const [loading, setLoading] = useState(true)
   const [newsloading, setnewsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [collabs,setCollabs] = useState(null)
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/settings/')
+    axios.get(`${BASE_URL}`+'/settings/')
       .then(res => {
         setSettings(res.data[0])
         setLoading(false)
@@ -24,7 +26,7 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/news/all/')
+    axios.get(`${BASE_URL}`+'/news/all/')
       .then(res => {
         setNews(res.data)
         setnewsLoading(false)
@@ -34,8 +36,19 @@ export const AppProvider = ({ children }) => {
         setLoading(false)
       })
   }, [])
+
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/collaborations/')
+    axios.get(`${BASE_URL}`+'/gallery/')
+      .then(res => {
+        setGallery(res.data)
+      })
+      .catch(err => {
+        setError(err.message)
+      })
+  }, [])
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}`+'/collaborations/')
       .then(res => {
         setCollabs(res.data)
       })
@@ -45,7 +58,7 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   return (
-    <AppContext.Provider value={{ settings,loading,news,collabs,newsloading, error }}>
+    <AppContext.Provider value={{ settings,loading,news,gallery,collabs,newsloading, error }}>
       {children}
     </AppContext.Provider>
   )
