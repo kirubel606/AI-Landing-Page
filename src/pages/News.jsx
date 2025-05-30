@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import CoolSvg from "../components/CoolSVg"
+import Footer from "../components/Footer"
 
 // Icon components (simple SVG icons)
 const PlayIcon = ({ size = "w-6 h-6" }) => (
@@ -61,18 +62,25 @@ function News() {
     }
   }
 
-  // Helper function to format date
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffTime = Math.abs(now - date)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 1) return "1 day ago"
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`
-    return `${Math.ceil(diffDays / 30)} months ago`
-  }
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+  
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffWeeks = Math.floor(diffDays / 7);
+    const diffMonths = Math.floor(diffDays / 30);
+  
+    if (diffMinutes < 1) return "Just now";
+    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    if (diffDays < 30) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+    return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+  };
+  
 
 
   // Helper function to extract video duration from iframe
@@ -138,7 +146,7 @@ function News() {
           {activeTab === "videos" && (
             <>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 bg-orange-400 backdrop-blur-sm rounded-full text-white flex items-center justify-center">
                   <PlayIcon size="w-3 h-3" />
                 </div>
               </div>
@@ -203,7 +211,6 @@ function News() {
           <CoolSvg />
         </div>
         <div className="relative h-64 bg-transparent mx-20">
-          <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white h-full">
               <h1 className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
@@ -322,7 +329,7 @@ function News() {
               <div className="w-full">
                 <div className="grid grid-cols-3 p-1 mb-6">
                   <button
-                    className={`text-xs font-medium py-2 px-3 transition-all ${
+                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "latest"
                         ? "bg-orange-400 text-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900"
@@ -332,7 +339,7 @@ function News() {
                     LATEST
                   </button>
                   <button
-                    className={`text-xs font-medium py-2 px-3 transition-all ${
+                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "trending"
                       ? "bg-orange-400 text-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
@@ -342,7 +349,7 @@ function News() {
                     TRENDING
                   </button>
                   <button
-                    className={`text-xs font-medium py-2 px-3 transition-all ${
+                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "videos"
                       ? "bg-orange-400 text-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
@@ -410,7 +417,7 @@ function News() {
                     }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-20 h-20 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-black/70 transition-colors">
+                    <div className="w-20 h-20 bg-orange-400 text-white backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-black/70 transition-colors">
                       <PlayIcon size="w-8 h-8" />
                     </div>
                   </div>
@@ -443,6 +450,7 @@ function News() {
           </div>
         </section>
       )}
+      <Footer/>
     </div>
   )
 }

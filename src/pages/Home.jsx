@@ -53,14 +53,15 @@ const Home = () => {
         </div>
       </section>
     </div>
-    {singleNews && (
-      <>
-      <ContentSection
+    
+    <ContentSection
       title={singleNews.title}
       subtitle={singleNews.subtitle}
       images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
       large={false}
     />
+    {singleNews && (
+      <>
     <ContentSection
       title={singleNews.title}
       subtitle={singleNews.subtitle}
