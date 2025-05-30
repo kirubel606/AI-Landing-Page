@@ -13,14 +13,6 @@ import { AppContext } from "../context/Appcontext"
 const Home = () => {
   const { news } = useContext(AppContext)
   const singleNews = news.results.result[0]
-  const dummyImages2 = [
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1497493292307-31c376b6e479?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df080?auto=format&fit=crop&w=800&q=80",
-  ];
   
   return (
     <>
@@ -61,18 +53,23 @@ const Home = () => {
         </div>
       </section>
     </div>
+    {singleNews && (
+      <>
       <ContentSection
-        title={singleNews.title}
-        subtitle={singleNews.subtitle}
-        images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
-        large={false}
-      />
-      <ContentSection
-        title={singleNews.title}
-        subtitle={singleNews.subtitle}
-        images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
-        large={true}
-      />
+      title={singleNews.title}
+      subtitle={singleNews.subtitle}
+      images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
+      large={false}
+    />
+    <ContentSection
+      title={singleNews.title}
+      subtitle={singleNews.subtitle}
+      images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
+      large={true}
+    />
+    </>
+    )}
+
       <ApplicationsGrid />
       <ProjectsGrid />
       <Quotes />
