@@ -4,6 +4,10 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
+import Leftsidebar from "../components/News/Leftsidebar"
+import RightSidebar from "../components/News/RightSidebar"
+import CenterColumn from "../components/News/CenterColumn"
+import MajorNews from "../components/News/MajorNews"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 // Icon components (simple SVG icons)
 const PlayIcon = ({ size = "w-6 h-6" }) => (
@@ -240,182 +244,36 @@ function News() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Left Column - Small News Items */}
-          <div className="lg:col-span-1 space-y-6">
-            {leftColumnNews.map((article) => (
-              <div
-                key={article.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => navigateToDetail(article)}
-              >
-                <div className="relative">
-                  <img
-                    src={`${BASE_URL}` + article.cover_image || "/placeholder.svg"}
-                    alt={article.title}
-                    className="w-full h-48 object-cover"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/300x200"
-                    }}
-                  />
-                  <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                    {article.category}
-                  </span>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-sm leading-tight mb-2 line-clamp-3">{article.title}</h3>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <CalendarIcon size="w-3 h-3" />
-                    <span className="ml-1">{formatDate(article.created_at)}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Leftsidebar
+            leftColumnNews = {leftColumnNews}
+            BASE_URL = {BASE_URL}
+            CalendarIcon = {CalendarIcon}
+            formatDate ={formatDate}
+            navigateToDetail = {navigateToDetail}
+          />
+          <CenterColumn 
+            featuredArticle = {featuredArticle}
+            BASE_URL={BASE_URL}
+            techNews = {techNews}
+            CalendarIcon ={CalendarIcon}
+            formatDate ={formatDate}
+            navigateToDetail={navigateToDetail}
+          />
 
-          {/* Center Column - Featured Article */}
-          <div className="lg:col-span-2">
-            {featuredArticle && (
-              <div
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer mb-8"
-                onClick={() => navigateToDetail(featuredArticle)}
-              >
-                <div className="relative">
-                  <img
-                    src={`${BASE_URL}` + featuredArticle.cover_image || "/placeholder.svg"}
-                    alt={featuredArticle.title}
-                    className="w-full h-80 object-cover"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/600x400"
-                    }}
-                  />
-                  <span className="absolute top-4 left-4 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                    {featuredArticle.category}
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <h2 className="text-2xl font-bold mb-2 leading-tight">{featuredArticle.title}</h2>
-                    <p className="text-sm opacity-90 mb-2">{featuredArticle.subtitle}</p>
-                    <div className="flex items-center text-xs">
-                      <CalendarIcon size="w-3 h-3" />
-                      <span className="ml-1">{formatDate(featuredArticle.created_at)}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tech News Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {techNews.map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => navigateToDetail(article)}
-                >
-                  <div className="relative">
-                    <img
-                      src={`${BASE_URL}` + article.cover_image || "/placeholder.svg"}
-                      alt={article.title}
-                      className="w-full h-48 object-cover"
-                      onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/300x200"
-                      }}
-                    />
-                    <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                      {article.category}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-2 line-clamp-2">{article.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-3">{article.subtitle}</p>
-                    <div className="flex items-center text-xs text-gray-500">
-                      <CalendarIcon size="w-3 h-3" />
-                      <span className="ml-1">{formatDate(article.created_at)}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
-              <div className="w-full">
-                <div className="grid grid-cols-3 p-1 mb-6">
-                  <button
-                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
-                      activeTab === "latest"
-                        ? "bg-orange-400 text-white shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                    onClick={() => setActiveTab("latest")}
-                  >
-                    LATEST
-                  </button>
-                  <button
-                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
-                      activeTab === "trending"
-                        ? "bg-orange-400 text-white shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                    onClick={() => setActiveTab("trending")}
-                  >
-                    TRENDING
-                  </button>
-                  <button
-                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
-                      activeTab === "videos"
-                        ? "bg-orange-400 text-white shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                    onClick={() => setActiveTab("videos")}
-                  >
-                    VIDEOS
-                  </button>
-                </div>
-
-                <div className="space-y-4">{renderSidebarContent()}</div>
-              </div>
-            </div>
-          </div>
+          <RightSidebar 
+            activeTab={activeTab}
+            setActiveTab ={setActiveTab}
+            renderSidebarContent={renderSidebarContent}
+          />
         </div>
-        {/* Major News Article */}
-        {majorNews && (
-          <div
-            className="bg-white hidden md:block overflow-hidden transition-shadow cursor-pointer"
-            onClick={() => navigateToDetail(majorNews)}
-          >
-            <div className="relative flex">
-              <img
-                src={`${BASE_URL}` + majorNews.cover_image || "/placeholder.svg"}
-                alt={majorNews.title}
-                className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/800x400"
-                }}
-              />
-              {majorNews.iframe && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <PlayIcon size="w-6 h-6" />
-                  </div>
-                </div>
-              )}
-              <span className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
-                {majorNews.category}
-              </span>
-              <div className="p-6">
-                <h2 className="text-2xl font-bold mb-4 leading-tight">{majorNews.title}</h2>
-                <p className="text-gray-600 mb-4">{majorNews.subtitle}</p>
-                <div className="flex items-center text-sm text-gray-500">
-                  <CalendarIcon size="w-3.5 h-3.5" />
-                  <span className="ml-1">{formatDate(majorNews.created_at)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <MajorNews 
+          majorNews = {majorNews}
+          BASE_URL={BASE_URL}
+          PlayIcon = {PlayIcon}
+          CalendarIcon ={CalendarIcon}
+          formatDate ={formatDate}
+          navigateToDetail={navigateToDetail}
+        />
       </main>
 
       {/* Video Section */}

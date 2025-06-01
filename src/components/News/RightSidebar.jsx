@@ -3,8 +3,8 @@ import React from 'react'
 const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
   return (
     <>
-              {/* Right News Sidebar */}
-              <div className="lg:col-span-1">
+          {/* Right Sidebar */}
+          <div className="lg:col-span-1">
             <div className="sticky top-8">
               <div className="w-full">
                 <div className="grid grid-cols-3 p-1 mb-6">
@@ -21,9 +21,9 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "trending"
-                      ? "bg-orange-400 text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                        ? "bg-orange-400 text-white shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
                     onClick={() => setActiveTab("trending")}
                   >
                     TRENDING
@@ -31,9 +31,9 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "videos"
-                      ? "bg-orange-400 text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                        ? "bg-orange-400 text-white shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
                     onClick={() => setActiveTab("videos")}
                   >
                     VIDEOS

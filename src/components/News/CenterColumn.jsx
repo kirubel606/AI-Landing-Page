@@ -1,15 +1,18 @@
 import React from 'react'
 
-const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, formatDate }) => {
+const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, formatDate,navigateToDetail }) => {
   return (
     <>
-              {/* Center Column - Featured Article */}
-              <div className="lg:col-span-2">
+          {/* Center Column - Featured Article */}
+          <div className="lg:col-span-2">
             {featuredArticle && (
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer mb-8">
+              <div
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer mb-8"
+                onClick={() => navigateToDetail(featuredArticle)}
+              >
                 <div className="relative">
                   <img
-                    src={`${BASE_URL}`+featuredArticle.cover_image || "/placeholder.svg"}
+                    src={`${BASE_URL}` + featuredArticle.cover_image || "/placeholder.svg"}
                     alt={featuredArticle.title}
                     className="w-full h-80 object-cover"
                     onError={(e) => {
@@ -38,10 +41,11 @@ const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, forma
                 <div
                   key={article.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => navigateToDetail(article)}
                 >
                   <div className="relative">
                     <img
-                      src={`${BASE_URL}`+article.cover_image || "/placeholder.svg"}
+                      src={`${BASE_URL}` + article.cover_image || "/placeholder.svg"}
                       alt={article.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
@@ -63,8 +67,6 @@ const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, forma
                 </div>
               ))}
             </div>
-
-
           </div>
 
     </>
