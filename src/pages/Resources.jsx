@@ -3,99 +3,17 @@ import axios from "axios"
 import CoolSvg from "../components/CoolSVg"
 import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer"
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
+
 const Resources = () => {
-  // Mock data for publications
-  // const mockData = [
-  //   {
-  //     id: 1,
-  //     title:
-  //       "A Hybrid Machine Learning Model Based on Global and Local Learner Algorithms for Diabetes Mellitus Prediction",
-  //     author: "Deepa Guha Bala, Taye Girma Debelee, Worku Gachena Negera",
-  //     published_at: "2024-01-15",
-  //     link: "https://www.scientific.net/JBBBE.54.65",
-  //     tags: "machine learning, diabetes, prediction, algorithms",
-  //     classification: "publication",
-  //     category: "Machine Learning",
-  //   },
-  //   {
-  //     id: 2,
-  //     title:
-  //       "Interpretable Hybrid Multichannel Deep Learning Model for Heart Disease Classification Using 12-Lead ECG Signal",
-  //     author: "Yehualashet Megersa Ayano, Friedhelm Schwenker, Bisrat Derebssa Dufera, Taye Girma Debelee",
-  //     published_at: "2023-12-20",
-  //     link: "#",
-  //     tags: "deep learning, heart disease, ECG, classification",
-  //     classification: "publication",
-  //     category: "Deep Learning",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Advanced Neural Networks Dataset for Healthcare Analytics",
-  //     author: "John Smith, Jane Doe, Michael Johnson",
-  //     published_at: "2023-11-10",
-  //     link: "#",
-  //     tags: "neural networks, healthcare, dataset, analytics",
-  //     classification: "resource",
-  //     category: "Healthcare Analytics",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Federated Learning Framework for Medical Data Analysis",
-  //     author: "Alice Brown, Bob Wilson, Carol Davis",
-  //     published_at: "2023-10-05",
-  //     link: "#",
-  //     tags: "federated learning, medical data, framework",
-  //     classification: "resource",
-  //     category: "Medical Data",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Computer Vision Applications in Diagnostic Imaging",
-  //     author: "David Lee, Emma Taylor, Frank Miller",
-  //     published_at: "2023-09-18",
-  //     link: "#",
-  //     tags: "computer vision, diagnostic imaging, medical",
-  //     classification: "publication",
-  //     category: "Computer Vision",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Natural Language Processing Toolkit for Clinical Text Mining",
-  //     author: "Grace Chen, Henry Wang, Ivy Zhang",
-  //     published_at: "2023-08-22",
-  //     link: "#",
-  //     tags: "NLP, clinical text, mining, toolkit",
-  //     classification: "resource",
-  //     category: "Clinical Data",
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Reinforcement Learning in Drug Discovery",
-  //     author: "Jack Thompson, Kelly Rodriguez, Liam Anderson",
-  //     published_at: "2023-07-14",
-  //     link: "#",
-  //     tags: "reinforcement learning, drug discovery, AI",
-  //     classification: "publication",
-  //     category: "Drug Discovery",
-  //   },
-  //   {
-  //     id: 8,
-  //     title: "Blockchain Framework for Healthcare Data Management",
-  //     author: "Mia Garcia, Noah Martinez, Olivia Johnson",
-  //     published_at: "2023-06-30",
-  //     link: "#",
-  //     tags: "blockchain, healthcare, data management",
-  //     classification: "resource",
-  //     category: "Healthcare Management",
-  //   },
-  // ]
 const [mockData, setMockData] = useState([]);
 const [isLoading, setIsLoading] = useState(true); // NEW
 
 useEffect(() => {
   const fetchresource = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/resources/");
+      const response = await axios.get(BASE_URL+"/resources/");
       setMockData(response.data);
     } catch (error) {
       console.error("Failed to fetch R&resources projects:", error);
@@ -110,7 +28,7 @@ const [categoryData, setCategoryData] = useState([]);
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/categories/");
+                const response = await axios.get(BASE_URL+"/categories/");
                 setCategoryData(response.data);
             } catch (error) {
                 console.error("Failed to fetch categories:", error);
@@ -289,7 +207,7 @@ const tabFilteredData = useMemo(() => {
      useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/categories/");
+                const response = await axios.get(BASE_URL+"/categories/");
                 setCategoryNames(response.data);
             } catch (error) {
                 console.error("Failed to fetch categories:", error);
@@ -376,7 +294,7 @@ const tabFilteredData = useMemo(() => {
   return (
 
     <div className="min-h-screen overflow-y-clip bg-white">
-      <div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
+      <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
         <div className="absolute h-dvh w-full">
           <CoolSvg />
         </div>

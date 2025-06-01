@@ -6,6 +6,7 @@ import News from "./pages/News"
 import Events from "./pages/Events"
 import About from "./pages/About"
 import Resources from "./pages/Resources"
+import Contactus from "./pages/Contactus"
 import "./App.css"
 import SplashWrapper from './components/SplashWrapper';
 import NewsDetail from "./pages/NewsDetail"
@@ -24,6 +25,7 @@ function App() {
               <Route path="/events" element={<Events />} />
               <Route path="/about" element={<About />} />
               <Route path="/resources" element={<Resources />} />    
+              <Route path="/contactus" element={<Contactus/>} />    
           </Routes>
         </main>
       </SplashWrapper>

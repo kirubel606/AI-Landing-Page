@@ -123,7 +123,7 @@ const Research = () => {
     return (
 
         <div className="min-h-screen overflow-y-clip bg-gray-50">
-            <div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
+            <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
                 <div className="absolute h-dvh w-full">
                     <CoolSvg />
                 </div>
