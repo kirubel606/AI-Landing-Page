@@ -1,12 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect,useContext } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
 
 // Add these imports at the top of the file
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
+import RightSidebar from "../components/News/RightSidebar"
+import { AppContext } from "../context/Appcontext"
+
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -31,7 +34,11 @@ const EyeIcon = ({ size = "w-4 h-4" }) => (
     />
   </svg>
 )
-
+const PlayIcon = ({ size = "w-6 h-6" }) => (
+  <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <polygon points="5,3 19,12 5,21" fill="currentColor" />
+  </svg>
+)
 const BackIcon = ({ size = "w-5 h-5" }) => (
   <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -56,6 +63,9 @@ function NewsDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [relatedNews, setRelatedNews] = useState([])
+  const [activeTab, setActiveTab] = useState("latest")
+  const { newsData } = useContext(AppContext)
+  const videoData = newsData.filter((item) => item.iframe)
 
   // Add this state after the other state declarations in the NewsDetail component
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -80,7 +90,7 @@ function NewsDetail() {
 
         // Fetch related news based on category
         if (data.category) {
-          fetchRelatedNews(data.category, data.id)
+          fetchRelatedNews(data.id)
         }
       } else {
         setError("News item not found")
@@ -98,12 +108,7 @@ function NewsDetail() {
       const response = await fetch(`${BASE_URL}/news/related/${currentId}/`)
       const data = await response.json()
 
-      if (data.results && data.results.result) {
-        // Filter out the current article and limit to 3 related articles
-        const filtered = data.results.result.filter((item) => item.id !== currentId).slice(0, 3)
-
-        setRelatedNews(filtered)
-      }
+      setRelatedNews(data)
     } catch (err) {
       console.error("Error fetching related news:", err)
     }
@@ -120,19 +125,24 @@ function NewsDetail() {
 
   const handleShare = () => {
     if (navigator.share) {
-      navigator.share({
-        title: newsItem.title,
-        text: newsItem.subtitle,
-        url: window.location.href,
-      })
+      try {
+        navigator.share({
+          title: newsItem.title,
+          text: newsItem.subtitle,
+          url: window.location.href,
+        })
+      } catch (err) {
+        console.error("Share failed:", err)
+        alert("Sharing failed or was canceled.")
+      }
     } else {
-      // Fallback for browsers that don't support Web Share API
+      // Fallback: copy to clipboard
       navigator.clipboard
         .writeText(window.location.href)
         .then(() => alert("Link copied to clipboard!"))
         .catch((err) => console.error("Failed to copy link:", err))
     }
-  }
+  }  
 
   // Add this function before the return statement
   const openLightbox = (images, startIndex = 0) => {
@@ -155,6 +165,89 @@ function NewsDetail() {
       setCurrentImageIndex(newIndex)
     }
   }
+  // Helper function to get video thumbnail from iframe
+  const getVideoThumbnail = (iframe, coverImage) => {
+    // Try to extract YouTube thumbnail or use cover image
+    if (iframe && iframe.includes("youtube.com/embed/")) {
+      const videoId = iframe.match(/embed\/([^?]+)/)?.[1]
+      if (videoId) {
+        return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+      }
+    }
+    return coverImage
+  }
+  const extractVideoDuration = (iframe) => {
+    // This is a placeholder - you might want to implement actual duration extraction
+    // or store duration in your backend
+    return "5:24"
+  }
+  const navigateToDetail = (newsItem) => {
+    navigate(`/news/${newsItem.id}`)
+  }
+
+  const renderSidebarContent = () => {
+    let displayData = []
+    let badgeColor = "bg-orange-100 text-orange-800"
+
+    switch (activeTab) {
+      case "trending":
+        // Filter trending news or use a different endpoint
+        displayData = newsData.sort((a, b) => b.view_count - a.view_count)
+        badgeColor = "bg-blue-100 text-blue-800"
+        break
+      case "videos":
+        displayData = videoData.sort((a, b) => b.view_count - a.view_count)
+        badgeColor = "bg-green-100 text-green-800"
+        break
+      default:
+        displayData = newsData.slice(0, 6)
+        badgeColor = "bg-orange-100 text-orange-800"
+    }
+
+    return displayData.map((article) => (
+      <div
+        key={article.id}
+        className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+        onClick={() => navigateToDetail(article)}
+      >
+        <div className="relative flex-shrink-0">
+          <img
+            src={
+              activeTab === "videos"
+                ? getVideoThumbnail(article.iframe, `${BASE_URL}` + article.cover_image)
+                : `${BASE_URL}` + article.cover_image
+            }
+            alt={article.title}
+            className="w-20 h-20 object-cover rounded-lg"
+            onError={(e) => {
+              e.target.src = "https://via.placeholder.com/80x80"
+            }}
+          />
+          {activeTab === "videos" && (
+            <>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-6 h-6 bg-orange-400 backdrop-blur-sm rounded-full text-white flex items-center justify-center">
+                  <PlayIcon size="w-3 h-3" />
+                </div>
+              </div>
+              <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+                {extractVideoDuration(article.iframe)}
+              </div>
+            </>
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>{article.category}</span>
+          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{article.title}</h4>
+          <div className="flex items-center text-xs text-gray-500">
+            <CalendarIcon size="w-2.5 h-2.5" />
+            <span className="ml-1">{formatDate(article.created_at)}</span>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+
 
   if (loading) {
     return (
@@ -221,15 +314,15 @@ function NewsDetail() {
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-      <button
+      <main className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="max-w-4xl mx-auto md:col-span-3">
+        <button
             onClick={() => navigate("/news")}
             className="flex items-center text-black hover:text-orange-300 transition-colors mb-6"
           >
             <BackIcon />
             <span className="ml-2">Back to News</span>
           </button>
-        <div className="max-w-4xl mx-auto">
           {/* Featured Image */}
           {!isVideo && (
             <div className="mb-8 relative group">
@@ -325,10 +418,19 @@ function NewsDetail() {
             </div>
           )}
         </div>
-
-        {/* Related News */}
-        {relatedNews.length > 0 && (
-          <div className="mt-16">
+        <div className="hidden md:block lg:col-span-1">
+          <div className="sticky top-8">
+          <RightSidebar
+          activeTab={activeTab}
+          setActiveTab ={setActiveTab}
+          renderSidebarContent={renderSidebarContent}
+        />
+          </div>
+        </div>
+      </main>
+              {/* Related News */}
+              {relatedNews && (
+          <div className="m-16">
             <h3 className="text-2xl font-bold mb-6">Related News</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedNews.map((article) => (
@@ -378,7 +480,6 @@ function NewsDetail() {
             </div>
           </div>
         )}
-      </main>
 
       {lightboxOpen && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center">

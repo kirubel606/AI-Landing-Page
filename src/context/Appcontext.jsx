@@ -7,6 +7,7 @@ export const AppContext = createContext()
 export const AppProvider = ({ children }) => {
   const [settings, setSettings] = useState([])
   const [news, setNews] = useState([])
+  const [newsData, setNewsData] = useState([])
   const [gallery, setGallery] = useState([])
   const [loading, setLoading] = useState(true)
   const [newsloading, setnewsLoading] = useState(true)
@@ -38,6 +39,29 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
+    const fetchNewsData = async () => {
+    try {
+      setLoading(true)
+      // Replace with your actual API endpoint
+      const response = await fetch(`${BASE_URL}/news/all/`) // Adjust this URL to match your backend
+      const data = await response.json()
+
+      if (data.results && data.results.result) {
+        const allNews = data.results.result
+        setNewsData(allNews)
+      }
+    } catch (err) {
+      setError("Failed to fetch news data")
+      console.error("Error fetching news:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
+  fetchNewsData();
+      }, [])
+  
+
+  useEffect(() => {
     axios.get(`${BASE_URL}`+'/gallery/')
       .then(res => {
         setGallery(res.data)
@@ -58,7 +82,7 @@ export const AppProvider = ({ children }) => {
   }, [])
 
   return (
-    <AppContext.Provider value={{ settings,loading,news,gallery,collabs,newsloading, error }}>
+    <AppContext.Provider value={{ settings,loading,news,newsData,gallery,collabs,newsloading, error }}>
       {children}
     </AppContext.Provider>
   )

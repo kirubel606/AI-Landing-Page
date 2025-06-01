@@ -9,11 +9,14 @@ import Quotes from "../components/Quotes"
 import Testimonial from "../components/Testimonial"
 import React,{useContext} from "react"
 import { AppContext } from "../context/Appcontext"
+import { useParams, useNavigate } from "react-router-dom"
 
 const Home = () => {
   const { news ,gallery} = useContext(AppContext)
   const singleNews = news.results.result[0]
   const singleGallery = gallery[0]
+  const navigate = useNavigate()
+
   return (
     <>
     <div className="min-h-screen bg-gray-900 relative overflow-hidden">
@@ -40,6 +43,8 @@ const Home = () => {
           </p>
 
           {/* CTA Button */}
+          <a href="/contactus">
+
           <button className="relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200">
             {/* Gradient border layer */}
             <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
@@ -49,6 +54,7 @@ const Home = () => {
               Get in Touch
             </span>
           </button>
+          </a>
 
         </div>
       </section>
@@ -67,13 +73,14 @@ const Home = () => {
     )}
 
     {singleNews && (
-      <>
+      <><a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
     <ContentSection
       title={singleNews.title}
       subtitle={singleNews.subtitle}
       images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
       large={false}
     />
+    </a>
     </>
     )}
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { Navigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProjectsGrid = () => {
   const [projects, setProjects] = useState([])
@@ -41,17 +42,24 @@ const ProjectsGrid = () => {
           >
           {projects.map((project) => (
             <a
-              href={project.link}
+              href='/research'
               target="_blank"
               rel="noopener noreferrer"
               key={project.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-sm w-full"
+              className="relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-sm w-full"
             >
               <img
                 src={project.coverimage || "/placeholder.svg"}
                 alt={project.title}
                 className="w-full h-48 object-cover"
               />
+                            {project.logo && (
+                  <img
+                      src={project.logo}
+                      alt={`${project.title} logo`}
+                      className="absolute top-40 right-10 w-16 rounded-full border-2 border-white shadow-md object-cover"
+                  />
+              )}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{project.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{project.description.split(" ").slice(0, 20).join(" ") + (project.description.split(" ").length > 20 ? "..." : "")}</p>

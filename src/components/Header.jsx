@@ -59,7 +59,9 @@ const Header = () => {
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
 
           {/* Inner solid bg to create border effect */}
+          <a href="/contactus">
           <span className="relative block rounded-full bg-[#202024] px-6 py-2">Get in Touch</span>
+          </a>
         </button>
 
         {/* Mobile menu button */}
