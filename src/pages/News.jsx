@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 // Icon components (simple SVG icons)
 const PlayIcon = ({ size = "w-6 h-6" }) => (
   <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,6 +22,7 @@ const CalendarIcon = ({ size = "w-3 h-3" }) => (
 )
 
 function News() {
+  const navigate = useNavigate()
   // State for news data
   const [newsData, setNewsData] = useState([])
   const [videoData, setVideoData] = useState([])
@@ -63,25 +65,23 @@ function News() {
   }
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now - date;
-  
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffWeeks = Math.floor(diffDays / 7);
-    const diffMonths = Math.floor(diffDays / 30);
-  
-    if (diffMinutes < 1) return "Just now";
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    if (diffDays < 30) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
-    return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
-  };
-  
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now - date
 
+    const diffMinutes = Math.floor(diffMs / (1000 * 60))
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+    const diffWeeks = Math.floor(diffDays / 7)
+    const diffMonths = Math.floor(diffDays / 30)
+
+    if (diffMinutes < 1) return "Just now"
+    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`
+    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`
+    if (diffDays < 30) return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""} ago`
+    return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`
+  }
 
   // Helper function to extract video duration from iframe
   const extractVideoDuration = (iframe) => {
@@ -113,6 +113,10 @@ function News() {
     }
   }
 
+  const navigateToDetail = (newsItem) => {
+    navigate(`/news/${newsItem.id}`)
+  }
+
   const renderSidebarContent = () => {
     let displayData = []
     let badgeColor = "bg-orange-100 text-orange-800"
@@ -120,11 +124,11 @@ function News() {
     switch (activeTab) {
       case "trending":
         // Filter trending news or use a different endpoint
-        displayData = newsData.sort((a, b) => b.view_count - a.view_count);
+        displayData = newsData.sort((a, b) => b.view_count - a.view_count)
         badgeColor = "bg-blue-100 text-blue-800"
         break
       case "videos":
-        displayData = videoData.sort((a, b) => b.view_count - a.view_count);
+        displayData = videoData.sort((a, b) => b.view_count - a.view_count)
         badgeColor = "bg-green-100 text-green-800"
         break
       default:
@@ -133,10 +137,18 @@ function News() {
     }
 
     return displayData.map((article) => (
-      <div key={article.id} className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+      <div
+        key={article.id}
+        className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+        onClick={() => navigateToDetail(article)}
+      >
         <div className="relative flex-shrink-0">
           <img
-            src={activeTab === "videos" ? getVideoThumbnail(article.iframe,`${BASE_URL}`+article.cover_image) : `${BASE_URL}`+article.cover_image}
+            src={
+              activeTab === "videos"
+                ? getVideoThumbnail(article.iframe, `${BASE_URL}` + article.cover_image)
+                : `${BASE_URL}` + article.cover_image
+            }
             alt={article.title}
             className="w-20 h-20 object-cover rounded-lg"
             onError={(e) => {
@@ -157,9 +169,7 @@ function News() {
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
-            {article.category}
-          </span>
+          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>{article.category}</span>
           <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{article.title}</h4>
           <div className="flex items-center text-xs text-gray-500">
             <CalendarIcon size="w-2.5 h-2.5" />
@@ -196,13 +206,13 @@ function News() {
   }
 
   // Get featured article (first non-video article)
-  const Mostviewed = newsData.sort((a, b) => b.view_count - a.view_count);
-  const featuredArticle = Mostviewed[0]; 
+  const Mostviewed = newsData.sort((a, b) => b.view_count - a.view_count)
+  const featuredArticle = Mostviewed[0]
 
   // Get articles for different sections
   const leftColumnNews = newsData
   const techNews = newsData
-  const majorNews = newsData.find((article) => article.category === 'Healthcare') || newsData[newsData.length - 1]
+  const majorNews = newsData.find((article) => article.category === "Healthcare") || newsData[newsData.length - 1]
 
   return (
     <div className="min-h-screen bg-white">
@@ -212,11 +222,13 @@ function News() {
         </div>
         <div className="relative h-64 bg-transparent mx-20">
           <div className="z-20 flex items-center justify-center h-full">
-            <div className="text-center text-white h-full">
-              <h1 className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                News & <p className="text-orange-400 ml-3">Videos</p>
+            <div className="flex flex-col items-center justify-center text-center text-white h-full px-4 py-20">
+              <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mt-[30%] mb-4 leading-tight">
+                News & <span className="text-orange-400">Videos</span>
               </h1>
-              <h1 className="text-lg opacity-90 text-white">Advancing Innovation Through Technology</h1>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90">
+                Advancing Innovation Through Technology
+              </p>
             </div>
           </div>
           {/* Decorative elements */}
@@ -234,10 +246,11 @@ function News() {
               <div
                 key={article.id}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigateToDetail(article)}
               >
                 <div className="relative">
                   <img
-                    src={`${BASE_URL}`+article.cover_image || "/placeholder.svg"}
+                    src={`${BASE_URL}` + article.cover_image || "/placeholder.svg"}
                     alt={article.title}
                     className="w-full h-48 object-cover"
                     onError={(e) => {
@@ -262,10 +275,13 @@ function News() {
           {/* Center Column - Featured Article */}
           <div className="lg:col-span-2">
             {featuredArticle && (
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer mb-8">
+              <div
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer mb-8"
+                onClick={() => navigateToDetail(featuredArticle)}
+              >
                 <div className="relative">
                   <img
-                    src={`${BASE_URL}`+featuredArticle.cover_image || "/placeholder.svg"}
+                    src={`${BASE_URL}` + featuredArticle.cover_image || "/placeholder.svg"}
                     alt={featuredArticle.title}
                     className="w-full h-80 object-cover"
                     onError={(e) => {
@@ -294,10 +310,11 @@ function News() {
                 <div
                   key={article.id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => navigateToDetail(article)}
                 >
                   <div className="relative">
                     <img
-                      src={`${BASE_URL}`+article.cover_image || "/placeholder.svg"}
+                      src={`${BASE_URL}` + article.cover_image || "/placeholder.svg"}
                       alt={article.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
@@ -319,8 +336,6 @@ function News() {
                 </div>
               ))}
             </div>
-
-
           </div>
 
           {/* Right Sidebar */}
@@ -341,9 +356,9 @@ function News() {
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "trending"
-                      ? "bg-orange-400 text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                        ? "bg-orange-400 text-white shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
                     onClick={() => setActiveTab("trending")}
                   >
                     TRENDING
@@ -351,9 +366,9 @@ function News() {
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "videos"
-                      ? "bg-orange-400 text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                        ? "bg-orange-400 text-white shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
                     onClick={() => setActiveTab("videos")}
                   >
                     VIDEOS
@@ -365,39 +380,42 @@ function News() {
             </div>
           </div>
         </div>
-            {/* Major News Article */}
-            {majorNews && (
-              <div className="bg-white overflow-hidden transition-shadow cursor-pointer">
-                <div className="relative flex">
-                  <img
-                    src={`${BASE_URL}`+majorNews.cover_image || "/placeholder.svg"}
-                    alt={majorNews.title}
-                    className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/800x400"
-                    }}
-                  />
-                  {majorNews.iframe && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                        <PlayIcon size="w-6 h-6" />
-                      </div>
-                    </div>
-                  )}
-                  <span className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
-                    {majorNews.category}
-                  </span>
-                  <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-4 leading-tight">{majorNews.title}</h2>
-                  <p className="text-gray-600 mb-4">{majorNews.subtitle}</p>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <CalendarIcon size="w-3.5 h-3.5" />
-                    <span className="ml-1">{formatDate(majorNews.created_at)}</span>
+        {/* Major News Article */}
+        {majorNews && (
+          <div
+            className="bg-white hidden md:block overflow-hidden transition-shadow cursor-pointer"
+            onClick={() => navigateToDetail(majorNews)}
+          >
+            <div className="relative flex">
+              <img
+                src={`${BASE_URL}` + majorNews.cover_image || "/placeholder.svg"}
+                alt={majorNews.title}
+                className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/800x400"
+                }}
+              />
+              {majorNews.iframe && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                    <PlayIcon size="w-6 h-6" />
                   </div>
                 </div>
+              )}
+              <span className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
+                {majorNews.category}
+              </span>
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-4 leading-tight">{majorNews.title}</h2>
+                <p className="text-gray-600 mb-4">{majorNews.subtitle}</p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <CalendarIcon size="w-3.5 h-3.5" />
+                  <span className="ml-1">{formatDate(majorNews.created_at)}</span>
                 </div>
               </div>
-            )}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Video Section */}
@@ -406,7 +424,11 @@ function News() {
           <h2 className="text-3xl font-bold mb-8 text-center">Featured Videos</h2>
           <div className="space-y-8 max-h-screen overflow-y-auto" onScroll={handleVideoScroll}>
             {videoData.slice(0, visibleVideos).map((video) => (
-              <div key={video.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div
+                key={video.id}
+                className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onClick={() => navigateToDetail(video)}
+              >
                 <div className="relative">
                   <img
                     src={getVideoThumbnail(video.iframe, video.cover_image) || "/placeholder.svg"}
@@ -450,7 +472,7 @@ function News() {
           </div>
         </section>
       )}
-      <Footer/>
+      <Footer />
     </div>
   )
 }

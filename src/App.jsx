@@ -8,6 +8,7 @@ import About from "./pages/About"
 import Resources from "./pages/Resources"
 import "./App.css"
 import SplashWrapper from './components/SplashWrapper';
+import NewsDetail from "./pages/NewsDetail"
 
 function App() {
   const location = useLocation(); // <-- This now works correctly
@@ -16,9 +17,10 @@ function App() {
       <SplashWrapper >
         <main className="relative z-10">
           <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/Home" element={<Home />} />
               <Route path="/research" element={<Research />} />
               <Route path="/news" element={<News />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/events" element={<Events />} />
               <Route path="/about" element={<About />} />
               <Route path="/resources" element={<Resources />} />    

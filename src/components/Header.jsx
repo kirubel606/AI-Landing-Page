@@ -9,7 +9,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navItems = [
-    { name: "Home", path: "/" },
+    { name: "Home", path: "/Home" },
     { name: "Research & Development", path: "/research" },
     { name: "News", path: "/news" },
     { name: "Events", path: "/events" },
@@ -27,7 +27,7 @@ const Header = () => {
     <header className="relative z-10 px-6 py-4">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/Home" className="flex items-center">
           <div className="w-20 bg-white rounded-full flex items-center justify-center">
             <img src={logo || "/placeholder.svg"} className="rounded-full" />
           </div>
@@ -43,7 +43,7 @@ const Header = () => {
               key={index}
               to={item.path}
               className={`transition-colors duration-200 text-sm font-medium ${
-                location.pathname === item.path
+                location.pathname.startsWith(item.path)
                   ? "text-white bg-[#363639] rounded-3xl px-5 py-2"
                   : "text-gray-300 hover:text-white px-1"
               }`}
