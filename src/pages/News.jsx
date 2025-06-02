@@ -140,7 +140,7 @@ function News() {
         badgeColor = "bg-orange-100 text-orange-800"
     }
 
-    return displayData.map((article) => (
+    return displayData.slice(0, 5).map((article) => (
       <div
         key={article.id}
         className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
@@ -242,7 +242,7 @@ function News() {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-[90%] mx-auto py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <Leftsidebar
             leftColumnNews = {leftColumnNews}

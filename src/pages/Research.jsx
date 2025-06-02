@@ -122,7 +122,7 @@ const Research = () => {
 
     return (
 
-        <div className="min-h-screen overflow-y-clip bg-gray-50">
+        <div className="min-h-screen overflow-y-clip bg-white">
             <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
                 <div className="absolute h-dvh w-full">
                     <CoolSvg />
@@ -253,24 +253,25 @@ const Research = () => {
 
                     {/* Sidebar - Related Topics */}
                     <aside className="lg:col-span-1">
-                        <Card className="shadow-sm">
-                            <CardBody className="p-4 max-h-[500px] overflow-y-auto">
+                        <Card className="shadow-sm ">
                                 {/* Tab Headers */}
                                 <div className="flex gap-2 mb-4">
                                     {tabItems.map((tab) => (
                                         <button
                                             key={tab.value}
                                             onClick={() => setActiveTab(tab.value)}
-                                            className={`px-4 py-2 text-xs font-medium transition-colors transform -skew-x-12 ${activeTab === tab.value
+                                            className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12  ${activeTab === tab.value
                                                 ? "bg-orange-500 text-white"
                                                 : " text-gray-600 hover:text-gray-900"
                                                 }`}
+                                                
                                         >
                                             <span className="-skew-x-12 inline-block">{tab.label}</span>
                                         </button>
 
                                     ))}
                                 </div>
+                            <CardBody className="p-4 max-h-[500px] overflow-y-auto">
 
                                 {/* Tab Content */}
                                 <div className="space-y-3">

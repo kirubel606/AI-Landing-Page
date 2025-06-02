@@ -4,8 +4,8 @@ const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate,naviga
         return (
             <>
             {/* Left Column - Small News Items */}
-            <div className="lg:col-span-1 space-y-6">
-                {leftColumnNews.map((article) => (
+            <div className="lg:col-span-1 space-y-6 hidden md:block">
+                {leftColumnNews.slice(0, 3).map((article) => (
                 <div
                     key={article.id}
                     className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
@@ -15,7 +15,7 @@ const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate,naviga
                     <img
                         src={`${BASE_URL}` + article.cover_image || "/placeholder.svg"}
                         alt={article.title}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-28 object-cover"
                         onError={(e) => {
                         e.target.src = "https://via.placeholder.com/300x200"
                         }}
