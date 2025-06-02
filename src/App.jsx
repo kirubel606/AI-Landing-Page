@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route,useLocation } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route,useLocation, Navigate } from "react-router-dom"
 import Header from "./components/Header"
 import Home from "./pages/Home"
 import Research from "./pages/Research"
@@ -18,6 +18,7 @@ function App() {
       <SplashWrapper >
         <main className="relative z-10">
           <Routes>
+              <Route path="/" element={<Navigate to="/Home" replace />} />
               <Route path="/Home" element={<Home />} />
               <Route path="/research" element={<Research />} />
               <Route path="/news" element={<News />} />
