@@ -243,7 +243,7 @@ function News() {
 
       {/* Main Content */}
       <main className="max-w-[90%] mx-auto py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
           <Leftsidebar
             leftColumnNews = {leftColumnNews}
             BASE_URL = {BASE_URL}

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { LinkedinIcon } from "lucide-react";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AUTO_ADVANCE_DELAY = 5000; // 5 seconds
 
@@ -65,6 +66,11 @@ const Quotes = () => {
               <div className="text-white ">
                 <p className="font-bold text-lg">{quote.name}</p>
                 <p className="text-gray-200">{quote.position}</p>
+                {quote.link && (
+                  <a href={quote.link} target="_blank" rel="noopener noreferrer">
+                  <LinkedinIcon/>
+                  </a>
+                )}
               </div>
             </div>
           </div>

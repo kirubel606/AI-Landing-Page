@@ -4,7 +4,7 @@ const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate,naviga
         return (
             <>
             {/* Left Column - Small News Items */}
-            <div className="lg:col-span-1 space-y-6 hidden md:block">
+            <div className="lg:col-span-1 space-y-8 hidden md:block">
                 {leftColumnNews.slice(0, 3).map((article) => (
                 <div
                     key={article.id}

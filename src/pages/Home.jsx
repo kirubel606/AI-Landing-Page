@@ -7,7 +7,7 @@ import Header from "../components/Header"
 import ProjectsGrid from "../components/ProjectsGrid"
 import Quotes from "../components/Quotes"
 import Testimonial from "../components/Testimonial"
-import React,{useContext} from "react"
+import React,{useContext,useState} from "react"
 import { AppContext } from "../context/Appcontext"
 import { useParams, useNavigate } from "react-router-dom"
 
@@ -15,7 +15,9 @@ const Home = () => {
   const { news ,gallery} = useContext(AppContext)
   const singleNews = news.results.result[0]
   const singleGallery = gallery[0]
+  
   const navigate = useNavigate()
+
 
   return (
     <>
@@ -90,6 +92,7 @@ const Home = () => {
       <Testimonial/>
       <Collaborations />
       <Footer />
+
     </>
   )
 }
