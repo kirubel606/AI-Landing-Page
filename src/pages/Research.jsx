@@ -117,78 +117,78 @@ const Research = () => {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
-      const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    const getPageNumbers = () => {
-      const pages = []
-      const maxVisible = 5
+    const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+        const getPageNumbers = () => {
+            const pages = []
+            const maxVisible = 5
 
-      if (totalPages <= maxVisible) {
-        for (let i = 1; i <= totalPages; i++) {
-          pages.push(i)
-        }
-      } else {
-        if (currentPage <= 3) {
-          for (let i = 1; i <= 4; i++) {
-            pages.push(i)
-          }
-          pages.push("...")
-          pages.push(totalPages)
-        } else if (currentPage >= totalPages - 2) {
-          pages.push(1)
-          pages.push("...")
-          for (let i = totalPages - 3; i <= totalPages; i++) {
-            pages.push(i)
-          }
-        } else {
-          pages.push(1)
-          pages.push("...")
-          for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-            pages.push(i)
-          }
-          pages.push("...")
-          pages.push(totalPages)
-        }
-      }
+            if (totalPages <= maxVisible) {
+                for (let i = 1; i <= totalPages; i++) {
+                    pages.push(i)
+                }
+            } else {
+                if (currentPage <= 3) {
+                    for (let i = 1; i <= 4; i++) {
+                        pages.push(i)
+                    }
+                    pages.push("...")
+                    pages.push(totalPages)
+                } else if (currentPage >= totalPages - 2) {
+                    pages.push(1)
+                    pages.push("...")
+                    for (let i = totalPages - 3; i <= totalPages; i++) {
+                        pages.push(i)
+                    }
+                } else {
+                    pages.push(1)
+                    pages.push("...")
+                    for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                        pages.push(i)
+                    }
+                    pages.push("...")
+                    pages.push(totalPages)
+                }
+            }
 
-      return pages
+            return pages
+        }
+
+        return (
+            <div className="flex items-center justify-center space-x-2 mt-8">
+                <button
+                    onClick={() => onPageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="p-2 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                >
+                    <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                {getPageNumbers().map((page, index) => (
+                    <button
+                        key={index}
+                        onClick={() => typeof page === "number" && onPageChange(page)}
+                        disabled={page === "..."}
+                        className={`px-3 py-2 rounded border text-sm ${page === currentPage
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : page === "..."
+                                ? "border-transparent cursor-default"
+                                : "border-gray-300 hover:bg-gray-50"
+                            }`}
+                    >
+                        {page}
+                    </button>
+                ))}
+
+                <button
+                    onClick={() => onPageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="p-2 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                >
+                    <ChevronRight className="w-4 h-4" />
+                </button>
+            </div>
+        )
     }
-
-    return (
-      <div className="flex items-center justify-center space-x-2 mt-8">
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="p-2 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-
-        {getPageNumbers().map((page, index) => (
-          <button
-            key={index}
-            onClick={() => typeof page === "number" && onPageChange(page)}
-            disabled={page === "..."}
-            className={`px-3 py-2 rounded border text-sm ${page === currentPage
-              ? "bg-blue-600 text-white border-blue-600"
-              : page === "..."
-                ? "border-transparent cursor-default"
-                : "border-gray-300 hover:bg-gray-50"
-              }`}
-          >
-            {page}
-          </button>
-        ))}
-
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="p-2 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
-    )
-  }
     // Add this definition for tabItems
     const tabItems = [
         { label: "Latest", value: "latest" },
@@ -233,46 +233,80 @@ const Research = () => {
             {/* Category divs */}
             <div className="container mx-auto px-4 py-8 overflow-y-clip">
                 <div className="relative mb-8">
-                    {overflow && (
-                        <div className="absolute top-1/2 -left-4 z-10 scro">
-                            <button onClick={goPrev} className="bg-white rounded-full shadow p-2">
-                                ◀
-                            </button>
-                        </div>
-                    )}
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        {visibleCategories.map((category, index) => (
-                            <div
-                                key={`${category.id}-${index}`}
-                                onClick={() => {
-                                    setSelectedCategory(category.id);
-                                    setSelectedCategoryName(category.name);
-                                }}
+  <div className="flex gap-4 items-start">
+    {/* Left Arrow Button */}
+    {overflow && (
+      <div className="absolute top-1/2 -left-4 z-10">
+        <button onClick={goPrev} className="bg-white rounded-full shadow p-2">
+          ◀
+        </button>
+      </div>
+    )}
 
-                                className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
-                            >
+    {/* All Categories Card - showing grid of 4 category images */}
+<div
+  onClick={() => {
+    setSelectedCategory(null);
+    setSelectedCategoryName("All Categories");
+  }}
+  className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
+>
+  <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
+    {visibleCategories.slice(0, 4).map((category, idx) => (
+      <img
+        key={category.id || idx}
+        src={category.image || "/placeholder.svg"}
+        alt={category.name}
+        className="w-full h-full object-cover border border-gray-200"
+      />
+    ))}
+  </div>
+  <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-10">
+    <h1 className="text-white font-semibold text-center text-sm px-2">
+      All Categories
+    </h1>
+  </div>
+</div>
 
-                                <div className="relative h-32">
-                                    <img
-                                        src={category.image || "/placeholder.svg"}
-                                        alt={category.name}
-                                        className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                        <h1 className="text-white font-semibold">{category.name}</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    {overflow && (
-                        <div className="absolute top-1/2 -right-4 z-10">
-                            <button onClick={goNext} className="bg-white rounded-full shadow p-2">
-                                ▶
-                            </button>
-                        </div>
-                    )}
-                </div>
+
+    {/* Scrollable Categories Grid */}
+    <div className="relative flex-1">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        {visibleCategories.map((category, index) => (
+          <div
+            key={`${category.id}-${index}`}
+            onClick={() => {
+              setSelectedCategory(category.id);
+              setSelectedCategoryName(category.name);
+            }}
+            className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
+          >
+            <div className="relative h-32">
+              <img
+                src={category.image || "/placeholder.svg"}
+                alt={category.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <h1 className="text-white font-semibold">{category.name}</h1>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {overflow && (
+        <div className="absolute top-1/2 -right-4 z-10">
+          <button onClick={goNext} className="bg-white rounded-full shadow p-2">
+            ▶
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+
 
                 {/* Main Content Area */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -417,9 +451,9 @@ const Research = () => {
                     </aside>
                 </div>
                 {/* Pagination */}
-            {totalPages > 1 && (
-              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-            )}
+                {totalPages > 1 && (
+                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+                )}
             </div>
             <Footer />
         </div>
