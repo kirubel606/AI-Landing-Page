@@ -7,102 +7,102 @@ import Footer from "../components/Footer"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
 
 const Resources = () => {
-const [mockData, setMockData] = useState([]);
-const [isLoading, setIsLoading] = useState(true); // NEW
+  const [mockData, setMockData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // NEW
 
-useEffect(() => {
-  const fetchresource = async () => {
-    try {
-      const response = await axios.get(BASE_URL+"/resources/");
-      setMockData(response.data);
-    } catch (error) {
-      console.error("Failed to fetch R&resources projects:", error);
-    } finally {
-      setIsLoading(false); // Stop loading once done (success or error)
-    }
-  };
+  useEffect(() => {
+    const fetchresource = async () => {
+      try {
+        const response = await axios.get(BASE_URL + "/resources/");
+        setMockData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch R&resources projects:", error);
+      } finally {
+        setIsLoading(false); // Stop loading once done (success or error)
+      }
+    };
 
-  fetchresource();
-}, []);
-const [categoryData, setCategoryData] = useState([]);
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get(BASE_URL+"/categories/");
-                setCategoryData(response.data);
-            } catch (error) {
-                console.error("Failed to fetch categories:", error);
-            }
-        };
+    fetchresource();
+  }, []);
+  const [categoryData, setCategoryData] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(BASE_URL + "/categories/");
+        setCategoryData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
 
-        fetchCategories();
-    }, []);
-  
+    fetchCategories();
+  }, []);
 
-const FilterDropdown = ({ label, options, selectedValues, onChange, placeholder, disabled }) => {
-  const [isOpen, setIsOpen] = useState(false);
 
-  const handleOptionClick = (optionValue) => {
-    if (disabled) return;
-    if (selectedValues.includes(optionValue)) {
-      onChange(selectedValues.filter((val) => val !== optionValue));
-    } else {
-      onChange([...selectedValues, optionValue]);
-    }
-  };
+  const FilterDropdown = ({ label, options, selectedValues, onChange, placeholder, disabled }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-  const getSelectedLabels = () =>
-    selectedValues
-      .map((val) => options.find((opt) => opt.value === val)?.label)
-      .filter(Boolean)
-      .join(", ");
+    const handleOptionClick = (optionValue) => {
+      if (disabled) return;
+      if (selectedValues.includes(optionValue)) {
+        onChange(selectedValues.filter((val) => val !== optionValue));
+      } else {
+        onChange([...selectedValues, optionValue]);
+      }
+    };
 
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => !disabled && setIsOpen(!isOpen)}
-        className={`w-full flex items-center justify-between px-3 py-2 text-left text-sm 
+    const getSelectedLabels = () =>
+      selectedValues
+        .map((val) => options.find((opt) => opt.value === val)?.label)
+        .filter(Boolean)
+        .join(", ");
+
+    return (
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => !disabled && setIsOpen(!isOpen)}
+          className={`w-full flex items-center justify-between px-3 py-2 text-left text-sm 
           ${disabled ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "text-gray-700 bg-white"} 
           border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500`}
-        disabled={disabled}
-      >
-        <span className="truncate text-sm">
-          {selectedValues.length === 0
-            ? placeholder
-            : getSelectedLabels()}
-        </span>
-        <ChevronDown
-          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""} 
+          disabled={disabled}
+        >
+          <span className="truncate text-sm">
+            {selectedValues.length === 0
+              ? placeholder
+              : getSelectedLabels()}
+          </span>
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""} 
             ${disabled ? "text-gray-300" : ""}`}
-        />
-      </button>
+          />
+        </button>
 
-      {!disabled && isOpen && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-          <div className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-48 overflow-auto">
-            {options.map((option) => (
-              <div
-                key={option.value}
-                onClick={() => handleOptionClick(option.value)}
-                className="flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedValues.includes(option.value)}
-                  onChange={() => {}}
-                  className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                <span className="text-sm text-gray-700">{option.label}</span>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+        {!disabled && isOpen && (
+          <>
+            <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
+            <div className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-48 overflow-auto">
+              {options.map((option) => (
+                <div
+                  key={option.value}
+                  onClick={() => handleOptionClick(option.value)}
+                  className="flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedValues.includes(option.value)}
+                    onChange={() => { }}
+                    className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-700">{option.label}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
 
 
 
@@ -178,6 +178,7 @@ const FilterDropdown = ({ label, options, selectedValues, onChange, placeholder,
       </div>
     )
   }
+
   const [activeTab, setActiveTab] = useState("PUBLICATIONS")
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedYears, setSelectedYears] = useState([])
@@ -187,15 +188,15 @@ const FilterDropdown = ({ label, options, selectedValues, onChange, placeholder,
   const itemsPerPage = 6
 
   // Filter data by tab first
-const tabFilteredData = useMemo(() => {
-  return mockData.filter((item) => {
-    if (activeTab === "PUBLICATIONS") {
-      return item.classification === "publication";
-    } else {
-      return item.classification === "resource";
-    }
-  });
-}, [activeTab, mockData]); // <-- ADD mockData here
+  const tabFilteredData = useMemo(() => {
+    return mockData.filter((item) => {
+      if (activeTab === "PUBLICATIONS") {
+        return item.classification === "publication";
+      } else {
+        return item.classification === "resource";
+      }
+    });
+  }, [activeTab, mockData]); // <-- ADD mockData here
 
 
   // Get unique values for filters from tab-filtered data
@@ -203,22 +204,22 @@ const tabFilteredData = useMemo(() => {
     (a, b) => b - a,
   )
 
- const [categoryNames, setCategoryNames] = useState([])
-     useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get(BASE_URL+"/categories/");
-                setCategoryNames(response.data);
-            } catch (error) {
-                console.error("Failed to fetch categories:", error);
-            }
-        };
+  const [categoryNames, setCategoryNames] = useState([])
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(BASE_URL + "/categories/");
+        setCategoryNames(response.data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
 
-        fetchCategories();
-    }, []);
+    fetchCategories();
+  }, []);
   const categories = [...new Set(tabFilteredData.map((item) => item.category))].sort()
 
- 
+
   const collections = [
     "Biomedical Engineering",
     "Medical Imaging",
@@ -227,7 +228,7 @@ const tabFilteredData = useMemo(() => {
     "Drug Discovery",
     "Healthcare Management",
   ].sort()
-  
+
 
   // Apply additional filters and sort
   const filteredData = useMemo(() => {
@@ -255,7 +256,7 @@ const tabFilteredData = useMemo(() => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage)
-
+console.log(paginatedData)
   // Reset filters and page when tab changes
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -374,30 +375,30 @@ const tabFilteredData = useMemo(() => {
                     Year
                   </label>
                   <FilterDropdown
-  label="Year"
-  options={years.map((year) => ({ label: year, value: year }))}
-  selectedValues={selectedYears}
-  onChange={(values) => handleFilterChange("years", values)}
-  placeholder="Select years"
-/>
+                    label="Year"
+                    options={years.map((year) => ({ label: year, value: year }))}
+                    selectedValues={selectedYears}
+                    onChange={(values) => handleFilterChange("years", values)}
+                    placeholder="Select years"
+                  />
                 </div>
 
                 {/* Category Filter */}
                 <div>
-  <label className="text-sm font-medium text-gray-700 mb-1 block">
-    Research Areas
-  </label>
-  <FilterDropdown
-    label="Category"
-    options={categoryData.map((cat) => ({
-      label: cat.name,
-      value: cat.id,
-    }))}
-    selectedValues={selectedCategories}
-    onChange={(values) => handleFilterChange("categories", values)}
-    placeholder="Select categories"
-  />
-</div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">
+                    Research Areas
+                  </label>
+                  <FilterDropdown
+                    label="Category"
+                    options={categoryData.map((cat) => ({
+                      label: cat.name,
+                      value: cat.id,
+                    }))}
+                    selectedValues={selectedCategories}
+                    onChange={(values) => handleFilterChange("categories", values)}
+                    placeholder="Select categories"
+                  />
+                </div>
 
 
                 {/* Collections Filter */}
@@ -406,13 +407,13 @@ const tabFilteredData = useMemo(() => {
                     Collections
                   </label>
                   <FilterDropdown
-  disabled
-  label="Collections"
-  options={collections.map((col) => ({ label: col, value: col }))}
-  selectedValues={selectedCollections}
-  onChange={(values) => handleFilterChange("collections", values)}
-  placeholder="Select collections"
-/>
+                    disabled
+                    label="Collections"
+                    options={collections.map((col) => ({ label: col, value: col }))}
+                    selectedValues={selectedCollections}
+                    onChange={(values) => handleFilterChange("collections", values)}
+                    placeholder="Select collections"
+                  />
 
                 </div>
               </div>
@@ -439,8 +440,7 @@ const tabFilteredData = useMemo(() => {
                       <span className="font-medium">Author:</span> {item.author}
                     </div>
                     <div>
-                      <span className="font-medium">Published:</span> Journal of Biomedical, Biostatistics and
-                      Biomedical Engineering (Volume 54)
+                      <span className="font-medium">Published:</span> {item.plublisher}
                     </div>
                   </div>
 
