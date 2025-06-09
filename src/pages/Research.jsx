@@ -8,25 +8,37 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Research = () => {
     const [activeTab, setActiveTab] = useState("latest");
     const timeAgo = (dateString) => {
+        if (!dateString) return "unknown time";
+
+        // Truncate fractional seconds if present
+        const safeDateString = dateString.split(".")[0] + "Z";
+        const date = new Date(safeDateString);
+        if (isNaN(date)) return "invalid date";
+
         const now = new Date();
-        const date = new Date(dateString);
-        const diff = Math.floor((now - date) / 1000); // diff in seconds
+        const diffInSeconds = Math.floor((now - date) / 1000);
 
-        const seconds = diff;
-        const minutes = Math.floor(diff / 60);
-        const hours = Math.floor(diff / 3600);
-        const days = Math.floor(diff / 86400);
-        const weeks = Math.floor(diff / 604800);
-        const months = Math.floor(diff / 2592000);
-        const years = Math.floor(diff / 31536000);
+        const hours = Math.floor(diffInSeconds / 3600);
+        const days = Math.floor(diffInSeconds / 86400);
+        const weeks = Math.floor(diffInSeconds / 604800);
+        const months = Math.floor(diffInSeconds / 2592000);
+        const years = Math.floor(diffInSeconds / 31536000);
 
-        if (seconds < 60) return "just now";
-        if (minutes < 60) return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+        if (diffInSeconds < 3600) return "just now";
         if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
         if (days < 7) return `${days} day${days !== 1 ? "s" : ""} ago`;
         if (weeks < 4) return `${weeks} week${weeks !== 1 ? "s" : ""} ago`;
         if (months < 12) return `${months} month${months !== 1 ? "s" : ""} ago`;
         return `${years} year${years !== 1 ? "s" : ""} ago`;
+    };
+
+
+    const formatMonthYear = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+        });
     };
 
     const [categories, setCategories] = useState([]);
@@ -38,7 +50,7 @@ const Research = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}`+"/categories/");
+                const response = await axios.get(`${BASE_URL}` + "/categories/");
                 setCategories(response.data);
             } catch (error) {
                 console.error("Failed to fetch categories:", error);
@@ -83,7 +95,7 @@ const Research = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}`+"/rnd/");
+                const response = await axios.get(`${BASE_URL}` + "/rnd/");
                 setProjects(response.data.slice(0, 4));
             } catch (error) {
                 console.error("Failed to fetch R&D projects:", error);
@@ -227,7 +239,7 @@ const Research = () => {
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center gap-2 mb-2">
                                                             <h1 className="text-orange-500 text-xs">
-                                                                {div.timestamp}
+                                                                {formatMonthYear(div.timestamp)}
                                                             </h1>
                                                         </div>
                                                         <h1 className="text-gray-900 font-semibold mb-2 text-sm leading-tight">
@@ -254,23 +266,23 @@ const Research = () => {
                     {/* Sidebar - Related Topics */}
                     <aside className="lg:col-span-1">
                         <Card className="shadow-sm ">
-                                {/* Tab Headers */}
-                                <div className="flex gap-2 mb-4">
-                                    {tabItems.map((tab) => (
-                                        <button
-                                            key={tab.value}
-                                            onClick={() => setActiveTab(tab.value)}
-                                            className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12  ${activeTab === tab.value
-                                                ? "bg-orange-500 text-white"
-                                                : " text-gray-600 hover:text-gray-900"
-                                                }`}
-                                                
-                                        >
-                                            <span className="-skew-x-12 inline-block">{tab.label}</span>
-                                        </button>
+                            {/* Tab Headers */}
+                            <div className="flex gap-2 mb-4">
+                                {tabItems.map((tab) => (
+                                    <button
+                                        key={tab.value}
+                                        onClick={() => setActiveTab(tab.value)}
+                                        className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12  ${activeTab === tab.value
+                                            ? "bg-orange-500 text-white"
+                                            : " text-gray-600 hover:text-gray-900"
+                                            }`}
 
-                                    ))}
-                                </div>
+                                    >
+                                        <span className="-skew-x-12 inline-block">{tab.label}</span>
+                                    </button>
+
+                                ))}
+                            </div>
                             <CardBody className="p-4 max-h-[500px] overflow-y-auto">
 
                                 {/* Tab Content */}
@@ -292,13 +304,15 @@ const Research = () => {
                                                     variant="small"
                                                     className="text-gray-800 text-xs mb-1 inline-block"
                                                 >
-                                                    {item.category} /
+                                                    {
+                                                        categories.find(cat => cat.id === item.category)?.name || "Unknown"
+                                                    } / { }
                                                 </Typography>
                                                 <Typography
                                                     variant="small"
                                                     className="text-gray-500 text-xs mb-1 inline"
                                                 >
-                                                    {timeAgo(item.date)}
+                                                    {timeAgo(item.timestamp)}
                                                 </Typography>
                                                 <Typography
                                                     variant="small"
@@ -344,8 +358,8 @@ const Research = () => {
                             key={i}
                             onClick={() => setCurrentPage(i + 1)}
                             className={`px-3 py-2 rounded-full text-sm font-medium ${currentPage === i + 1
-                                    ? "bg-orange-600 text-white"
-                                    : "bg-orange-100 text-orange-700 hover:bg-orange-200"
+                                ? "bg-orange-600 text-white"
+                                : "bg-orange-100 text-orange-700 hover:bg-orange-200"
                                 }`}
                         >
                             {i + 1}
