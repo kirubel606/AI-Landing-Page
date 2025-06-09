@@ -105,7 +105,7 @@ const Research = () => {
 
         fetchProjects();
     }, []);
-    const itemsPerPage = 3;
+    const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
 
     const filteredProjects = projects.filter(
