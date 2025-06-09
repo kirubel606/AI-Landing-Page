@@ -2,6 +2,7 @@ import CoolSvg from "../components/CoolSVg"
 import React, { useState, useEffect } from "react";
 import axios from "axios"
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
+import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -104,7 +105,7 @@ const Research = () => {
 
         fetchProjects();
     }, []);
-    const itemsPerPage = 8;
+    const itemsPerPage = 3;
     const [currentPage, setCurrentPage] = useState(1);
 
     const filteredProjects = projects.filter(
@@ -116,6 +117,78 @@ const Research = () => {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
+      const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    const getPageNumbers = () => {
+      const pages = []
+      const maxVisible = 5
+
+      if (totalPages <= maxVisible) {
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i)
+        }
+      } else {
+        if (currentPage <= 3) {
+          for (let i = 1; i <= 4; i++) {
+            pages.push(i)
+          }
+          pages.push("...")
+          pages.push(totalPages)
+        } else if (currentPage >= totalPages - 2) {
+          pages.push(1)
+          pages.push("...")
+          for (let i = totalPages - 3; i <= totalPages; i++) {
+            pages.push(i)
+          }
+        } else {
+          pages.push(1)
+          pages.push("...")
+          for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+            pages.push(i)
+          }
+          pages.push("...")
+          pages.push(totalPages)
+        }
+      }
+
+      return pages
+    }
+
+    return (
+      <div className="flex items-center justify-center space-x-2 mt-8">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="p-2 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+
+        {getPageNumbers().map((page, index) => (
+          <button
+            key={index}
+            onClick={() => typeof page === "number" && onPageChange(page)}
+            disabled={page === "..."}
+            className={`px-3 py-2 rounded border text-sm ${page === currentPage
+              ? "bg-blue-600 text-white border-blue-600"
+              : page === "..."
+                ? "border-transparent cursor-default"
+                : "border-gray-300 hover:bg-gray-50"
+              }`}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    )
+  }
     // Add this definition for tabItems
     const tabItems = [
         { label: "Latest", value: "latest" },
@@ -343,38 +416,10 @@ const Research = () => {
                         </Card>
                     </aside>
                 </div>
-                <div className="flex justify-center mt-6 gap-2">
-                    <button
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage(currentPage - 1)}
-                        className={`px-4 py-2 rounded text-white ${currentPage === 1 ? "bg-orange-300 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
-                            }`}
-                    >
-                        Prev
-                    </button>
-
-                    {Array.from({ length: totalPages }, (_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setCurrentPage(i + 1)}
-                            className={`px-3 py-2 rounded-full text-sm font-medium ${currentPage === i + 1
-                                ? "bg-orange-600 text-white"
-                                : "bg-orange-100 text-orange-700 hover:bg-orange-200"
-                                }`}
-                        >
-                            {i + 1}
-                        </button>
-                    ))}
-
-                    <button
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage(currentPage + 1)}
-                        className={`px-4 py-2 rounded text-white ${currentPage === totalPages ? "bg-orange-300 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
-                            }`}
-                    >
-                        Next
-                    </button>
-                </div>
+                {/* Pagination */}
+            {totalPages > 1 && (
+              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            )}
             </div>
             <Footer />
         </div>
