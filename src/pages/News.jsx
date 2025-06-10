@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
@@ -8,8 +8,9 @@ import Leftsidebar from "../components/News/Leftsidebar"
 import RightSidebar from "../components/News/RightSidebar"
 import CenterColumn from "../components/News/CenterColumn"
 import MajorNews from "../components/News/MajorNews"
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
-// Icon components (simple SVG icons)
+
 const PlayIcon = ({ size = "w-6 h-6" }) => (
   <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <polygon points="5,3 19,12 5,21" fill="currentColor" />
@@ -27,118 +28,183 @@ const CalendarIcon = ({ size = "w-3 h-3" }) => (
 
 function News() {
   const navigate = useNavigate()
-  // State for news data
   const [newsData, setNewsData] = useState([])
   const [videoData, setVideoData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-
-  // State for UI
   const [activeTab, setActiveTab] = useState("latest")
-  const [visibleVideos, setVisibleVideos] = useState(1)
-  const [isLoadingVideos, setIsLoadingVideos] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const observerTarget = useRef(null)
+  const [mergedContent, setMergedContent] = useState([])
+  const addedItemIds = useRef(new Set()) // Track added IDs to prevent duplicates
 
-  // Fetch news data from backend
+  // Helper to get video thumbnail from YouTube iframe embed URL
+const getVideoThumbnail = (iframe, coverImage) => {
+  if (!iframe) return coverImage ? `${BASE_URL}${coverImage}` : ""
+
+  // Match src attribute from full iframe string
+  const match = iframe.match(/src="https:\/\/www\.youtube\.com\/embed\/([^"?]+)/)
+  const videoId = match ? match[1] : null
+
+  if (videoId) {
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+  }
+  return coverImage ? `${BASE_URL}${coverImage}` : ""
+}
+
+
+  const extractVideoDuration = () => "5:24" // Placeholder, adjust if real duration needed
+
+  const navigateToDetail = (item) => navigate(`/news/${item.id}`)
+
+  // Fetch paginated content and merge news & videos interleaved without duplicates
   useEffect(() => {
-    fetchNewsData()
+    const fetchContent = async () => {
+      if (!hasMore || loading) return
+
+      setLoading(true)
+      setError(null)
+
+      try {
+        // Fetch combined news & videos (assuming same endpoint)
+        const response = await fetch(`${BASE_URL}/news/all/?page=${page}`)
+        const json = await response.json()
+        const results = json?.results?.result || []
+
+        if (results.length === 0) {
+          setHasMore(false)
+          setLoading(false)
+          return
+        }
+
+        // Filter out already added items by id
+        const newNews = results
+          .filter((item) => !item.iframe && !addedItemIds.current.has(item.id))
+        const newVideos = results
+          .filter((item) => item.iframe && !addedItemIds.current.has(item.id))
+
+        if (newNews.length === 0 && newVideos.length === 0) {
+          setHasMore(false)
+          setLoading(false)
+          return
+        }
+
+        // Interleave 2 news and 1 video repeatedly
+        let interleaved = []
+        let newsIndex = 0
+        let videoIndex = 0
+
+        while (newsIndex < newNews.length || videoIndex < newVideos.length) {
+          for (let i = 0; i < 2 && newsIndex < newNews.length; i++) {
+            const newsItem = newNews[newsIndex++]
+            if (!addedItemIds.current.has(newsItem.id)) {
+              interleaved.push({ type: "news", data: newsItem })
+              addedItemIds.current.add(newsItem.id)
+            }
+          }
+          if (videoIndex < newVideos.length) {
+            const videoItem = newVideos[videoIndex++]
+            if (!addedItemIds.current.has(videoItem.id)) {
+              interleaved.push({ type: "video", data: videoItem })
+              addedItemIds.current.add(videoItem.id)
+            }
+          }
+        }
+
+        setMergedContent((prev) => [...prev, ...interleaved])
+        setPage((prev) => prev + 1)
+      } catch (err) {
+        console.error("Error fetching news:", err)
+        setError("Failed to fetch news data")
+        setHasMore(false)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchContent()
+  }, [page, hasMore, loading])
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    if (!observerTarget.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          setPage((prev) => prev + 1)
+        }
+      },
+      { threshold: 1.0 }
+    )
+
+    observer.observe(observerTarget.current)
+
+    return () => {
+      if (observerTarget.current) observer.unobserve(observerTarget.current)
+    }
+  }, [hasMore, loading])
+
+  // Fetch initial separate news and videos for sidebar and main columns
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch(`${BASE_URL}/news/all/`)
+        const data = await res.json()
+        if (data.results?.result) {
+          const allNews = data.results.result
+          setVideoData(allNews.filter((item) => item.iframe))
+          setNewsData(allNews.filter((item) => !item.iframe))
+
+          // Also add initial IDs to addedItemIds to avoid duplicates in infinite scroll
+          allNews.forEach((item) => addedItemIds.current.add(item.id))
+        }
+      } catch (err) {
+        console.error("Error fetching news:", err)
+        setError("Failed to fetch news data")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchInitialData()
   }, [])
 
-  const fetchNewsData = async () => {
-    try {
-      setLoading(true)
-      // Replace with your actual API endpoint
-      const response = await fetch(`${BASE_URL}/news/all/`) // Adjust this URL to match your backend
-      const data = await response.json()
-
-      if (data.results && data.results.result) {
-        const allNews = data.results.result
-
-        // Separate videos (items with iframe) from regular news
-        const videos = allNews.filter((item) => item.iframe)
-        const regularNews = allNews.filter((item) => !item.iframe)
-
-        setVideoData(videos)
-        setNewsData(regularNews)
-      }
-    } catch (err) {
-      setError("Failed to fetch news data")
-      console.error("Error fetching news:", err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
+  // Format dates nicely
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr)
     const now = new Date()
     const diffMs = now - date
+    const mins = Math.floor(diffMs / 60000)
+    const hours = Math.floor(mins / 60)
+    const days = Math.floor(hours / 24)
+    const weeks = Math.floor(days / 7)
+    const months = Math.floor(days / 30)
 
-    const diffMinutes = Math.floor(diffMs / (1000 * 60))
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-    const diffWeeks = Math.floor(diffDays / 7)
-    const diffMonths = Math.floor(diffDays / 30)
-
-    if (diffMinutes < 1) return "Just now"
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`
-    if (diffDays < 30) return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""} ago`
-    return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`
+    if (mins < 1) return "Just now"
+    if (mins < 60) return `${mins} minute${mins > 1 ? "s" : ""} ago`
+    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`
+    if (days < 7) return `${days} day${days > 1 ? "s" : ""} ago`
+    if (days < 30) return `${weeks} week${weeks > 1 ? "s" : ""} ago`
+    return `${months} month${months > 1 ? "s" : ""} ago`
   }
 
-  // Helper function to extract video duration from iframe
-  const extractVideoDuration = (iframe) => {
-    // This is a placeholder - you might want to implement actual duration extraction
-    // or store duration in your backend
-    return "5:24"
-  }
-
-  // Helper function to get video thumbnail from iframe
-  const getVideoThumbnail = (iframe, coverImage) => {
-    // Try to extract YouTube thumbnail or use cover image
-    if (iframe && iframe.includes("youtube.com/embed/")) {
-      const videoId = iframe.match(/embed\/([^?]+)/)?.[1]
-      if (videoId) {
-        return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-      }
-    }
-    return coverImage
-  }
-
-  const handleVideoScroll = (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget
-    if (scrollHeight - scrollTop === clientHeight && !isLoadingVideos && visibleVideos < videoData.length) {
-      setIsLoadingVideos(true)
-      setTimeout(() => {
-        setVisibleVideos((prev) => Math.min(prev + 1, videoData.length))
-        setIsLoadingVideos(false)
-      }, 1000)
-    }
-  }
-
-  const navigateToDetail = (newsItem) => {
-    navigate(`/news/${newsItem.id}`)
-  }
-
+  // Sidebar content render helper
   const renderSidebarContent = () => {
-    let displayData = []
-    let badgeColor = "bg-orange-100 text-orange-800"
+    const displayData =
+      activeTab === "trending"
+        ? [...newsData].sort((a, b) => b.view_count - a.view_count)
+        : activeTab === "videos"
+        ? [...videoData].sort((a, b) => b.view_count - a.view_count)
+        : newsData.slice(0, 6)
 
-    switch (activeTab) {
-      case "trending":
-        // Filter trending news or use a different endpoint
-        displayData = newsData.sort((a, b) => b.view_count - a.view_count)
-        badgeColor = "bg-blue-100 text-blue-800"
-        break
-      case "videos":
-        displayData = videoData.sort((a, b) => b.view_count - a.view_count)
-        badgeColor = "bg-green-100 text-green-800"
-        break
-      default:
-        displayData = newsData.slice(0, 6)
-        badgeColor = "bg-orange-100 text-orange-800"
-    }
+    const badgeColor =
+      activeTab === "trending"
+        ? "bg-blue-100 text-blue-800"
+        : activeTab === "videos"
+        ? "bg-green-100 text-green-800"
+        : "bg-orange-100 text-orange-800"
 
     return displayData.slice(0, 5).map((article) => (
       <div
@@ -150,14 +216,11 @@ function News() {
           <img
             src={
               activeTab === "videos"
-                ? getVideoThumbnail(article.iframe, `${BASE_URL}` + article.cover_image)
-                : `${BASE_URL}` + article.cover_image
+                ? getVideoThumbnail(article.iframe, article.cover_image)
+                : `${BASE_URL}${article.cover_image}`
             }
             alt={article.title}
             className="w-20 h-20 object-cover rounded-lg"
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/80x80"
-            }}
           />
           {activeTab === "videos" && (
             <>
@@ -184,23 +247,23 @@ function News() {
     ))
   }
 
-  if (loading) {
+  if (loading && mergedContent.length === 0) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
     )
   }
 
-  if (error) {
+  if (error && mergedContent.length === 0) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-white flex items-center justify-center text-center">
+        <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading News</h2>
           <p className="text-gray-600 mb-4">{error}</p>
           <button
-            onClick={fetchNewsData}
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors"
+            onClick={() => window.location.reload()}
+            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
           >
             Try Again
           </button>
@@ -209,14 +272,8 @@ function News() {
     )
   }
 
-  // Get featured article (first non-video article)
-  const Mostviewed = newsData.sort((a, b) => b.view_count - a.view_count)
-  const featuredArticle = Mostviewed[0]
-
-  // Get articles for different sections
-  const leftColumnNews = newsData
-  const techNews = newsData
-  const majorNews = newsData.find((article) => article.category === "Healthcare") || newsData[newsData.length - 1]
+  const featuredArticle = [...newsData].sort((a, b) => b.view_count - a.view_count)[0]
+  const majorNews = newsData.find((n) => n.category === "Healthcare") || newsData[newsData.length - 1]
 
   return (
     <div className="min-h-screen bg-white">
@@ -235,101 +292,85 @@ function News() {
               </p>
             </div>
           </div>
-          {/* Decorative elements */}
           <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"></div>
           <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
         </div>
       </div>
 
-      {/* Main Content */}
       <main className="max-w-[90%] mx-auto py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
           <Leftsidebar
-            leftColumnNews = {leftColumnNews}
-            BASE_URL = {BASE_URL}
-            CalendarIcon = {CalendarIcon}
-            formatDate ={formatDate}
-            navigateToDetail = {navigateToDetail}
-          />
-          <CenterColumn 
-            featuredArticle = {featuredArticle}
+            leftColumnNews={newsData}
             BASE_URL={BASE_URL}
-            techNews = {techNews}
-            CalendarIcon ={CalendarIcon}
-            formatDate ={formatDate}
+            CalendarIcon={CalendarIcon}
+            formatDate={formatDate}
             navigateToDetail={navigateToDetail}
           />
-
-          <RightSidebar 
-            activeTab={activeTab}
-            setActiveTab ={setActiveTab}
-            renderSidebarContent={renderSidebarContent}
+          <CenterColumn
+            featuredArticle={featuredArticle}
+            BASE_URL={BASE_URL}
+            techNews={newsData}
+            CalendarIcon={CalendarIcon}
+            formatDate={formatDate}
+            navigateToDetail={navigateToDetail}
           />
+          <RightSidebar activeTab={activeTab} setActiveTab={setActiveTab} renderSidebarContent={renderSidebarContent} />
         </div>
-        <MajorNews 
-          majorNews = {majorNews}
-          BASE_URL={BASE_URL}
-          PlayIcon = {PlayIcon}
-          CalendarIcon ={CalendarIcon}
-          formatDate ={formatDate}
-          navigateToDetail={navigateToDetail}
-        />
       </main>
 
-      {/* Video Section */}
-      {videoData.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Featured Videos</h2>
-          <div className="space-y-8 max-h-screen overflow-y-auto" onScroll={handleVideoScroll}>
-            {videoData.slice(0, visibleVideos).map((video) => (
+      <section className="max-w-7xl mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold mb-8 text-center">Tech News & Videos</h2>
+        <div className="space-y-8">
+          {mergedContent.map((item, idx) =>
+            item.type === "news" ? (
               <div
-                key={video.id}
+                key={`news-${idx}`}
+                className="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => navigateToDetail(item.data)}
+              >
+                <MajorNews majorNews={item.data} BASE_URL={BASE_URL} PlayIcon={PlayIcon} CalendarIcon={CalendarIcon} formatDate={formatDate} navigateToDetail={navigateToDetail} />
+              </div>
+            ) : (
+              <div
+                key={`video-${idx}`}
                 className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
-                onClick={() => navigateToDetail(video)}
+                onClick={() => navigateToDetail(item.data)}
               >
                 <div className="relative">
                   <img
-                    src={getVideoThumbnail(video.iframe, video.cover_image) || "/placeholder.svg"}
-                    alt={video.title}
+                    src={getVideoThumbnail(item.data.iframe, item.data.cover_image)}
+                    alt={item.data.title}
                     className="w-full h-64 md:h-80 object-cover"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/500x300"
-                    }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-20 h-20 bg-orange-400 text-white backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-black/70 transition-colors">
+                    <div className="w-20 h-20 bg-orange-400 text-white backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/70 transition-colors">
                       <PlayIcon size="w-8 h-8" />
                     </div>
                   </div>
                   <div className="absolute bottom-4 right-4 bg-black/80 text-white text-sm px-2 py-1 rounded">
-                    {extractVideoDuration(video.iframe)}
+                    {extractVideoDuration(item.data.iframe)}
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{video.title}</h3>
-                  <p className="text-gray-600 mb-4">{video.subtitle}</p>
+                  <h3 className="text-xl font-bold mb-2">{item.data.title}</h3>
+                  <p className="text-gray-600 mb-4">{item.data.subtitle}</p>
                   <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>{video.view_count} views</span>
-                    <span>{formatDate(video.created_at)}</span>
+                    <span>{item.data.view_count} views</span>
+                    <span>{formatDate(item.data.created_at)}</span>
                   </div>
                 </div>
               </div>
-            ))}
+            )
+          )}
+        </div>
 
-            {isLoadingVideos && (
-              <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-              </div>
-            )}
+        <div ref={observerTarget} className="py-4 text-center">
+          {loading && <p>Loading more content...</p>}
+          {!hasMore && !loading && mergedContent.length > 0 && <p>You've reached the end of the content!</p>}
+          {!hasMore && !loading && mergedContent.length === 0 && <p>No content available.</p>}
+        </div>
+      </section>
 
-            {visibleVideos >= videoData.length && videoData.length > 0 && (
-              <div className="text-center py-8 text-gray-500">
-                <p>No more videos to load</p>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
       <Footer />
     </div>
   )
