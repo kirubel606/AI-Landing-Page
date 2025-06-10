@@ -27,6 +27,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/resources" element={<Resources />} />    
               <Route path="/contactus" element={<Contactus/>} />    
+              
           </Routes>
         </main>
       </SplashWrapper>

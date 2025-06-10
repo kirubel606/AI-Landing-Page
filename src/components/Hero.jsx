@@ -5,7 +5,7 @@ const Hero = () => {
         {/* AI Badge */}
         <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
           <span className="bg-white text-black text-xs font-bold px-2 py-1 rounded mr-2">AI</span>
-          <span className="text-gray-300 text-sm font-medium">ARTIFICIAL INTELLIGENCE FOR ALL</span>
+          <span className="text-gray-300 text-sm font-medium">AI FOR ALL</span>
         </div>
 
         {/* Main Heading */}
