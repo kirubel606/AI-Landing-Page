@@ -1,11 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../../public/logo.png"
 
 const Header = () => {
   const location = useLocation()
+  const [isSticky, setIsSticky] = useState(false)
+  const [animateIn, setAnimateIn] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navItems = [
@@ -17,6 +19,32 @@ const Header = () => {
     { name: "Resource & Publications", path: "/resources" },
   ]
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Animate sliding down only after isSticky turns true
+  useEffect(() => {
+    if (isSticky) {
+      setAnimateIn(false);
+      // Delay the animateIn toggle to trigger transition
+      const timer = setTimeout(() => {
+        setAnimateIn(true);
+      }, 50); // 50ms delay
+      return () => clearTimeout(timer);
+    } else {
+      setAnimateIn(false);
+    }
+  }, [isSticky]);
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
     // Prevent scrolling when menu is open
@@ -24,7 +52,15 @@ const Header = () => {
   }
 
   return (
-    <header className="relative z-10 px-6 py-4">
+    <header
+      className={`z-10 px-6 py-4 w-full p-4 transition-transform duration-300 ease-in-out ${
+        isSticky
+          ? `fixed top-0 left-0 right-0 bg-gradient-to-b from-black/90 via-gray-800/60 to-transparent z-50 opacity-100 ${
+              animateIn ? "translate-y-0" : "-translate-y-12"
+            }`
+          : "relative opacity-100 translate-y-0"
+      }`}
+    >
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <Link to="/Home" className="flex items-center">
@@ -54,7 +90,7 @@ const Header = () => {
         </div>
 
         {/* Get in Touch Button */}
-        <button className="hidden lg:flex relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200">
+        <button className={`hidden lg:flex relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200  ${isSticky ? "opacity-0 pointer-events-none" : "opacity-100 scale-100"}`}>
           {/* Gradient border layer */}
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
 

@@ -10,6 +10,7 @@ import Testimonial from "../components/Testimonial"
 import React,{useContext,useState} from "react"
 import { AppContext } from "../context/Appcontext"
 import { useParams, useNavigate } from "react-router-dom"
+import RotatingText from '../components/RotatingText'
 
 const Home = () => {
   const { news ,gallery} = useContext(AppContext)
@@ -31,8 +32,19 @@ const Home = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* AI Badge */}
           <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
-            <span className="bg-white text-black text-xs font-bold px-2 py-1 rounded mr-2">AI</span>
-            <span className="text-gray-300 text-sm font-medium">ARTIFICIAL INTELLIGENCE FOR ALL</span>
+            <RotatingText
+              texts={['AI', 'Inovation', 'Advancment', 'Growth']}
+              mainClassName="sm:px-2 md:px-3 bg-white text-black text-sm font-bold py-1 rounded mr-2 overflow-hidden sm:py-1 md:py-2 justify-center rounded-lg"
+              staggerFrom={"last"}
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-120%" }}
+              staggerDuration={0.025}
+              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+              transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              rotationInterval={2000}
+            />
+            <span className="text-gray-300 text-sm font-medium">FOR ALL</span>
           </div>
 
           {/* Main Heading */}
