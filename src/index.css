@@ -14,3 +14,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* Heading styles */
+h1 {
+  font-size: 32px; /* or 24px if you prefer */
+  font-weight: bold;
+}

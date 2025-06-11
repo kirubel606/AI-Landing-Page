@@ -14,8 +14,12 @@ import RotatingText from '../components/RotatingText'
 
 const Home = () => {
   const { news ,gallery} = useContext(AppContext)
-  const singleNews = news.results.result[0]
-  const singleGallery = gallery[0]
+  const singleNews = news?.results?.result?.[0] || null;
+
+
+  const singleGallery = gallery?.[0] || null;
+
+
   
   const navigate = useNavigate()
 
@@ -75,28 +79,31 @@ const Home = () => {
     </div>
     
 
-    {singleGallery && (
-      <>
-    <ContentSection
-      title='Our Gallery'
-      subtitle={singleGallery.title}
-      images={singleGallery.images.map(img => img.image)}
-      large={true}
-    />
-    </>
-    )}
+    {singleGallery && singleGallery.images ? (
+  <ContentSection
+    title='Our Gallery'
+    subtitle={singleGallery.title}
+    images={(singleGallery.images || []).map(img => img.image)}
+    large={true}
+  />
+) : (
+  <p className="text-center text-white">No Gallery Available</p>
+)}
 
-    {singleNews && (
-      <><a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
+
+    {singleNews && singleNews.cover_image ? (
+  <a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
     <ContentSection
       title={singleNews.title}
       subtitle={singleNews.subtitle}
-      images={[singleNews.cover_image, ...singleNews.images.map(img => img.image)]}
+      images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
       large={false}
     />
-    </a>
-    </>
-    )}
+  </a>
+) : (
+  <p className="text-center text-white">No News Available</p>
+)}
+
 
       <ApplicationsGrid />
       <ProjectsGrid />
