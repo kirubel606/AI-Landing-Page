@@ -67,7 +67,7 @@ function NewsDetail() {
   const { newsData } = useContext(AppContext)
   const videoData = newsData.filter((item) => item.iframe)
   const normalData = newsData.filter((item) => !item.iframe)
-
+  console.log("RAW CONTENT:", newsItem)
   // Add this state after the other state declarations in the NewsDetail component
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -277,6 +277,12 @@ function NewsDetail() {
 
   const isVideo = !!newsItem.iframe
 
+  function decodeHtml(html) {
+    const txt = document.createElement("textarea")
+    txt.innerHTML = html
+    return txt.value
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Background */}
@@ -358,9 +364,11 @@ function NewsDetail() {
 
 
           {/* Article Content */}
-          <div className="prose prose-lg max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: newsItem.content }} />
-          </div>
+          <div
+            className="prose prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: `${decodeHtml(newsItem.content)}` }}
+          />
+
 
           {/* Additional Images */}
           {newsItem.images && newsItem.images.length > 0 && (
