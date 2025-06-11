@@ -66,6 +66,7 @@ function NewsDetail() {
   const [activeTab, setActiveTab] = useState("latest")
   const { newsData } = useContext(AppContext)
   const videoData = newsData.filter((item) => item.iframe)
+  const normalData = newsData.filter((item) => !item.iframe)
 
   // Add this state after the other state declarations in the NewsDetail component
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -192,7 +193,7 @@ function NewsDetail() {
     switch (activeTab) {
       case "trending":
         // Filter trending news or use a different endpoint
-        displayData = newsData.sort((a, b) => b.view_count - a.view_count)
+        displayData = normalData.sort((a, b) => b.view_count - a.view_count)
         badgeColor = "bg-blue-100 text-blue-800"
         break
       case "videos":
@@ -200,7 +201,7 @@ function NewsDetail() {
         badgeColor = "bg-green-100 text-green-800"
         break
       default:
-        displayData = newsData.slice(0, 6)
+        displayData = normalData.slice(0, 6)
         badgeColor = "bg-orange-100 text-orange-800"
     }
 
