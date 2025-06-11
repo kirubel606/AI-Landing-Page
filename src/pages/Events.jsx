@@ -184,7 +184,7 @@ function Events() {
                         alt={event.title} 
                         className="w-full h-80 object-cover"
                         onError={(e) => {
-                          e.target.src = "https://via.placeholder.com/800x400?text=Event+Image"
+                          e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
                         }}
                       />
                       {event.is_live && (

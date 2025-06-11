@@ -16,7 +16,7 @@ const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, forma
                     alt={featuredArticle.title}
                     className="w-full h-[60vh] md:h-[90vh] object-cover"
                     onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/600x400"
+                      e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
                     }}
                   />
                   <span className="absolute top-4 left-4 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">

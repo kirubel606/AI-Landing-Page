@@ -17,7 +17,7 @@ const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate, navig
                                 alt={article.title}
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
-                                    e.target.src = "https://via.placeholder.com/300x200"
+                                    e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
                                 }}
                             />
                             <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">

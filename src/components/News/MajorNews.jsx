@@ -28,11 +28,11 @@ const MajorNews = ({ majorNews, BASE_URL, CalendarIcon, PlayIcon,formatDate ,nav
           >
             <div className="relative flex">
               <img
-                src={`${BASE_URL}` + majorNews.cover_image || "/placeholder.svg"}
+                src={`${BASE_URL}` + majorNews.cover_image || "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"}
                 alt={majorNews.title}
                 className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
                 onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/800x400"
+                  e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
                 }}
               />
               {majorNews.iframe && (

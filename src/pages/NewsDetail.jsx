@@ -221,7 +221,7 @@ function NewsDetail() {
             alt={article.title}
             className="w-20 h-20 object-cover rounded-lg"
             onError={(e) => {
-              e.target.src = "https://via.placeholder.com/80x80"
+              e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
             }}
           />
           {activeTab === "videos" && (
@@ -338,7 +338,7 @@ function NewsDetail() {
                 alt={newsItem.title}
                 className="w-full rounded-lg shadow-lg"
                 onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/1200x600"
+                  e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg0"
                 }}
               />
               <button
@@ -384,7 +384,7 @@ function NewsDetail() {
                         alt={`${newsItem.title} - Image ${index + 1}`}
                         className="w-full h-64 object-cover"
                         onError={(e) => {
-                          e.target.src = "https://via.placeholder.com/400x300"
+                          e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
                         }}
                       />
                       <button
@@ -454,7 +454,7 @@ function NewsDetail() {
                       alt={article.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/300x200"
+                        e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
                       }}
                     />
                     <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
