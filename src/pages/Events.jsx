@@ -7,7 +7,7 @@ import Footer from "../components/Footer"
 import { Calendar, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL 
-
+const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 function Events() {
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
@@ -184,7 +184,7 @@ function Events() {
                         alt={event.title} 
                         className="w-full h-80 object-cover"
                         onError={(e) => {
-                          e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
+                          e.target.src = PLACEHOLDER_IMAGE
                         }}
                       />
                       {event.is_live && (

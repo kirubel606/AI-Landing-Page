@@ -1,6 +1,8 @@
 import React from 'react'
+const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 
 const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, formatDate,navigateToDetail }) => {
+
   return (
     <>
           {/* Center Column - Featured Article */}
@@ -16,7 +18,7 @@ const CenterColumn = ({ featuredArticle, BASE_URL, techNews ,CalendarIcon, forma
                     alt={featuredArticle.title}
                     className="w-full h-[60vh] md:h-[90vh] object-cover"
                     onError={(e) => {
-                      e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
+                      e.target.src = PLACEHOLDER_IMAGE;
                     }}
                   />
                   <span className="absolute top-4 left-4 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">

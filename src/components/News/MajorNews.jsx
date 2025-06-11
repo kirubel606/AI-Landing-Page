@@ -1,7 +1,7 @@
 import React from 'react'
 import { convert } from 'html-to-text'
 const MAX_LENGTH = 700; // Change this to however many characters you want
-
+const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 const getPreviewHTML = (html) => {
   const plainText = convert(html, {
     wordwrap: false,
@@ -28,11 +28,11 @@ const MajorNews = ({ majorNews, BASE_URL, CalendarIcon, PlayIcon,formatDate ,nav
           >
             <div className="relative flex">
               <img
-                src={`${BASE_URL}` + majorNews.cover_image || "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"}
+                src={`${BASE_URL}` + majorNews.cover_image || PLACEHOLDER_IMAGE}
                 alt={majorNews.title}
                 className="w-1/4 h-64 md:h-80 object-cover shadow-lg rounded-md shadow-orange-400"
                 onError={(e) => {
-                  e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
+                  e.target.src = PLACEHOLDER_IMAGE;
                 }}
               />
               {majorNews.iframe && (

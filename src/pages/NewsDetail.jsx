@@ -10,6 +10,7 @@ import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
 import RightSidebar from "../components/News/RightSidebar"
 import { AppContext } from "../context/Appcontext"
 
+const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -221,7 +222,7 @@ function NewsDetail() {
             alt={article.title}
             className="w-20 h-20 object-cover rounded-lg"
             onError={(e) => {
-              e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
+              e.target.src = PLACEHOLDER_IMAGE
             }}
           />
           {activeTab === "videos" && (
@@ -338,7 +339,7 @@ function NewsDetail() {
                 alt={newsItem.title}
                 className="w-full rounded-lg shadow-lg"
                 onError={(e) => {
-                  e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg0"
+                  e.target.src = PLACEHOLDER_IMAGE
                 }}
               />
               <button
@@ -384,7 +385,7 @@ function NewsDetail() {
                         alt={`${newsItem.title} - Image ${index + 1}`}
                         className="w-full h-64 object-cover"
                         onError={(e) => {
-                          e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
+                          e.target.src = PLACEHOLDER_IMAGE
                         }}
                       />
                       <button
@@ -454,7 +455,7 @@ function NewsDetail() {
                       alt={article.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
-                        e.target.src = "https://cdn.pixabay.com/photo/2017/06/26/19/03/news-2444778_1280.jpg"
+                        e.target.src = PLACEHOLDER_IMAGE
                       }}
                     />
                     <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">

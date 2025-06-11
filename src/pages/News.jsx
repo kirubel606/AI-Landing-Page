@@ -11,6 +11,7 @@ import MajorNews from "../components/News/MajorNews";
 import debounce from 'lodash/debounce'; // Make sure you have lodash installed: npm install lodash
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 
 const PlayIcon = ({ size = "w-6 h-6" }) => (
   <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,8 +214,12 @@ useEffect(() => {
           <img
             src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
             alt={a.title}
+                                  onError={(e) => {
+                        e.target.src =  PLACEHOLDER_IMAGE
+                      }}
             className="w-20 h-20 object-cover rounded-lg"
           />
+
           {activeTab === "videos" && (
             <>
               <div className="absolute inset-0 flex items-center justify-center">
