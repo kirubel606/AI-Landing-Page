@@ -1,7 +1,23 @@
 import CoolSvg from "../components/CoolSVg"
 import { Card, CardBody, Typography } from "@material-tailwind/react";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
+import axios from "axios"
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const About = () => {
+  const [about, setAbout] = useState([]);
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/about/`);
+        setAbout(response.data);
+      } catch (error) {
+        console.error("Failed to fetch about:", error);
+      }
+    };
+
+    fetchAbout();
+  }, []);
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="min-h-[50vh] bg-gray-900 relative overflow-hidden">
@@ -22,39 +38,39 @@ const About = () => {
           <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
         </div>
       </div>
-      <div className="max-w-7xl mb-28 mx-auto space-y-24 mt-10">
+       {about.map((about, index) => (
+      <div key={`${about.id}-${index}`} className="max-w-7xl mb-28 mx-auto space-y-24 mt-10">
         {/* Header Section with Blue Border */}
         <Card className="">
-          <CardBody className="p-6">
-            <div className="flex flex-col h-fit lg:flex-row gap-6">
-              {/* Speaker Image */}
-              <div className="lg:w-2/3  h-full flex ">
-                <img
-                  src="../Assets/speaker.png"
-                  alt="EAII Speaker"
-                  className="w-full lg:h-[550px] object-cover rounded-lg"
-                />
-              </div>
+         
+            <CardBody  className="p-6">
+              <div className="flex flex-col h-fit lg:flex-row gap-6">
+                {/* Speaker Image */}
+                <div className="lg:w-2/3  h-full flex ">
+                  <img
+                    src={about.image}
+                    alt="EAII Speaker"
+                    className="w-full lg:h-[550px] object-cover rounded-lg"
+                  />
+                </div>
 
-              {/* Content */}
-              <div className="lg:w-2/3 space-y-7">
-                <Typography variant="h2" className="text-2xl lg:text-3xl font-bold text-gray-900">
-                  Ethiopian Artificial Intelligence Institute (EAII)
-                </Typography>
-                <div className="space-y-3 text-gray-700 text-sm lg:text-lg leading-relaxed">
-                  <Typography className="text-gray-700">
-                    The Ethiopian Artificial Intelligence Institute is a leading research and development organization dedicated to advancing AI technologies and applications in Ethiopia. Our mission is to foster innovation, conduct cutting-edge research, and develop AI solutions that address local and global challenges.
+                {/* Content */}
+                <div className="lg:w-2/3 space-y-7">
+                  <Typography variant="h2" className="text-2xl lg:text-3xl font-bold text-gray-900">
+                    {about.title}
                   </Typography>
-                  <Typography className="text-gray-700">
-                    We are committed to building Ethiopia's capacity in artificial intelligence through research, education, and collaboration with international partners. Our institute serves as a hub for AI innovation, bringing together researchers, practitioners, and stakeholders to drive technological advancement.
-                  </Typography>
-                  <Typography className="text-gray-700">
-                    Through our comprehensive programs, we aim to position Ethiopia as a leader in AI research and development in Africa, while ensuring that AI technologies are developed and deployed responsibly for the benefit of society.
-                  </Typography>
+                  <div className="space-y-3 text-gray-700 text-sm lg:text-lg leading-relaxed">
+
+                    <Typography className="text-gray-700 whitespace-pre-line">
+                      {about.description}
+                    </Typography>
+
+
+                  </div>
                 </div>
               </div>
-            </div>
-          </CardBody>
+            </CardBody>
+     
         </Card>
 
         {/* Mission and Vision Section */}
@@ -66,7 +82,7 @@ const About = () => {
                 Our Mission
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
-                To advance artificial intelligence research and applications through innovative solutions, collaborative partnerships, and capacity building initiatives that drive technological progress and societal impact in Ethiopia and beyond.
+                {about.mission}
               </Typography>
             </CardBody>
           </Card>
@@ -78,16 +94,16 @@ const About = () => {
                 Our Vision
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
-                To become a world-class AI research institute that drives innovation, fosters collaboration, and develops cutting-edge solutions that transform industries and improve lives across Ethiopia and the African continent.
+                {about.vision}
               </Typography>
             </CardBody>
           </Card>
         </div>
-
+     
         {/* Subtitle */}
         <div className="text-center ">
           <Typography className="text-gray-700 text-xl italic mb-4">
-            At EAII, we believe in the power of AI to transform society, drive efficiency, and accelerate future. Join us in transforming Ethiopia through artificial intelligence.
+            {about.quote}
           </Typography>
         </div>
 
@@ -97,7 +113,7 @@ const About = () => {
           <div className="flex gap-4">
             <div className="flex-shrink-0">
               <div className="w-12 h-12rounded-full flex items-center justify-center">
-                <img src="../public/Assets/impact.png"/>
+                <img src="../public/Assets/impact.png" />
               </div>
             </div>
             <div>
@@ -114,7 +130,7 @@ const About = () => {
           <div className="flex gap-4">
             <div className="flex-shrink-0">
               <div className="w-12 h-12 rounded-full flex items-center justify-center">
-                <img src="../public/Assets/develop.png"/>
+                <img src="../public/Assets/develop.png" />
               </div>
             </div>
             <div>
@@ -131,7 +147,7 @@ const About = () => {
           <div className="flex gap-4">
             <div className="flex-shrink-0">
               <div className="w-12 h-12 rounded-full flex items-center justify-center">
-                <img src="../public/Assets/foster.png"/>
+                <img src="../public/Assets/foster.png" />
               </div>
             </div>
             <div>
@@ -148,7 +164,7 @@ const About = () => {
           <div className="flex gap-4">
             <div className="flex-shrink-0">
               <div className="w-12 h-12 rounded-full flex items-center justify-center">
-                <img src="../public/Assets/cultivate.png"/>
+                <img src="../public/Assets/cultivate.png" />
               </div>
             </div>
             <div>
@@ -162,6 +178,7 @@ const About = () => {
           </div>
         </div>
       </div>
+      ))}
       <Footer />
     </div>
   )

@@ -2,12 +2,14 @@ import CoolSvg from "../components/CoolSVg"
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Research = () => {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -47,34 +49,34 @@ const Research = () => {
             month: "long",
         });
     };
-   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/categories/`);
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/categories/`);
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+            }
+        };
 
-    fetchCategories();
-  }, []);
+        fetchCategories();
+    }, []);
 
-  // This should run AFTER categories are fetched
-useEffect(() => {
-  const categoryFromURL = searchParams.get("category");
+    // This should run AFTER categories are fetched
+    useEffect(() => {
+        const categoryFromURL = searchParams.get("category");
 
-  if (categoryFromURL && categories.length > 0) {
-    const categoryId = parseInt(categoryFromURL, 10);
-    setSelectedCategory(categoryId); // ✅ store as number
+        if (categoryFromURL && categories.length > 0) {
+            setSelectedCategory(categoryFromURL);
 
-    const matched = categories.find((category) => category.id === categoryId);
-    if (matched) {
-      setSelectedCategoryName(matched.name);
-    }
-  }
-}, [searchParams, categories]);
-
+            const matched = categories.find(
+                (category) => category.id.toString() === categoryFromURL
+            );
+            if (matched) {
+                setSelectedCategoryName(matched.name);
+            }
+        }
+    }, [searchParams, categories]);
 
     // Auto-scroll every 2 seconds
     useEffect(() => {
@@ -112,7 +114,7 @@ useEffect(() => {
         const fetchProjects = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}` + "/rnd/");
-                setProjects(response.data.slice(0, 4));
+                setProjects(response.data);
             } catch (error) {
                 console.error("Failed to fetch R&D projects:", error);
             }
@@ -123,10 +125,9 @@ useEffect(() => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
 
-const filteredProjects = projects.filter(
-  (div) => !selectedCategory || div.category === selectedCategory
+    const filteredProjects = projects.filter(
+    (div) => !selectedCategory || String(div.category) === String(selectedCategory)
 );
-
 
 
     const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
@@ -217,7 +218,7 @@ const filteredProjects = projects.filter(
         if (activeTab === "latest") {
             return [...projects]
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
-                .slice(0, 6);
+                .slice(0, 5);
         }
         return projects.filter((item) => item.type === activeTab);
     };
@@ -263,9 +264,10 @@ const filteredProjects = projects.filter(
                         {/* All Categories Card - showing grid of 4 category images */}
                         <div
                             onClick={() => {
-                                setSelectedCategory(null);
-                                setSelectedCategoryName("All Categories");
-                            }}
+    navigate("/research");  // removes ?category=... from the URL
+    setSelectedCategory(null);
+    setSelectedCategoryName("All Categories");
+}}
                             className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
                         >
                             <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
@@ -293,9 +295,11 @@ const filteredProjects = projects.filter(
                                     <div
                                         key={`${category.id}-${index}`}
                                         onClick={() => {
+                                            navigate(`/research?category=${category.id}`);
                                             setSelectedCategory(category.id);
                                             setSelectedCategoryName(category.name);
                                         }}
+
                                         className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
                                     >
                                         <div className="relative h-32">
@@ -336,8 +340,9 @@ const filteredProjects = projects.filter(
                         )}
 
                         {paginatedProjects
-                            .filter((div) => !selectedCategory || div.category === selectedCategory)
-                            .map((div, index) => (
+    .filter((div) => !selectedCategory || String(div.category) === String(selectedCategory))
+    .map((div, index) => (
+
                                 <div key={div.id} className="lg:col-span-2">
                                     <div className="space-y-4">
                                         <div className="overflow-hidden shadow-sm">
