@@ -1,31 +1,39 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ApplicationsGrid = () => {
-  const [applications, setApplications] = useState([])
+  const [applications, setApplications] = useState([]);
+  const navigate = useNavigate();
+
+  const handleClick = (category) => {
+    navigate(`/research?category=${category}`);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}`+"/categories/")
-        setApplications(response.data.slice(0, 5))
+        const response = await axios.get(`${BASE_URL}/categories/`);
+        setApplications(response.data.slice(0, 5));
       } catch (error) {
-        console.error("Failed to fetch categories:", error)
+        console.error("Failed to fetch categories:", error);
       }
-    }
+    };
 
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        {/* Orange accent bar */}
         <div className="w-16 h-1 bg-orange-500 mx-auto mb-8"></div>
 
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Unleashing AI's Potential in Ethiopia</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Unleashing AI's Potential in Ethiopia
+          </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Exploring diverse applications of artificial intelligence across key sectors
           </p>
@@ -33,7 +41,11 @@ const ApplicationsGrid = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {applications.map((app) => (
-            <div key={app.id} className="group cursor-pointer hover:scale-105 transition-transform duration-300">
+            <div
+              key={app.id}
+              onClick={() => handleClick(app.id)} // ✅ pass category name here
+              className="group cursor-pointer hover:scale-105 transition-transform duration-300"
+            >
               <div className="relative overflow-hidden rounded-lg shadow-lg">
                 <img
                   src={app.image || "/placeholder.svg"}
@@ -51,7 +63,7 @@ const ApplicationsGrid = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ApplicationsGrid
+export default ApplicationsGrid;

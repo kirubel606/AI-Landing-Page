@@ -34,7 +34,7 @@ function News() {
   const [videoData, setVideoData] = useState([]);
   const [mergedContent, setMergedContent] = useState([]);
   const [page, setPage] = useState(1);
- 
+
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -44,9 +44,12 @@ function News() {
 
   const getVideoThumbnail = (iframe, coverImage) => {
     const videoId = iframe?.match(/embed\/(.*?)\?/i)?.[1];
-    // Fix the URL here: should be `i.ytimg.com` for YouTube thumbnails
-    return videoId ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg` : `${BASE_URL}${coverImage || ""}`;
+    if (!videoId) return `${BASE_URL}${coverImage || ""}`;
+
+    // Try the best-quality thumbnail first
+    return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
   };
+
 
   const extractVideoDuration = () => "5:24"; // This is hardcoded; you might want to dynamically get this
 
@@ -68,102 +71,102 @@ function News() {
   };
 
 
-const pageRef = useRef(page);
- pageRef.current = page; 
+  const pageRef = useRef(page);
+  pageRef.current = page;
 
-// Debounced setter
-const debouncedSetPage = useCallback(
-  debounce((nextPage) => {
-    setPage(nextPage);
-    pageRef.current = nextPage; // Update ref to stay in sync
-  }, 300),
-  []
-);
+  // Debounced setter
+  const debouncedSetPage = useCallback(
+    debounce((nextPage) => {
+      setPage(nextPage);
+      pageRef.current = nextPage; // Update ref to stay in sync
+    }, 300),
+    []
+  );
 
-const fetchContent = async (targetPage = pageRef.current) => {
-  if (!targetPage) {
-    console.warn("Page is undefined — skipping fetchContent");
-    return;
-  }
-
-  if (loading || !hasMore) return;
-  setLoading(true);
-
-  try {
-    const res = await fetch(`${BASE_URL}/news/all/?page=${targetPage}`);
-    const json = await res.json();
-
-    console.log(`Fetching page ${targetPage}`, json);
-
-    const results = json?.results?.result;
-
-    if (!results || results.length === 0) {
-      setHasMore(false);
+  const fetchContent = async (targetPage = pageRef.current) => {
+    if (!targetPage) {
+      console.warn("Page is undefined — skipping fetchContent");
       return;
     }
 
-    // Filter duplicates
-    const newItems = results.filter((item) => !addedItemIds.current.has(item.id));
-    newItems.forEach((item) => addedItemIds.current.add(item.id));
+    if (loading || !hasMore) return;
+    setLoading(true);
 
-  const newMerged = newItems; // Already merged on backend
+    try {
+      const res = await fetch(`${BASE_URL}/news/all/?page=${targetPage}`);
+      const json = await res.json();
 
+      console.log(`Fetching page ${targetPage}`, json);
 
-    // Append to merged content
-    setMergedContent((prev) => [...prev, ...newItems]);
+      const results = json?.results?.result;
 
-
-    // Set hasMore based on the `next` field from the response
-    if (!json.next) {
-      setHasMore(false);
-    }
-
-  } catch (err) {
-    console.error("Error fetching content:", err);
-    setError("Failed to fetch news data");
-    setHasMore(false);
-  } finally {
-    setLoading(false);
-  }
-};
-
-// Initial fetch on mount and whenever page changes
-useEffect(() => {
-  fetchContent();
-}, [page]);
-
-// IntersectionObserver
-useEffect(() => {
-  if (!observerTarget.current) return;
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-
-        if (hasMore && !loading) {
-          const nextPage = pageRef.current + 1;
-
-          pageRef.current = nextPage; // update ref first
-          debouncedSetPage(nextPage); // trigger actual state update (which triggers fetchContent)
-        }else{  
-          console.log("No more pages to load or currently loading.");
-        }
+      if (!results || results.length === 0) {
+        setHasMore(false);
+        return;
       }
-    },
-    {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
+
+      // Filter duplicates
+      const newItems = results.filter((item) => !addedItemIds.current.has(item.id));
+      newItems.forEach((item) => addedItemIds.current.add(item.id));
+
+      const newMerged = newItems; // Already merged on backend
+
+
+      // Append to merged content
+      setMergedContent((prev) => [...prev, ...newItems]);
+
+
+      // Set hasMore based on the `next` field from the response
+      if (!json.next) {
+        setHasMore(false);
+      }
+
+    } catch (err) {
+      console.error("Error fetching content:", err);
+      setError("Failed to fetch news data");
+      setHasMore(false);
+    } finally {
+      setLoading(false);
     }
-  );
-
-  observer.observe(observerTarget.current);
-
-  return () => {
-    observer.disconnect();
-    debouncedSetPage.cancel?.();
   };
-}, [hasMore, loading, debouncedSetPage]);
+
+  // Initial fetch on mount and whenever page changes
+  useEffect(() => {
+    fetchContent();
+  }, [page]);
+
+  // IntersectionObserver
+  useEffect(() => {
+    if (!observerTarget.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+
+          if (hasMore && !loading) {
+            const nextPage = pageRef.current + 1;
+
+            pageRef.current = nextPage; // update ref first
+            debouncedSetPage(nextPage); // trigger actual state update (which triggers fetchContent)
+          } else {
+            console.log("No more pages to load or currently loading.");
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(observerTarget.current);
+
+    return () => {
+      observer.disconnect();
+      debouncedSetPage.cancel?.();
+    };
+  }, [hasMore, loading, debouncedSetPage]);
 
 
   useEffect(() => {
@@ -214,9 +217,9 @@ useEffect(() => {
           <img
             src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
             alt={a.title}
-                                  onError={(e) => {
-                        e.target.src =  PLACEHOLDER_IMAGE
-                      }}
+            onError={(e) => {
+              e.target.src = PLACEHOLDER_IMAGE;
+            }}
             className="w-20 h-20 object-cover rounded-lg"
           />
 
@@ -276,53 +279,53 @@ useEffect(() => {
       </main>
 
       <section className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-8 text-center">Tech News & Videos</h2>
+        {/* <h2 className="text-3xl font-bold mb-8 text-center">Tech News & Videos</h2> */}
         <div className="space-y-8">
-  {mergedContent.map((item, idx) => (
-    <div
-      key={`${item.id}-${idx}`}
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg"
-      onClick={() => navigateToDetail(item)}
-    >
-      {item.iframe ? (
-        <>
-          <div className="relative">
-            <img
-              src={getVideoThumbnail(item.iframe, item.cover_image)}
-              alt={item.title}
-              className="w-full h-64 md:h-80 object-cover"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 bg-orange-400 text-white rounded-full flex items-center justify-center">
-                <PlayIcon size="w-8 h-8" />
-              </div>
+          {mergedContent.map((item, idx) => (
+            <div
+              key={`${item.id}-${idx}`}
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg"
+              onClick={() => navigateToDetail(item)}
+            >
+              {item.iframe ? (
+                <>
+                  <div className="relative">
+                    <img
+                      src={getVideoThumbnail(item.iframe, item.cover_image)}
+                      alt={item.title}
+                      className="w-full h-64 md:h-80 object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-20 h-20 bg-orange-400 text-white rounded-full flex items-center justify-center">
+                        <PlayIcon size="w-8 h-8" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-4 right-4 bg-black/80 text-white text-sm px-2 py-1 rounded">
+                      {extractVideoDuration(item.iframe)}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-gray-600 mb-4">{item.subtitle}</p>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <span>{item.view_count} views</span>
+                      <span>{formatDate(item.created_at)}</span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <MajorNews
+                  majorNews={item}
+                  BASE_URL={BASE_URL}
+                  PlayIcon={PlayIcon}
+                  CalendarIcon={CalendarIcon}
+                  formatDate={formatDate}
+                  navigateToDetail={navigateToDetail}
+                />
+              )}
             </div>
-            <div className="absolute bottom-4 right-4 bg-black/80 text-white text-sm px-2 py-1 rounded">
-              {extractVideoDuration(item.iframe)}
-            </div>
-          </div>
-          <div className="p-6">
-            <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-            <p className="text-gray-600 mb-4">{item.subtitle}</p>
-            <div className="flex items-center justify-between text-sm text-gray-500">
-              <span>{item.view_count} views</span>
-              <span>{formatDate(item.created_at)}</span>
-            </div>
-          </div>
-        </>
-      ) : (
-        <MajorNews
-          majorNews={item}
-          BASE_URL={BASE_URL}
-          PlayIcon={PlayIcon}
-          CalendarIcon={CalendarIcon}
-          formatDate={formatDate}
-          navigateToDetail={navigateToDetail}
-        />
-      )}
-    </div>
-  ))}
-</div>
+          ))}
+        </div>
 
         <div ref={observerTarget} className="py-4 text-center">
           {loading && page > 1 && (
