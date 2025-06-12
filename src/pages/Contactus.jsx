@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useContext } from "react"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
+import { AppContext } from "../context/Appcontext"
 import { Phone, Mail, MapPin, HelpCircle, BookOpen, MessageSquare } from "lucide-react"
 
 function Contactus() {
@@ -13,6 +14,8 @@ function Contactus() {
     phone: "",
     message: "",
   })
+  const { settings, loading } = useContext(AppContext)
+  
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
 
@@ -69,11 +72,10 @@ function Contactus() {
     {
       icon: MapPin,
       title: "Location",
-      description: "C/64 Northwest Freeway, Suite 558, Houston, USA 485",
       value: "View on Google map",
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
-      isLink: true,
+      isLink: settings.map_link,
     },
   ]
 
@@ -117,7 +119,7 @@ function Contactus() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-16 py-16">
+      <div className="container mx-auto px-16 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
           {/* Contact Information */}
           <div className="space-y-8 col-span-2">
@@ -131,17 +133,11 @@ function Contactus() {
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold mb-2">{info.title}</h3>
                     <p className="text-gray-600 mb-3">{info.description}</p>
-                    {info.isLink ? (
-                      <a
-                        href="https://maps.google.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-orange-600 hover:text-orange-700 font-medium"
-                      >
-                        {info.value}
-                      </a>
-                    ) : (
-                      <p className="font-medium text-gray-900">{info.value}</p>
+                    {info.isLink && (
+                          <div
+                          className="prose prose-lg overflow-clip"
+                          dangerouslySetInnerHTML={{ __html: info.isLink}}
+                        />
                     )}
                   </div>
                 </div>
@@ -262,7 +258,7 @@ function Contactus() {
       {/* Help Section */}
       <div className="bg-gray-50 py-16 px-32">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-5">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Find The Help You Need</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Artificial Intelligence makes it fast easy to create content for your blog, social media, website, and
