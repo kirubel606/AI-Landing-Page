@@ -1,5 +1,6 @@
 import CoolSvg from "../components/CoolSVg"
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios"
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
@@ -7,7 +8,12 @@ import Footer from "../components/Footer";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Research = () => {
+    const [searchParams] = useSearchParams();
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategoryName, setSelectedCategoryName] = useState();
     const [activeTab, setActiveTab] = useState("latest");
+    const [startIndex, setStartIndex] = useState(0);
     const timeAgo = (dateString) => {
         if (!dateString) return "unknown time";
 
@@ -41,25 +47,34 @@ const Research = () => {
             month: "long",
         });
     };
+   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/categories/`);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
 
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedCategoryName, setSelectedCategoryName] = useState("All Categories");
-    console.log("Selected Category:", selectedCategory);
-    const [startIndex, setStartIndex] = useState(0);
+    fetchCategories();
+  }, []);
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios.get(`${BASE_URL}` + "/categories/");
-                setCategories(response.data);
-            } catch (error) {
-                console.error("Failed to fetch categories:", error);
-            }
-        };
+  // This should run AFTER categories are fetched
+useEffect(() => {
+  const categoryFromURL = searchParams.get("category");
 
-        fetchCategories();
-    }, []);
+  if (categoryFromURL && categories.length > 0) {
+    const categoryId = parseInt(categoryFromURL, 10);
+    setSelectedCategory(categoryId); // ✅ store as number
+
+    const matched = categories.find((category) => category.id === categoryId);
+    if (matched) {
+      setSelectedCategoryName(matched.name);
+    }
+  }
+}, [searchParams, categories]);
+
 
     // Auto-scroll every 2 seconds
     useEffect(() => {
@@ -108,9 +123,11 @@ const Research = () => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
 
-    const filteredProjects = projects.filter(
-        (div) => !selectedCategory || div.category === selectedCategory
-    );
+const filteredProjects = projects.filter(
+  (div) => !selectedCategory || div.category === selectedCategory
+);
+
+
 
     const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
     const paginatedProjects = filteredProjects.slice(
@@ -233,78 +250,78 @@ const Research = () => {
             {/* Category divs */}
             <div className="container mx-auto px-4 py-8 overflow-y-clip">
                 <div className="relative mb-8">
-  <div className="flex gap-4 items-start">
-    {/* Left Arrow Button */}
-    {overflow && (
-      <div className="absolute top-1/2 -left-4 z-10">
-        <button onClick={goPrev} className="bg-white rounded-full shadow p-2">
-          ◀
-        </button>
-      </div>
-    )}
+                    <div className="flex gap-4 items-start">
+                        {/* Left Arrow Button */}
+                        {overflow && (
+                            <div className="absolute top-1/2 -left-4 z-10">
+                                <button onClick={goPrev} className="bg-white rounded-full shadow p-2">
+                                    ◀
+                                </button>
+                            </div>
+                        )}
 
-    {/* All Categories Card - showing grid of 4 category images */}
-<div
-  onClick={() => {
-    setSelectedCategory(null);
-    setSelectedCategoryName("All Categories");
-  }}
-  className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
->
-  <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
-    {visibleCategories.slice(0, 4).map((category, idx) => (
-      <img
-        key={category.id || idx}
-        src={category.image || "/placeholder.svg"}
-        alt={category.name}
-        className="w-full h-full object-cover border border-gray-200"
-      />
-    ))}
-  </div>
-  <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-10">
-    <h1 className="text-white font-semibold text-center text-sm px-2">
-      All Categories
-    </h1>
-  </div>
-</div>
+                        {/* All Categories Card - showing grid of 4 category images */}
+                        <div
+                            onClick={() => {
+                                setSelectedCategory(null);
+                                setSelectedCategoryName("All Categories");
+                            }}
+                            className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
+                        >
+                            <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
+                                {visibleCategories.slice(0, 4).map((category, idx) => (
+                                    <img
+                                        key={category.id || idx}
+                                        src={category.image || "/placeholder.svg"}
+                                        alt={category.name}
+                                        className="w-full h-full object-cover border border-gray-200"
+                                    />
+                                ))}
+                            </div>
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-10">
+                                <h1 className="text-white font-semibold text-center text-sm px-2">
+                                    All Categories
+                                </h1>
+                            </div>
+                        </div>
 
 
-    {/* Scrollable Categories Grid */}
-    <div className="relative flex-1">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {visibleCategories.map((category, index) => (
-          <div
-            key={`${category.id}-${index}`}
-            onClick={() => {
-              setSelectedCategory(category.id);
-              setSelectedCategoryName(category.name);
-            }}
-            className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
-          >
-            <div className="relative h-32">
-              <img
-                src={category.image || "/placeholder.svg"}
-                alt={category.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <h1 className="text-white font-semibold">{category.name}</h1>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+                        {/* Scrollable Categories Grid */}
+                        <div className="relative flex-1">
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                {visibleCategories.map((category, index) => (
+                                    <div
+                                        key={`${category.id}-${index}`}
+                                        onClick={() => {
+                                            setSelectedCategory(category.id);
+                                            setSelectedCategoryName(category.name);
+                                        }}
+                                        className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
+                                    >
+                                        <div className="relative h-32">
+                                            <img
+                                                src={category.image || "/placeholder.svg"}
+                                                alt={category.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                                <h1 className="text-white font-semibold">{category.name}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
 
-      {overflow && (
-        <div className="absolute top-1/2 -right-4 z-10">
-          <button onClick={goNext} className="bg-white rounded-full shadow p-2">
-            ▶
-          </button>
-        </div>
-      )}
-    </div>
-  </div>
-</div>
+                            {overflow && (
+                                <div className="absolute top-1/2 -right-4 z-10">
+                                    <button onClick={goNext} className="bg-white rounded-full shadow p-2">
+                                        ▶
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
 
 
 
