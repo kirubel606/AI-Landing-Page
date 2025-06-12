@@ -7,7 +7,7 @@ const Footer = () => {
   // console.log("Here is Setting:",settings);
   return (
     <footer className="bg-slate-900 text-white">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-7">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Contact */}
           <div className="space-y-4 items-center justify-center flex">
@@ -21,7 +21,10 @@ const Footer = () => {
               <p>Address: {settings.location}</p>
               <p>Phone: {settings.line1}</p>
               <p>Email: {settings.email}</p>
-              <p>Location: <a href={settings.map_link}>Click Here</a></p>
+              <div
+                className="prose prose-lg w-64 h-32 overflow-clip"
+                dangerouslySetInnerHTML={{ __html: settings.map_link}}
+              />
             </div>
           <div>
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
@@ -46,11 +49,11 @@ const Footer = () => {
                   Events
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
                   Meet the developers
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
                   Careers
