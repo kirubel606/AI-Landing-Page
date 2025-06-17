@@ -323,7 +323,7 @@ function NewsDetail() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="max-w-4xl mx-auto md:col-span-3">
+        <div className="max-w-4xl  mx-auto md:mx-auto 3xl:mx-[-200px]  md:col-span-3">
         <button
             onClick={() => navigate("/news")}
             className="flex items-center text-black hover:text-orange-300 transition-colors mb-6"

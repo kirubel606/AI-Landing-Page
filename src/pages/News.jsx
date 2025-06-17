@@ -296,7 +296,7 @@ function News() {
                       className="w-full h-64 md:h-80 object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-20 h-20 bg-orange-400 text-white rounded-full flex items-center justify-center">
+                      <div className="w-20 h-20 bg-orange-400 hover:bg-[#080a24af] text-white rounded-full flex items-center justify-center">
                         <PlayIcon size="w-8 h-8" />
                       </div>
                     </div>
