@@ -280,7 +280,7 @@ const Research = () => {
                                     />
                                 ))}
                             </div>
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-10">
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-0">
                                 <h1 className="text-white font-semibold text-center text-sm px-2">
                                     All Categories
                                 </h1>

@@ -58,7 +58,7 @@ const Header = () => {
           ? `fixed top-0 left-0 right-0 bg-gradient-to-b from-black/90 via-gray-800/60 to-transparent z-50 opacity-100 ${
               animateIn ? "translate-y-0" : "-translate-y-12"
             }`
-          : "relative opacity-100 translate-y-0"
+          : "opacity-100 translate-y-0 fixed "
       }`}
     >
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
