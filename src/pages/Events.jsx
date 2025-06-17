@@ -107,7 +107,7 @@ function Events() {
       </div>
 
       {/* Events Section */}
-      <div className="container mx-auto px-32 py-16">
+      <div className="container mx-auto px-10 md:px-32 py-16">
         {currentEvents.length === 0 ? (
           <div className="text-center py-16">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">No Events Found</h2>

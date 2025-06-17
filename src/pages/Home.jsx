@@ -79,30 +79,32 @@ const Home = () => {
     </div>
     
 
-    {singleGallery && singleGallery.images ? (
-  <ContentSection
-    title='Our Gallery'
-    subtitle={singleGallery.title}
-    images={(singleGallery.images || []).map(img => img.image)}
-    large={true}
-  />
-) : (
-  <p className="text-center text-white">No Gallery Available</p>
-)}
 
 
     {singleNews && singleNews.cover_image ? (
-  <a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
-    <ContentSection
-      title={singleNews.title}
-      subtitle={singleNews.subtitle}
-      images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
-      large={false}
-    />
-  </a>
-) : (
-  <p className="text-center text-white">No News Available</p>
-)}
+      <a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
+        <ContentSection
+          title={singleNews.title}
+          subtitle={singleNews.subtitle}
+          images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
+          large={false}
+        />
+      </a>
+    ) : (
+      <p className="text-center text-white">No News Available</p>
+    )}
+
+    {singleGallery && singleGallery.images ? (
+      <ContentSection
+        title='Our Gallery'
+        subtitle={singleGallery.title}
+        images={(singleGallery.images || []).map(img => img.image)}
+        large={true}
+      />
+    ) : (
+      <p className="text-center text-white">No Gallery Available</p>
+    )}
+
 
 
       <ApplicationsGrid />

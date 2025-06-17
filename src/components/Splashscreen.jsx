@@ -15,12 +15,13 @@ const Splashscreen = () => {
                 <span className="text-orange-400">Intelligence Institute</span>
             </h1>
         </div>
+        <div className='mb-72 md:mb-10'>
       <Player
         autoplay
         loop
         src={splashAnimation}
         style={{ height: '300px', width: '300px' }}
-      />
+      /></div>
     </div>
   )
 }

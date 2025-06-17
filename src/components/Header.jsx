@@ -115,7 +115,7 @@ const Header = () => {
 
         {/* Full Screen Mobile Menu */}
         <div
-          className={`fixed inset-0 bg-black/95 backdrop-blur-md z-40 lg:hidden flex flex-col justify-center items-center transition-all duration-500 ${
+          className={`fixed h-dvh inset-0 bg-black/95 backdrop-blur-md z-40 lg:hidden flex flex-col justify-center items-center transition-all duration-500 ${
             mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
         >
