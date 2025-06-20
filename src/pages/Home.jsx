@@ -31,7 +31,7 @@ const Home = () => {
       <section className="flex items-center justify-center min-h-[80vh] px-6">
         <div className="text-center max-w-4xl mx-auto">
           {/* AI Badge */}
-          <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
+          <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mt-32 mb-4">
             <RotatingText
               texts={['AI', 'Inovation', 'Advancment', 'Growth']}
               mainClassName="sm:px-2 md:px-3 bg-white text-black text-sm font-bold py-1 rounded mr-2 overflow-hidden sm:py-1 md:py-2 justify-center rounded-lg"
@@ -63,7 +63,7 @@ const Home = () => {
           {/* CTA Button */}
           <a href="/contactus">
 
-          <button className="relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200">
+          <button className="relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200 mt-4">
             {/* Gradient border layer */}
             <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
 
