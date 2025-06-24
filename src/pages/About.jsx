@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import axios from "axios"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import SocialMediaLinks from "../components/SocialMediaLinks";
 const About = () => {
   const [about, setAbout] = useState([]);
   useEffect(() => {
@@ -24,6 +25,7 @@ const About = () => {
         <div className="absolute h-lvh w-full">
           <CoolSvg />
         </div>
+                    <SocialMediaLinks />
         <div className="relative h-64 bg-transparent mx-20">
           <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
           <div className="z-20 flex items-center justify-center h-full">
@@ -82,7 +84,7 @@ const About = () => {
                 Our Mission
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
-                {about.mission}
+                To pioneer AI research and development that empowers Ethiopia’s economic growth, enhances public services, and positions the nation as a technological leader in Africa.
               </Typography>
             </CardBody>
           </Card>
@@ -94,7 +96,7 @@ const About = () => {
                 Our Vision
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
-                {about.vision}
+                To become a world-class AI research institute that drives innovation, fosters talent, and builds AI-powered solutions that address Ethiopia’s challenges.
               </Typography>
             </CardBody>
           </Card>

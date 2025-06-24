@@ -17,7 +17,7 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     axios.get(`${BASE_URL}`+'/settings/')
       .then(res => {
-        setSettings(res.data[0])
+        setSettings(res.data[0] || {})
         setLoading(false)
       })
       .catch(err => {

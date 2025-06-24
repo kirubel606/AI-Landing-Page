@@ -4,6 +4,7 @@ import { AppContext } from "../context/Appcontext"
 
 const Footer = () => {
   const { settings, loading } = useContext(AppContext)
+  
   // console.log("Here is Setting:",settings);
   return (
     <footer className="bg-slate-900 text-white">
@@ -57,6 +58,11 @@ const Footer = () => {
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
                   Careers
+                </a>
+              </li>
+              <li>
+                <a href="/gallery" className="hover:text-orange-400 transition-colors">
+                  Gallery
                 </a>
               </li>
             </ul>

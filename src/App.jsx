@@ -9,7 +9,8 @@ import Resources from "./pages/Resources"
 import Contactus from "./pages/Contactus"
 import "./App.css"
 import SplashWrapper from './components/SplashWrapper';
-import NewsDetail from "./pages/NewsDetail"
+import NewsDetail from "./pages/NewsDetail";
+import GalleryPage from "./pages/GalleryPage";
 
 function App() {
   const location = useLocation(); // <-- This now works correctly
@@ -26,7 +27,8 @@ function App() {
               <Route path="/events" element={<Events />} />
               <Route path="/about" element={<About />} />
               <Route path="/resources" element={<Resources />} />    
-              <Route path="/contactus" element={<Contactus/>} />    
+              <Route path="/contactus" element={<Contactus/>} /> 
+              <Route path="/gallery" element={<GalleryPage />} />   
               
           </Routes>
         </main>

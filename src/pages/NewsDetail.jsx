@@ -11,7 +11,7 @@ import RightSidebar from "../components/News/RightSidebar"
 import { AppContext } from "../context/Appcontext"
 
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
-
+import SocialMediaLinks from "../components/SocialMediaLinks";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 // Icon components
@@ -291,6 +291,7 @@ function NewsDetail() {
         <div className="absolute h-dvh w-full">
           <CoolSvg />
         </div>
+                    <SocialMediaLinks />
         <div className="relative h-full bg-transparent container mx-auto px-4 py-12">
 
           <div className="max-w-4xl mx-auto">

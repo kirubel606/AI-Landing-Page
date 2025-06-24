@@ -3,7 +3,7 @@ import axios from "axios"
 import CoolSvg from "../components/CoolSVg"
 import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer"
-
+import SocialMediaLinks from "../components/SocialMediaLinks";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
 
 const Resources = () => {
@@ -299,6 +299,7 @@ console.log(paginatedData)
         <div className="absolute h-dvh w-full">
           <CoolSvg />
         </div>
+                    <SocialMediaLinks />
         <div className="relative h-64 bg-transparent mx-20">
           <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
           <div className="z-20 flex items-center justify-center h-full">

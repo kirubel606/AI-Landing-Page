@@ -7,7 +7,7 @@ import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+import SocialMediaLinks from "../components/SocialMediaLinks";
 const Research = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -126,8 +126,8 @@ const Research = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const filteredProjects = projects.filter(
-    (div) => !selectedCategory || String(div.category) === String(selectedCategory)
-);
+        (div) => !selectedCategory || String(div.category) === String(selectedCategory)
+    );
 
 
     const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
@@ -230,6 +230,7 @@ const Research = () => {
                 <div className="absolute h-dvh w-full">
                     <CoolSvg />
                 </div>
+
                 <div className="relative h-64 bg-transparent mx-20">
                     <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
                     <div className="z-20 flex items-center justify-center h-full">
@@ -247,9 +248,10 @@ const Research = () => {
                     <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
                 </div>
             </div>
-
+            <SocialMediaLinks />
             {/* Category divs */}
             <div className="container mx-auto px-4 py-8 overflow-y-clip">
+
                 <div className="relative mb-8">
                     <div className="flex gap-4 items-start">
                         {/* Left Arrow Button */}
@@ -264,10 +266,10 @@ const Research = () => {
                         {/* All Categories Card - showing grid of 4 category images */}
                         <div
                             onClick={() => {
-    navigate("/research");  // removes ?category=... from the URL
-    setSelectedCategory(null);
-    setSelectedCategoryName("All Categories");
-}}
+                                navigate("/research");  // removes ?category=... from the URL
+                                setSelectedCategory(null);
+                                setSelectedCategoryName("All Categories");
+                            }}
                             className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
                         >
                             <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
@@ -340,8 +342,8 @@ const Research = () => {
                         )}
 
                         {paginatedProjects
-    .filter((div) => !selectedCategory || String(div.category) === String(selectedCategory))
-    .map((div, index) => (
+                            .filter((div) => !selectedCategory || String(div.category) === String(selectedCategory))
+                            .map((div, index) => (
 
                                 <div key={div.id} className="lg:col-span-2">
                                     <div className="space-y-4">

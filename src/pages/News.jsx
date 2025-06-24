@@ -9,7 +9,7 @@ import RightSidebar from "../components/News/RightSidebar";
 import CenterColumn from "../components/News/CenterColumn";
 import MajorNews from "../components/News/MajorNews";
 import debounce from 'lodash/debounce'; // Make sure you have lodash installed: npm install lodash
-
+import SocialMediaLinks from "../components/SocialMediaLinks";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 
@@ -281,6 +281,7 @@ function News() {
       <section className="max-w-7xl mx-auto px-4 py-16">
         {/* <h2 className="text-3xl font-bold mb-8 text-center">Tech News & Videos</h2> */}
         <div className="space-y-8">
+                      <SocialMediaLinks />
           {mergedContent.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}

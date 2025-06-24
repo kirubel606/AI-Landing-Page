@@ -7,7 +7,7 @@ import { MapPin, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
-
+import SocialMediaLinks from "../components/SocialMediaLinks";
 function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -99,6 +99,7 @@ function Events() {
         <div className="absolute w-full h-full">
           <CoolSvg />
         </div>
+                    <SocialMediaLinks />
         <div className="relative h-full flex justify-center items-center text-center text-white">
           <div>
             <h1 className="text-5xl font-bold mb-4">Events</h1>
