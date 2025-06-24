@@ -12,6 +12,7 @@ import { AppContext } from "../context/Appcontext";
 import { useNavigate } from "react-router-dom";
 import SocialMediaLinks from "../components/SocialMediaLinks";
 // import RotatingText from '../components/RotatingText' // Uncomment if you use RotatingText
+import ChatbotWrapper from "../components/ChatbotWrapper";
 
 const Home = () => {
   const { news, gallery } = useContext(AppContext);
@@ -114,6 +115,7 @@ const Home = () => {
       <Quotes />
       <Testimonial />
       <Collaborations />
+      {showSocialLinks && <ChatbotWrapper />}
       <Footer />
     </>
   );
