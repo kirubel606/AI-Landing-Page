@@ -74,7 +74,7 @@ function NewsDetail() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [lightboxImages, setLightboxImages] = useState([])
-  const { t } = useTranslation();
+  const { t , i18n } = useTranslation();
 
   useEffect(() => {
     if (id) {
@@ -221,7 +221,8 @@ function NewsDetail() {
                 ? getVideoThumbnail(article.iframe, `${BASE_URL}` + article.cover_image)
                 : `${BASE_URL}` + article.cover_image
             }
-            alt={article.title}
+            alt={i18n.language === 'am' ? article.title_am : article.title}
+
             className="w-20 h-20 object-cover rounded-lg"
             onError={(e) => {
               e.target.src = PLACEHOLDER_IMAGE
@@ -242,7 +243,8 @@ function NewsDetail() {
         </div>
         <div className="flex-1 min-w-0">
           <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>{article.category}</span>
-          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{article.title}</h4>
+          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{i18n.language === 'am' ? article.title_am : article.title}</h4>
+          
           <div className="flex items-center text-xs text-gray-500">
             <CalendarIcon size="w-2.5 h-2.5" />
             <span className="ml-1">{formatDate(article.created_at)}</span>
@@ -298,11 +300,13 @@ function NewsDetail() {
 
           <div className="max-w-4xl mx-auto">
             <div className="text-white mt-[10%]">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">{newsItem.title}</h1>
-              <p className="text-lg opacity-90 mb-6">{newsItem.subtitle}</p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">{i18n.language === 'am' ? newsItem.title_am : newsItem.title}</h1>
+              
+              <p className="text-lg opacity-90 mb-6">{i18n.language === 'am' ? newsItem.subtitle_am : newsItem.subtitle}</p>
 
               <div className="flex flex-wrap items-center gap-4 text-sm">
-                <span className="bg-orange-400 text-white px-3 py-1 rounded">{newsItem.category}</span>
+                
+                <span className="bg-orange-400 text-white px-3 py-1 rounded">{i18n.language === 'am' ? newsItem.category_am : newsItem.category}</span>
 
                 <div className="flex items-center">
                   <CalendarIcon />
@@ -339,7 +343,8 @@ function NewsDetail() {
             <div className="mb-8 relative group">
               <img
                 src={`${BASE_URL}${newsItem.cover_image}`}
-                alt={newsItem.title}
+                alt={i18n.language === 'am' ? newsItem.title_am : newsItem.title}
+                
                 className="w-full rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.src = PLACEHOLDER_IMAGE
@@ -370,7 +375,7 @@ function NewsDetail() {
           {/* Article Content */}
           <div
             className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: `${decodeHtml(newsItem.content)}` }}
+            dangerouslySetInnerHTML={{ __html: `${decodeHtml(i18n.language === 'am' ? newsItem.content_am : newsItem.content)}` }}
           />
 
 
@@ -455,14 +460,16 @@ function NewsDetail() {
                   <div className="relative">
                     <img
                       src={`${BASE_URL}${article.cover_image}`}
-                      alt={article.title}
+                      alt={i18n.language === 'am' ? article.title_am : article.title}
+                      
                       className="w-full h-48 object-cover"
                       onError={(e) => {
                         e.target.src = PLACEHOLDER_IMAGE
                       }}
                     />
                     <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                      {article.category}
+                       {i18n.language === 'am' ? article.category_am : article.category}
+                     
                     </span>
                     {article.iframe && (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -475,8 +482,9 @@ function NewsDetail() {
                     )}
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-2 line-clamp-2">{article.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{article.subtitle}</p>
+                    <h3 className="font-semibold text-lg mb-2 line-clamp-2">{i18n.language === 'am' ? article.title_am : article.title}</h3>
+                     
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{i18n.language === 'am' ? article.subtitle_am : article.subtitle}</p>
                     <div className="flex items-center justify-between text-xs text-gray-500">
                       <div className="flex items-center">
                         <CalendarIcon />

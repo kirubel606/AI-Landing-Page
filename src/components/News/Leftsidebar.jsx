@@ -1,6 +1,9 @@
 import React from 'react'
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
+import { useTranslation } from 'react-i18next'
+
 const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate, navigateToDetail }) => {
+      const { i18n, t } = useTranslation();
     return (
         <>
             {/* Left Column - Small News Items */}
@@ -14,18 +17,18 @@ const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate, navig
                         <div className="relative h-[80%]">
                             <img
                                 src={article.cover_image ? `${BASE_URL}${article.cover_image}` : "/placeholder.svg"}
-                                alt={article.title}
+                                alt=  {i18n.language === 'am' ? article.title_am : article.title}
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
                                     e.target.src = PLACEHOLDER_IMAGE
                                 }}
                             />
                             <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                                {article.category}
+                                {i18n.language === 'am' ? article.category_am : article.category}
                             </span>
                         </div>
                         <div className="p-2 h-[20%] flex flex-col justify-between">
-                            <h3 className="font-semibold text-sm leading-tight line-clamp-2">{article.title}</h3>
+                            <h3 className="font-semibold text-sm leading-tight line-clamp-2">  {i18n.language === 'am' ? article.title_am : article.title}</h3>
                             <div className="flex items-center text-xs text-gray-500 mt-1">
                                 <CalendarIcon size="w-3 h-3" />
                                 <span className="ml-1">{formatDate(article.created_at)}</span>

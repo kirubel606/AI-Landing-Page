@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProjectsGrid = () => {
-  const { t } = useTranslation();
+  const { t , i18n  } = useTranslation();
   const [projects, setProjects] = useState([])
 
   useEffect(() => {
@@ -52,7 +52,8 @@ const ProjectsGrid = () => {
             >
               <img
                 src={project.coverimage || "/placeholder.svg"}
-                alt={project.title}
+                alt={i18n.language === 'am' ? project.title_am : item.title}
+                
                 className="w-full h-48 object-cover"
               />
                             {project.logo && (
@@ -63,8 +64,8 @@ const ProjectsGrid = () => {
                   />
               )}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{project.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{project.description.split(" ").slice(0, 20).join(" ") + (project.description.split(" ").length > 20 ? "..." : "")}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{i18n.language === 'am' ? project.title_am : project.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{(i18n.language === 'am' ? project.description_am : project.description).split(" ").slice(0, 20).join(" ") + ((i18n.language === 'am' ? project.description_am : project.description).split(" ").length > 20 ? "..." : "")}</p>
               </div>
             </a>
           ))}

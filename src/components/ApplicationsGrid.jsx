@@ -8,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ApplicationsGrid = () => {
   const [applications, setApplications] = useState([]);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t ,i18n } = useTranslation();
 
   const handleClick = (category) => {
     navigate(`/research?category=${category}`);
@@ -51,13 +51,15 @@ const ApplicationsGrid = () => {
               <div className="relative overflow-hidden rounded-lg shadow-lg">
                 <img
                   src={app.image || "/placeholder.svg"}
-                  alt={app.name}
+                  alt={i18n.language === 'am' ? app.name_am : app.name}
                   className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-bold mb-2">{app.name}</h3>
-                  <p className="text-sm text-gray-200">{app.description}</p>
+                  <h3 className="text-xl font-bold mb-2">{i18n.language === 'am' ? app.name_am : app.name}</h3>
+                    
+                  <p className="text-sm text-gray-200">{i18n.language === 'am' ? app.description_am : app.description}</p>
+
                 </div>
               </div>
             </div>

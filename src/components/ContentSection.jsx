@@ -1,14 +1,14 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import React, { useContext, useState } from "react"
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
-
+import { useTranslation } from 'react-i18next';
 
 const ContentSection = ({ title, subtitle, images, large = false }) => {
   const getImageUrl = (img) => {
     if (typeof img !== 'string') return ''; // skip invalid types
     return img.startsWith('http') ? img : BASE_URL + img;
   };
-
+const { t, i18n } = useTranslation();
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [lightboxImages, setLightboxImages] = useState([])
@@ -44,6 +44,7 @@ const ContentSection = ({ title, subtitle, images, large = false }) => {
 
         <div className="text-center mb-12 w-[50%] justify-center items-center mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{title}</h2>
+          
           <p className="text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
         </div>
 

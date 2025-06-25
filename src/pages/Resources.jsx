@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
 
 const Resources = () => {
-  const { t } = useTranslation();
+  const { t ,i18n } = useTranslation();
   const [mockData, setMockData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // NEW
 
@@ -96,7 +96,8 @@ const Resources = () => {
                     onChange={() => { }}
                     className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700">{option.label}</span>
+                  <span className="text-sm text-gray-700">{option.label}
+                  </span>
                 </div>
               ))}
             </div>
@@ -394,7 +395,7 @@ console.log(paginatedData)
                   <FilterDropdown
                     label={t('category')}
                     options={categoryData.map((cat) => ({
-                      label: cat.name,
+                      label: (i18n.language === 'am' ? cat.name_am : cat.name),
                       value: cat.id,
                     }))}
                     selectedValues={selectedCategories}
@@ -436,14 +437,16 @@ console.log(paginatedData)
                     </span>
                   </div>
 
-                  <h3 className="text-base font-semibold text-gray-900 mb-2 leading-tight">{item.title}</h3>
+                  <h3 className="text-base font-semibold text-gray-900 mb-2 leading-tight">{i18n.language === 'am' ? item.title_am : item.title}</h3>
+                  
 
                   <div className="space-y-1 text-sm text-gray-600 mb-3">
                     <div>
                       <span className="font-medium">{t('author')}:</span> {item.author}
+                      
                     </div>
                     <div>
-                      <span className="font-medium">{t('published')}:</span> {item.plublisher}
+                      <span className="font-medium">{t('published')}:</span>{i18n.language === 'am' ? item.plublisher_am : item.plublisher}
                     </div>
                   </div>
 

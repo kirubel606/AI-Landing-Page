@@ -10,7 +10,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 import SocialMediaLinks from "../components/SocialMediaLinks";
 function Events() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -151,14 +151,14 @@ function Events() {
                         )}
                       </div>
 
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4">{event.title}</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold mb-4">{i18n.language === 'am' ? event.title_am : event.title}</h2>
 
                       <div className="flex items-center text-gray-600 mb-4">
                         <MapPin size={16} className="mr-2" />
                         <span>{event.location}</span>
                       </div>
 
-                      <p className="text-gray-700 mb-6 line-clamp-4">{event.description}</p>
+                      <p className="text-gray-700 mb-6 line-clamp-4">{i18n.language === 'am' ? event.description_am : event.description}</p>
 
                       <div className="flex items-center gap-4">
                         <a
@@ -180,48 +180,49 @@ function Events() {
                     </div>
 
                     {/* Event Images */}
-        <div className="md:w-1/2">
-  {event.images && event.images.length > 0 && (
-    <>
-      {/* Main Image */}
-      <div className="relative rounded-lg overflow-hidden shadow-lg mb-4">
-        <img
-          src={event.images[0].image || PLACEHOLDER_IMAGE}
-          alt={event.title}
-          className="w-full h-80 object-cover"
-          onError={(e) => {
-            e.currentTarget.src = PLACEHOLDER_IMAGE;
-          }}
-        />
-        {event.is_live && (
-          <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-            LIVE
-          </div>
-        )}
-      </div>
+                    <div className="md:w-1/2">
+                      {event.images && event.images.length > 0 && (
+                        <>
+                          {/* Main Image */}
+                          <div className="relative rounded-lg overflow-hidden shadow-lg mb-4">
+                            <img
+                              src={event.images[0].image || PLACEHOLDER_IMAGE}
+                              alt={i18n.language === 'am' ? event.title_am : event.title}
+                              
+                              className="w-full h-80 object-cover"
+                              onError={(e) => {
+                                e.currentTarget.src = PLACEHOLDER_IMAGE;
+                              }}
+                            />
+                            {event.is_live && (
+                              <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                LIVE
+                              </div>
+                            )}
+                          </div>
 
-      {/* Thumbnail Row - same width as main image */}
-      {event.images.length > 1 && (
-        <div className="w-full">
-          <div className="flex justify-between gap-2 overflow-x-auto">
-            {event.images.slice(1, 4).map((img, i) => (
-              <img
-                key={i}
-                src={img.image || PLACEHOLDER_IMAGE}
-                alt={`event-img-${i}`}
-                className="w-1/3 h-32 object-cover rounded-md"
-                onError={(e) => {
-                  e.currentTarget.src = PLACEHOLDER_IMAGE;
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </>
-  )}
-</div>
+                          {/* Thumbnail Row - same width as main image */}
+                          {event.images.length > 1 && (
+                            <div className="w-full">
+                              <div className="flex justify-between gap-2 overflow-x-auto">
+                                {event.images.slice(1, 4).map((img, i) => (
+                                  <img
+                                    key={i}
+                                    src={img.image || PLACEHOLDER_IMAGE}
+                                    alt={`event-img-${i}`}
+                                    className="w-1/3 h-32 object-cover rounded-md"
+                                    onError={(e) => {
+                                      e.currentTarget.src = PLACEHOLDER_IMAGE;
+                                    }}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
 
                   </div>
                 );
@@ -250,7 +251,8 @@ function Events() {
                           e.currentTarget.src = PLACEHOLDER_IMAGE;
                         }}
                         className="object-cover w-full h-28 rounded-md"
-                        alt={`${event.title} - image ${i + 1}`}
+                        alt={`${i18n.language === 'am' ? event.title_am : event.title} - image ${i + 1}`}
+                        
                       />
                     ))}
                   </div>
@@ -259,7 +261,7 @@ function Events() {
                     <img
                       src={PLACEHOLDER_IMAGE}
                       className="object-cover w-full h-full"
-                      alt={event.title}
+                      alt={i18n.language === 'am' ? event.title_am : event.title}
                     />
                   </div>
                 )}
@@ -267,12 +269,12 @@ function Events() {
 
                 <div className="p-5 flex flex-col flex-grow">
                   <div className="text-sm text-gray-500 mb-2">{formatDate(event.timestamp)}</div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{event.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{i18n.language === 'am' ? event.title_am : event.title}</h3>
                   <div className="text-sm text-gray-600 mb-3 flex items-center">
                     <MapPin size={14} className="mr-1" />
                     {event.location}
                   </div>
-                  <p className="text-sm text-gray-700 mb-4 line-clamp-3">{event.description}</p>
+                  <p className="text-sm text-gray-700 mb-4 line-clamp-3">{i18n.language === 'am' ? event.description_am : event.description}</p>
 
                   {event.video_link &&
                     (event.video_link.includes("youtube.com") || event.video_link.includes("youtu.be")) && (

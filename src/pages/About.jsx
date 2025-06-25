@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import SocialMediaLinks from "../components/SocialMediaLinks";
 const About = () => {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const [about, setAbout] = useState([]);
   useEffect(() => {
     const fetchAbout = async () => {
@@ -61,12 +61,13 @@ const About = () => {
                 {/* Content */}
                 <div className="lg:w-2/3 space-y-7">
                   <Typography variant="h2" className="text-2xl lg:text-3xl font-bold text-gray-900">
-                    {about.title}
+                     {i18n.language === 'am' ? about.title_am : about.title}
                   </Typography>
                   <div className="space-y-3 text-gray-700 text-sm lg:text-lg leading-relaxed">
 
                     <Typography className="text-gray-700 whitespace-pre-line">
-                      {about.description}
+                       {i18n.language === 'am' ? about.description_am : about.description}
+
                     </Typography>
 
 

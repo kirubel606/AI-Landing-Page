@@ -20,7 +20,7 @@ const Home = () => {
   const singleNews = news?.results?.result?.[0] || null;
   const singleGallery = gallery?.[0] || null;
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t , i18n  } = useTranslation();
 
   const heroRef = useRef(null);
   const [showSocialLinks, setShowSocialLinks] = useState(false);
@@ -86,8 +86,9 @@ const Home = () => {
       {singleNews && singleNews.cover_image ? (
         <a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
           <ContentSection
-            title={singleNews.title}
-            subtitle={singleNews.subtitle}
+            title={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
+            
+            subtitle={i18n.language === 'am' ? singleNews.subtitle_am : singleNews.subtitle}
             images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
             large={false}
           />
@@ -104,7 +105,7 @@ const Home = () => {
       {singleGallery && singleGallery.images ? (
         <ContentSection
           title={t('our_gallery')}
-          subtitle={singleGallery.title}
+          subtitle={i18n.language === 'am' ? singleGallery.title_am : singleGallery.title}
           images={(singleGallery.images || []).map(img => img.image)}
           large={true}
         />

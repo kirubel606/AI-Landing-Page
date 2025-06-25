@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 import CoolSvg from "../components/CoolSVg";
 import Footer from "../components/Footer";
@@ -16,6 +17,7 @@ Modal.setAppElement('#root');
 const ITEMS_PER_PAGE = 12;  // You can adjust this as you like
 
 const GalleryPage = () => {
+  const { t , i18n } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [galleryItems, setGalleryItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -120,6 +122,15 @@ const GalleryPage = () => {
   const prevImage = () => setCurrentIndex((prev) => (prev - 1 + lightboxImages.length) % lightboxImages.length);
   const nextImage = () => setCurrentIndex((prev) => (prev + 1) % lightboxImages.length);
 
+  // Replace filter labels with translation keys
+  const filterLabels = [
+    t('all'),
+    t('data_center'),
+    t('showroom'),
+    t('summer_camp'),
+    t('mou')
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -128,9 +139,9 @@ const GalleryPage = () => {
         <div className="absolute inset-0 flex items-center justify-center text-white text-center">
           <div>
             <h1 className="text-6xl font-bold mb-4">
-              <span className="text-orange-400">Gallery</span>
+              <span className="text-orange-400">{t('gallery')}</span>
             </h1>
-            <p className="text-xl">Advancing Innovation Through Technology</p>
+            <p className="text-xl">{t('advancing_innovation')}</p>
           </div>
         </div>
       </div>
@@ -140,12 +151,12 @@ const GalleryPage = () => {
         {/* Filters */}
         <div className="flex justify-center mt-10 mb-8">
           <div className="flex flex-wrap justify-center gap-2 bg-white rounded-lg p-2 shadow-sm">
-            {filters.map((filter) => (
+            {filterLabels.map((filter, idx) => (
               <button
                 key={filter}
-                onClick={() => setActiveFilter(filter)}
+                onClick={() => setActiveFilter(filters[idx])}
                 className={`px-6 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                  activeFilter === filter
+                  activeFilter === filters[idx]
                     ? 'bg-gray-900 text-white'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                 }`}
@@ -157,8 +168,8 @@ const GalleryPage = () => {
         </div>
 
         {/* Loading/Error */}
-        {loading && <p className="text-center text-gray-700">Loading galleries...</p>}
-        {error && <p className="text-center text-red-600">Error: {error}</p>}
+        {loading && <p className="text-center text-gray-700">{t('loading_galleries')}</p>}
+        {error && <p className="text-center text-red-600">{t('error_gallery')}: {error}</p>}
 
         {/* Gallery Grid */}
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -176,13 +187,15 @@ const GalleryPage = () => {
               >
                 <img
                   src={img.image || PLACEHOLDER_IMAGE}
-                  alt={img.galleryTitle}
+                  alt={i18n.language === 'am' ? img.galleryTitle_am : img.galleryTitle}
+                  
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-center items-start p-6 text-white">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <h3 className="text-xl font-bold mb-2">{img.galleryTitle}</h3>
-                    <p className="text-sm">{img.galleryCaption}</p>
+                    <h3 className="text-xl font-bold mb-2">{i18n.language === 'am' ? img.galleryTitle_am : img.galleryTitle}</h3>
+                    <p className="text-sm">{i18n.language === 'am' ? img.galleryCaption_am : img.galleryCaption}</p>
+                    
                   </div>
                 </div>
               </motion.div>
@@ -193,7 +206,7 @@ const GalleryPage = () => {
         {/* No Items */}
         {!loading && !error && filteredItems.length === 0 && (
           <div className="text-center py-12 text-gray-500 text-lg">
-            No items found for the selected filter.
+            {t('no_items_found')}
           </div>
         )}
 

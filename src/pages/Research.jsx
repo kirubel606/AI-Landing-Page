@@ -11,7 +11,7 @@ import SocialMediaLinks from "../components/SocialMediaLinks";
 import { useTranslation } from 'react-i18next';
 
 const Research = () => {
-    const { t } = useTranslation();
+    const { t ,i18n } = useTranslation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [categories, setCategories] = useState([]);
@@ -280,7 +280,8 @@ const Research = () => {
                                     <img
                                         key={category.id || idx}
                                         src={category.image || "/placeholder.svg"}
-                                        alt={category.name}
+                                        alt={i18n.language === 'am' ? category.name_am : category.name}
+                                        
                                         className="w-full h-full object-cover border border-gray-200"
                                     />
                                 ))}
@@ -310,11 +311,11 @@ const Research = () => {
                                         <div className="relative h-32">
                                             <img
                                                 src={category.image || "/placeholder.svg"}
-                                                alt={category.name}
+                                                alt={i18n.language === 'am' ? category.name_am : category.name}
                                                 className="w-full h-full object-cover"
                                             />
                                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                                <h1 className="text-white font-semibold">{category.name}</h1>
+                                                <h1 className="text-white font-semibold">{i18n.language === 'am' ? category.name_am : category.name}</h1>
                                             </div>
                                         </div>
                                     </div>
@@ -357,7 +358,8 @@ const Research = () => {
                                                     <div className="relative flex-shrink-0 w-40 h-36">
                                                         <img
                                                             src={div.coverimage || "/placeholder.svg"}
-                                                            alt={div.title}
+                                                            alt={i18n.language === 'am' ? div.title_am : div.title}
+                                                            
                                                             className="w-full h-full rounded-lg object-cover"
                                                         />
                                                         {div.logo && (
@@ -377,10 +379,10 @@ const Research = () => {
                                                             </h1>
                                                         </div>
                                                         <h1 className="text-gray-900 font-semibold mb-2 text-sm leading-tight">
-                                                            {div.title}
+                                                            {i18n.language === 'am' ? div.title_am : div.title}
                                                         </h1>
                                                         <h1 className="text-gray-600 text-xs leading-relaxed mb-3 line-clamp-3">
-                                                            {div.description}
+                                                            {i18n.language === 'am' ? div.description_am : div.description}
                                                         </h1>
                                                         <button
                                                             className="bg-indigo-950 hover:bg-indigo-700 rounded-md text-white flex items-center gap-2 text-sm px-4 py-2"
@@ -413,6 +415,7 @@ const Research = () => {
 
                                     >
                                         <span className="-skew-x-12 inline-block">{tab.label}</span>
+                                        
                                     </button>
 
                                 ))}
@@ -429,7 +432,7 @@ const Research = () => {
                                             <div className="flex-shrink-0">
                                                 <img
                                                     src={item.coverimage || "/placeholder.svg"}
-                                                    alt={item.title}
+                                                    alt={i18n.language === 'am' ? item.title_am : item.title}
                                                     className="w-[110px] h-[110px] rounded object-cover"
                                                 />
                                             </div>
@@ -439,7 +442,8 @@ const Research = () => {
                                                     className="text-gray-800 text-xs mb-1 inline-block"
                                                 >
                                                     {
-                                                        categories.find(cat => cat.id === item.category)?.name || t('unknown')
+                                                        categories.find(cat => cat.id === item.category)?.[i18n.language === 'am' ? 'name_am' : 'name'] || t('unknown')
+
                                                     } / { }
                                                 </Typography>
                                                 <Typography
@@ -453,7 +457,7 @@ const Research = () => {
                                                     className="text-gray-900 font-extrabold text-lg truncate block"
                                                     style={{ width: "500px" }}
                                                 >
-                                                    {item.title}
+                                                    {i18n.language === 'am' ? item.title_am : item.title}
                                                 </Typography>
                                                 <Typography
                                                     variant="small"
@@ -466,7 +470,7 @@ const Research = () => {
                                                         maxWidth: "500px",
                                                     }}
                                                 >
-                                                    {item.description}
+                                                    {i18n.language === 'am' ? item.description_am : item.description}
                                                 </Typography>
                                             </div>
                                         </div>

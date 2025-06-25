@@ -42,7 +42,7 @@ function News() {
   const [activeTab, setActiveTab] = useState("latest");
   const addedItemIds = useRef(new Set());
   const observerTarget = useRef(null);
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   const getVideoThumbnail = (iframe, coverImage) => {
     const videoId = iframe?.match(/embed\/(.*?)\?/i)?.[1];
@@ -218,7 +218,8 @@ function News() {
         <div className="relative flex-shrink-0">
           <img
             src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
-            alt={a.title}
+            alt={i18n.language === 'am' ? a.title_am : a.title}
+            
             onError={(e) => {
               e.target.src = PLACEHOLDER_IMAGE;
             }}
@@ -239,8 +240,11 @@ function News() {
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>{a.category}</span>
-          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{a.title}</h4>
+          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
+  {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
+</span>
+
+          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{i18n.language === 'am' ? a.title_am : a.title}</h4>
           <div className="flex items-center text-xs text-gray-500">
             <CalendarIcon size="w-2.5 h-2.5" />
             <span className="ml-1">{formatDate(a.created_at)}</span>
@@ -295,7 +299,8 @@ function News() {
                   <div className="relative">
                     <img
                       src={getVideoThumbnail(item.iframe, item.cover_image)}
-                      alt={item.title}
+                      alt={i18n.language === 'am' ? item.title_am : item.title}
+                      
                       className="w-full h-64 md:h-80 object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -308,8 +313,8 @@ function News() {
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-gray-600 mb-4">{item.subtitle}</p>
+                    <h3 className="text-xl font-bold mb-2">{i18n.language === 'am' ? item.title_am : item.title}</h3>
+                    <p className="text-gray-600 mb-4">{i18n.language === 'am' ? item.subtitle_am : item.subtitle}</p>
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <span>{item.view_count} views</span>
                       <span>{formatDate(item.created_at)}</span>
