@@ -268,8 +268,8 @@ function News() {
     <div className="min-h-screen bg-white">
       <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
         <CoolSvg />
-        <div className="relative h-64 mx-20 flex items-center justify-center text-white text-center">
-          <div>
+        <div className="relative  flex items-center justify-center mt-32 text-white text-center">
+          <div className="mx-auto text-center justify-normal">
             <h1 className="text-6xl font-bold mb-4">{t('news_and_videos')}</h1>
             <p className="text-xl">{t('advancing_innovation_through_technology')}</p>
           </div>
