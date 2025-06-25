@@ -8,7 +8,10 @@ import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import SocialMediaLinks from "../components/SocialMediaLinks";
+import { useTranslation } from 'react-i18next';
+
 const Research = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [categories, setCategories] = useState([]);
@@ -209,10 +212,10 @@ const Research = () => {
     }
     // Add this definition for tabItems
     const tabItems = [
-        { label: "Latest", value: "latest" },
-        { label: "Research", value: "research" },
-        { label: "Case Study", value: "case-study" },
-        { label: "Development", value: "development" }
+        { label: t('latest'), value: "latest" },
+        { label: t('research'), value: "research" },
+        { label: t('case_study'), value: "case-study" },
+        { label: t('development'), value: "development" }
     ];
     const getFilteredProjects = () => {
         if (activeTab === "latest") {
@@ -236,10 +239,10 @@ const Research = () => {
                     <div className="z-20 flex items-center justify-center h-full">
                         <div className="text-center text-white h-full">
                             <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                                Research & <p className="text-orange-400 ml-3">Development</p>
+                                {t('research_and_development')}
                             </h1>
                             <h1 variant="lead" className="text-lg opacity-90 text-white">
-                                Advancing Innovation Through Technology
+                                {t('advancing_innovation')}
                             </h1>
                         </div>
                     </div>
@@ -268,7 +271,7 @@ const Research = () => {
                             onClick={() => {
                                 navigate("/research");  // removes ?category=... from the URL
                                 setSelectedCategory(null);
-                                setSelectedCategoryName("All Categories");
+                                setSelectedCategoryName(t('allCategories'));
                             }}
                             className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
                         >
@@ -284,7 +287,7 @@ const Research = () => {
                             </div>
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-0">
                                 <h1 className="text-white font-semibold text-center text-sm px-2">
-                                    All Categories
+                                    {t('allCategories')}
                                 </h1>
                             </div>
                         </div>
@@ -382,7 +385,7 @@ const Research = () => {
                                                         <button
                                                             className="bg-indigo-950 hover:bg-indigo-700 rounded-md text-white flex items-center gap-2 text-sm px-4 py-2"
                                                         >
-                                                            Download
+                                                            {t('download')}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -436,7 +439,7 @@ const Research = () => {
                                                     className="text-gray-800 text-xs mb-1 inline-block"
                                                 >
                                                     {
-                                                        categories.find(cat => cat.id === item.category)?.name || "Unknown"
+                                                        categories.find(cat => cat.id === item.category)?.name || t('unknown')
                                                     } / { }
                                                 </Typography>
                                                 <Typography

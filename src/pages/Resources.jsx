@@ -4,9 +4,11 @@ import CoolSvg from "../components/CoolSVg"
 import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react"
 import Footer from "../components/Footer"
 import SocialMediaLinks from "../components/SocialMediaLinks";
+import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
 
 const Resources = () => {
+  const { t } = useTranslation();
   const [mockData, setMockData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // NEW
 
@@ -305,10 +307,10 @@ console.log(paginatedData)
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white h-full">
               <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                Resource  & <p className="text-orange-400 ml-3">Publications</p>
+                {t('resource_and_publications')}
               </h1>
               <h1 variant="lead" className="text-lg opacity-90 text-white">
-                Advancing Innovation Through Technology
+                {t('advancing_innovation')}
               </h1>
             </div>
           </div>
@@ -329,7 +331,7 @@ console.log(paginatedData)
                 }
               }`}
             >
-              PUBLICATIONS
+              {t('publications')}
             </button>
             <button
               onClick={() => handleTabChange("RESOURCES")}
@@ -338,7 +340,7 @@ console.log(paginatedData)
                 : "text-gray-400 italic hover:text-gray-600"
                 }`}
             >
-              RESOURCES
+              {t('resources')}
             </button>
           </div>
         </div>
@@ -354,7 +356,7 @@ console.log(paginatedData)
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Search for publications, authors..."
+                  placeholder={t('search_publications')}
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value)
@@ -373,31 +375,31 @@ console.log(paginatedData)
                 {/* Year Filter */}
                 <div>
                   <label className="flex items-center justify-between text-sm font-medium text-gray-700 mb-1">
-                    Year
+                    {t('year')}
                   </label>
                   <FilterDropdown
-                    label="Year"
+                    label={t('year')}
                     options={years.map((year) => ({ label: year, value: year }))}
                     selectedValues={selectedYears}
                     onChange={(values) => handleFilterChange("years", values)}
-                    placeholder="Select years"
+                    placeholder={t('select_years')}
                   />
                 </div>
 
                 {/* Category Filter */}
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-1 block">
-                    Research Areas
+                    {t('research_areas')}
                   </label>
                   <FilterDropdown
-                    label="Category"
+                    label={t('category')}
                     options={categoryData.map((cat) => ({
                       label: cat.name,
                       value: cat.id,
                     }))}
                     selectedValues={selectedCategories}
                     onChange={(values) => handleFilterChange("categories", values)}
-                    placeholder="Select categories"
+                    placeholder={t('select_categories')}
                   />
                 </div>
 
@@ -405,15 +407,15 @@ console.log(paginatedData)
                 {/* Collections Filter */}
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-1 block">
-                    Collections
+                    {t('collections')}
                   </label>
                   <FilterDropdown
                     disabled
-                    label="Collections"
+                    label={t('collections')}
                     options={collections.map((col) => ({ label: col, value: col }))}
                     selectedValues={selectedCollections}
                     onChange={(values) => handleFilterChange("collections", values)}
-                    placeholder="Select collections"
+                    placeholder={t('select_collections')}
                   />
 
                 </div>
@@ -438,16 +440,16 @@ console.log(paginatedData)
 
                   <div className="space-y-1 text-sm text-gray-600 mb-3">
                     <div>
-                      <span className="font-medium">Author:</span> {item.author}
+                      <span className="font-medium">{t('author')}:</span> {item.author}
                     </div>
                     <div>
-                      <span className="font-medium">Published:</span> {item.plublisher}
+                      <span className="font-medium">{t('published')}:</span> {item.plublisher}
                     </div>
                   </div>
 
                   <div>
                     <a href={item.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                      View More
+                      {t('view_more')}
                     </a>
                   </div>
                 </div>
@@ -462,7 +464,7 @@ console.log(paginatedData)
             {/* No results */}
             {filteredData.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500">No {activeTab.toLowerCase()} found matching your criteria.</p>
+                <p className="text-gray-500">{t('no_news_available')}</p>
               </div>
             )}
           </div>

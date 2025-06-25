@@ -1,3 +1,4 @@
+import './i18n';
 import { BrowserRouter as Router, Routes, Route,useLocation, Navigate } from "react-router-dom"
 import Header from "./components/Header"
 import Home from "./pages/Home"

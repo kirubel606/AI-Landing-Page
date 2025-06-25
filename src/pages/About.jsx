@@ -3,9 +3,11 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import axios from "axios"
+import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import SocialMediaLinks from "../components/SocialMediaLinks";
 const About = () => {
+  const { t } = useTranslation();
   const [about, setAbout] = useState([]);
   useEffect(() => {
     const fetchAbout = async () => {
@@ -31,7 +33,7 @@ const About = () => {
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white h-full">
               <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                About <p className="text-orange-400 ml-1">Us</p>
+                {t('about')} <p className="text-orange-400 ml-4">{t('us')}</p>
               </h1>
             </div>
           </div>
@@ -81,10 +83,10 @@ const About = () => {
           <Card className="bg-amber-500">
             <CardBody className="p-6">
               <Typography variant="h3" className="text-xl font-extrabold mb-3 text-white">
-                Our Mission
+                {t('about_mission')}
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
-                To pioneer AI research and development that empowers Ethiopia’s economic growth, enhances public services, and positions the nation as a technological leader in Africa.
+                {t('about_mission_desc')}
               </Typography>
             </CardBody>
           </Card>
@@ -93,10 +95,10 @@ const About = () => {
           <Card className="bg-blue-900">
             <CardBody className="p-6">
               <Typography variant="h3" className="text-xl font-bold mb-3 text-white">
-                Our Vision
+                {t('about_vision')}
               </Typography>
               <Typography className="text-sm leading-relaxed text-white">
-                To become a world-class AI research institute that drives innovation, fosters talent, and builds AI-powered solutions that address Ethiopia’s challenges.
+                {t('about_vision_desc')}
               </Typography>
             </CardBody>
           </Card>
@@ -120,10 +122,10 @@ const About = () => {
             </div>
             <div>
               <Typography variant="h4" className="font-bold text-gray-900 mb-2">
-                Advancing AI Research for Real-World Impact
+                {t('about_advancing_ai_research')}
               </Typography>
               <Typography className="text-gray-600 text-sm leading-relaxed">
-                We conduct cutting-edge research in artificial intelligence, machine learning, and data science to develop innovative solutions that address real-world challenges and create meaningful impact for communities and industries.
+                {t('about_advancing_ai_research_desc')}
               </Typography>
             </div>
           </div>
@@ -137,10 +139,10 @@ const About = () => {
             </div>
             <div>
               <Typography variant="h4" className="font-bold text-gray-900 mb-2">
-                Developing AI-Powered Tools for Public and Private Sectors
+                {t('about_developing_tools')}
               </Typography>
               <Typography className="text-gray-600 text-sm leading-relaxed">
-                We create sophisticated AI applications and tools that enhance efficiency, improve decision-making, and drive innovation across various sectors including healthcare, agriculture, finance, and government services.
+                {t('about_developing_tools_desc')}
               </Typography>
             </div>
           </div>
@@ -154,10 +156,10 @@ const About = () => {
             </div>
             <div>
               <Typography variant="h4" className="font-bold text-gray-900 mb-2">
-                Fostering Collaboration with Academia, Businesses, and Government
+                {t('about_fostering_collaboration')}
               </Typography>
               <Typography className="text-gray-600 text-sm leading-relaxed">
-                We build strategic partnerships and collaborative networks with universities, research institutions, private companies, and government agencies to accelerate AI adoption and create synergistic opportunities for innovation.
+                {t('about_fostering_collaboration_desc')}
               </Typography>
             </div>
           </div>
@@ -171,10 +173,10 @@ const About = () => {
             </div>
             <div>
               <Typography variant="h4" className="font-bold text-gray-900 mb-2">
-                Cultivating Ethiopia's Next Generation of AI Experts
+                {t('about_cultivating_next_gen')}
               </Typography>
               <Typography className="text-gray-600 text-sm leading-relaxed">
-                We provide comprehensive education, training, and mentorship programs to develop skilled AI professionals, researchers, and practitioners who will lead Ethiopia's technological advancement and innovation ecosystem.
+                {t('about_cultivating_next_gen_desc')}
               </Typography>
             </div>
           </div>

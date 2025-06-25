@@ -2,6 +2,7 @@
 
 import { useContext, useState, useEffect, useRef } from "react"
 import { AppContext } from "../context/Appcontext"
+import { useTranslation } from 'react-i18next';
 
 const Collaborations = () => {
   const { collabs } = useContext(AppContext)
@@ -9,6 +10,7 @@ const Collaborations = () => {
   const [isPaused, setIsPaused] = useState(false)
   const autoRotateTimerRef = useRef(null)
   const [isClient, setIsClient] = useState(false)
+  const { t } = useTranslation();
 
   // Set isClient to true when component mounts
   useEffect(() => {
@@ -82,9 +84,9 @@ const Collaborations = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Collaborations</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('collaborations')}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Working together with leading organizations to advance AI research and development
+            {t('working_together_ai')}
           </p>
         </div>
 
@@ -109,7 +111,7 @@ const Collaborations = () => {
               ))}
 
             {(!isClient || !collabs || collabs.length === 0) && (
-              <p className="col-span-full text-center">No collaborations found.</p>
+              <p className="col-span-full text-center">{t('no_collaborations_found')}</p>
             )}
           </div>
 

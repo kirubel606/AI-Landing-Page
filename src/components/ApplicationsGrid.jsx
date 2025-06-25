@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const ApplicationsGrid = () => {
   const [applications, setApplications] = useState([]);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = (category) => {
     navigate(`/research?category=${category}`);
@@ -32,10 +34,10 @@ const ApplicationsGrid = () => {
 
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Unleashing AI's Potential in Ethiopia
+            {t('unleashing_ai_potential')}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Exploring diverse applications of artificial intelligence across key sectors
+            {t('exploring_diverse_applications')}
           </p>
         </div>
 

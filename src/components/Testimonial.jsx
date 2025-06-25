@@ -3,9 +3,11 @@
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import axios from "axios"
+import { useTranslation } from 'react-i18next'
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Testimonial = () => {
+  const { t } = useTranslation();
   const [testimonials, setTestimonials] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -76,7 +78,7 @@ const Testimonial = () => {
   return (
     <section className="py-8 md:py-16 bg-gray-50 w-full">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-4xl font-bold text-center text-gray-900 mb-8 md:mb-12">Testimonial</h2>
+        <h2 className="text-2xl md:text-4xl font-bold text-center text-gray-900 mb-8 md:mb-12">{t('testimonial')}</h2>
 
         <div className="relative max-w-6xl mx-auto">
           {/* Navigation Buttons */}
@@ -180,7 +182,7 @@ const Testimonial = () => {
 
           {/* Mobile swipe indicator */}
           <div className="md:hidden text-center mt-4">
-            <p className="text-xs text-gray-500">Swipe left or right to navigate</p>
+            <p className="text-xs text-gray-500">{t('swipe_left_or_right')}</p>
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react"
 import React,{useContext} from "react"
 import { AppContext } from "../context/Appcontext"
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const { settings, loading } = useContext(AppContext)
   
   // console.log("Here is Setting:",settings);
@@ -19,35 +21,35 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-2 text-gray-300">
-              <p>Address: {settings.location}</p>
-              <p>Phone: {settings.line1}</p>
-              <p>Email: {settings.email}</p>
+              <p>{t('address')}: {settings.location}</p>
+              <p>{t('phone')}: {settings.line1}</p>
+              <p>{t('email')}: {settings.email}</p>
               <div
                 className="prose prose-lg w-64 h-32 overflow-clip"
                 dangerouslySetInnerHTML={{ __html: settings.map_link}}
               />
             </div>
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('quick_links')}</h3>
             <ul className="space-y-2 text-gray-300">
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
-                  About Us
+                  {t('about_us')}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
-                  Research
+                  {t('research')}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
-                  Publications
+                  {t('publications')}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
-                  Events
+                  {t('events')}
                 </a>
               </li>
               {/* <li>
@@ -57,12 +59,12 @@ const Footer = () => {
               </li> */}
               <li>
                 <a href="#" className="hover:text-orange-400 transition-colors">
-                  Careers
+                  {t('careers')}
                 </a>
               </li>
               <li>
                 <a href="/gallery" className="hover:text-orange-400 transition-colors">
-                  Gallery
+                  {t('gallery')}
                 </a>
               </li>
             </ul>
@@ -71,16 +73,16 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Newsletter</h3>
-            <p className="text-gray-300 mb-4">Stay updated with our latest research and developments</p>
+            <h3 className="font-semibold text-lg mb-4">{t('newsletter')}</h3>
+            <p className="text-gray-300 mb-4">{t('stay_updated')}</p>
             <div className="space-y-3">
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t('enter_your_email')}
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded focus:outline-none focus:border-orange-500"
               />
               <button className="w-full bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded transition-colors">
-                Subscribe
+                {t('subscribe')}
               </button>
             </div>
           </div>
@@ -89,7 +91,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-slate-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 Ethiopian Artificial Intelligence Institute. All rights reserved.
+            © 2025 {t('ethiopian_ai_institute')}. {t('all_rights_reserved')}
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">

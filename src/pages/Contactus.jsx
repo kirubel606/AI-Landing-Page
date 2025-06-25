@@ -5,8 +5,10 @@ import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
 import { AppContext } from "../context/Appcontext"
 import { Phone, Mail, MapPin, HelpCircle, BookOpen, MessageSquare } from "lucide-react"
+import { useTranslation } from 'react-i18next';
 
 function Contactus() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -55,24 +57,24 @@ function Contactus() {
   const contactInfo = [
     {
       icon: Phone,
-      title: "Phone",
-      description: "The phrasal sequence of the is now so that many campaign and benefit",
+      title: t('contact_phone'),
+      description: t('contact_phone_desc'),
       value: "+251 938-737-383",
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
     },
     {
       icon: Mail,
-      title: "Email",
-      description: "The phrasal sequence of the is now so that many campaign and benefit",
+      title: t('contact_email'),
+      description: t('contact_email_desc'),
       value: "contact@eai.com",
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
     },
     {
       icon: MapPin,
-      title: "Location",
-      value: "View on Google map",
+      title: t('contact_location'),
+      value: t('contact_location_link'),
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
       isLink: settings.map_link,
@@ -82,22 +84,22 @@ function Contactus() {
   const helpSections = [
     {
       icon: HelpCircle,
-      title: "FAQs",
-      description: "The phrasal sequence of the is now so that many campaign and benefit",
+      title: t('help_faqs'),
+      description: t('help_faqs_desc'),
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
     },
     {
       icon: BookOpen,
-      title: "Guides / Support",
-      description: "The phrasal sequence of the is now so that many campaign and benefit",
+      title: t('help_guides'),
+      description: t('help_guides_desc'),
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
     },
     {
       icon: MessageSquare,
-      title: "Support Request",
-      description: "The phrasal sequence of the is now so that many campaign and benefit",
+      title: t('help_support'),
+      description: t('help_support_desc'),
       bgColor: "bg-orange-100",
       iconColor: "text-orange-600",
     },
@@ -112,7 +114,7 @@ function Contactus() {
         </div>
         <div className="relative h-full bg-transparent container mx-auto px-4 py-12 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-6xl text-white xl:text-7xl font-bold mt-[45%] mb-4 leading-tight4">Contact Us</h1>
+            <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-6xl text-white xl:text-7xl font-bold mt-[45%] mb-4 leading-tight4">{t('contact_us')}</h1>
             <div className="w-24 h-1 bg-orange-400 mx-auto"></div>
           </div>
         </div>
@@ -165,7 +167,7 @@ function Contactus() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                    First Name
+                    {t('first_name')}
                   </label>
                   <input
                     type="text"
@@ -173,14 +175,14 @@ function Contactus() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    placeholder="First Name"
+                    placeholder={t('first_name')}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     required
                   />
                 </div>
                 <div>
                   <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                    Last Name
+                    {t('last_name')}
                   </label>
                   <input
                     type="text"
@@ -188,7 +190,7 @@ function Contactus() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    placeholder="Last Name"
+                    placeholder={t('last_name')}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     required
                   />
@@ -198,7 +200,7 @@ function Contactus() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
+                    {t('email')}
                   </label>
                   <input
                     type="email"
@@ -206,14 +208,14 @@ function Contactus() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Email"
+                    placeholder={t('email')}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     required
                   />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone
+                    {t('phone')}
                   </label>
                   <input
                     type="tel"
@@ -221,7 +223,7 @@ function Contactus() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="Phone Number"
+                    placeholder={t('phone_number')}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   />
                 </div>
@@ -229,14 +231,14 @@ function Contactus() {
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
+                  {t('message')}
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Message"
+                  placeholder={t('message')}
                   rows={6}
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-vertical"
                   required
@@ -248,7 +250,7 @@ function Contactus() {
                 disabled={isSubmitting}
                 className="w-full md:w-auto bg-indigo-900 hover:bg-indigo-800 text-white px-8 py-3 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "Submitting..." : "Submit Now"}
+                {isSubmitting ? t('submitting') : t('submit_now')}
               </button>
             </form>
           </div>
@@ -259,10 +261,9 @@ function Contactus() {
       <div className="bg-gray-50 py-16 px-32">
         <div className="container mx-auto px-4">
           <div className="text-center mb-5">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Find The Help You Need</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('find_help')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Artificial Intelligence makes it fast easy to create content for your blog, social media, website, and
-              more!
+              {t('find_help_desc')}
             </p>
           </div>
 
@@ -278,7 +279,7 @@ function Contactus() {
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{section.title}</h3>
                   <p className="text-gray-600 mb-4">{section.description}</p>
-                  <button className="text-orange-600 hover:text-orange-700 font-medium">Read More</button>
+                  <button className="text-orange-600 hover:text-orange-700 font-medium">{t('read_more')}</button>
                 </div>
               )
             })}

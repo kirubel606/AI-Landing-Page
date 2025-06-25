@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { Navigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ProjectsGrid = () => {
+  const { t } = useTranslation();
   const [projects, setProjects] = useState([])
 
   useEffect(() => {
@@ -26,10 +28,10 @@ const ProjectsGrid = () => {
 
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Some of our projects
+            {t('some_of_our_projects')}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Building the Future, One Project at a Time          
+            {t('building_the_future')}
           </p>
         </div>
       <div className="justify-center flex" >

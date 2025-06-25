@@ -3,21 +3,22 @@
 import { useState,useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../../public/logo.png"
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
   const location = useLocation()
   const [isSticky, setIsSticky] = useState(false)
   const [animateIn, setAnimateIn] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const navItems = [
-    { name: "Home", path: "/Home" },
-     { name: "News", path: "/news" },
-    { name: "Research & Development", path: "/research" },
-    { name: "Resource & Publications", path: "/resources" },
-    { name: "Events", path: "/events" },
-    { name: "About Us", path: "/about" },
-
+    { name: t('home'), path: "/Home" },
+    { name: t('news'), path: "/news" },
+    { name: t('research'), path: "/research" },
+    { name: t('resources'), path: "/resources" },
+    { name: t('events'), path: "/events" },
+    { name: t('aboutUs'), path: "/about" },
   ]
 
   useEffect(() => {
@@ -97,7 +98,7 @@ const Header = () => {
 
           {/* Inner solid bg to create border effect */}
           <a href="/contactus">
-          <span className="relative block rounded-full bg-[#202024] px-6 py-2">Get in Touch</span>
+          <span className="relative block rounded-full bg-[#202024] px-6 py-2">{t('contactus')}</span>
           </a>
         </button>
 
@@ -150,7 +151,7 @@ const Header = () => {
                 <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
 
                 {/* Inner solid bg to create border effect */}
-                <span className="relative block rounded-full bg-[#202024] px-6 py-2">Get in Touch</span>
+                <span className="relative block rounded-full bg-[#202024] px-6 py-2">{t('contactus')}</span>
               </button>
             </div>
 
@@ -159,6 +160,12 @@ const Header = () => {
             <div className="absolute bottom-1/4 -right-20 w-40 h-40 bg-orange-400/20 rounded-full blur-3xl"></div>
           </div>
         </div>
+
+        {/* Language Switcher */}
+        {/* <div className="ml-4">
+          <button onClick={() => i18n.changeLanguage('en')} className="text-white mr-2">EN</button>
+          <button onClick={() => i18n.changeLanguage('am')} className="text-white">AM</button>
+        </div> */}
       </nav>
     </header>
   )

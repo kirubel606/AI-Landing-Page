@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import CoolSvg from "../components/CoolSVg";
 import Footer from "../components/Footer";
 import { MapPin, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 import SocialMediaLinks from "../components/SocialMediaLinks";
 function Events() {
+  const { t } = useTranslation();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -79,13 +81,13 @@ function Events() {
     return (
       <div className="min-h-screen flex justify-center items-center text-center">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Error Loading Events</h2>
-          <p className="mb-4 text-gray-600">{error}</p>
+          <h2 className="text-2xl font-bold mb-2">{t('error_loading_events')}</h2>
+          <p className="mb-4 text-gray-600">{t('failed_to_fetch_events')}</p>
           <button
             onClick={fetchEvents}
             className="bg-orange-500 text-white px-4 py-2 rounded"
           >
-            Try Again
+            {t('try_again')}
           </button>
         </div>
       </div>
@@ -99,10 +101,10 @@ function Events() {
         <div className="absolute w-full h-full">
           <CoolSvg />
         </div>
-                    <SocialMediaLinks />
+        <SocialMediaLinks />
         <div className="relative h-full flex justify-center items-center text-center text-white">
           <div>
-            <h1 className="text-5xl font-bold mb-4">Events</h1>
+            <h1 className="text-5xl font-bold mb-4">{t('events')}</h1>
             <div className="w-20 h-1 bg-orange-400 mx-auto" />
           </div>
         </div>
@@ -113,8 +115,8 @@ function Events() {
         <div className="w-full mx-auto px-2 md:px-12 py-16">
           {upcomingEvents.length === 0 ? (
             <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">No Events Found</h2>
-              <p className="text-gray-600">Check back later for upcoming events.</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('no_events_found')}</h2>
+              <p className="text-gray-600">{t('check_back_later')}</p>
             </div>
           ) : (
             <div className="space-y-24">
@@ -137,13 +139,13 @@ function Events() {
                         {event.is_live ? (
                           <span className="flex items-center gap-1 bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm">
                             <span className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></span>
-                            <span>Is Going Live</span>
+                            <span>{t('is_going_live')}</span>
                           </span>
                         ) : (
                           daysLeft > 0 && (
                             <span className="flex items-center gap-1 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
                               <Clock size={14} />
-                              <span>{daysLeft} Days Left</span>
+                              <span>{daysLeft} {t('days_left')}</span>
                             </span>
                           )
                         )}
@@ -168,10 +170,10 @@ function Events() {
                           {event.is_live ? (
                             <>
                               <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                              Watch Live
+                              {t('watch_live')}
                             </>
                           ) : (
-                            "Book Event"
+                            t('book_event')
                           )}
                         </a>
                       </div>
@@ -231,7 +233,7 @@ function Events() {
 
         {/* Past Events Grid */}
         <div className="container justify-center px-auto mt-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">Past Events</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">{t('past_events')}</h2>
           <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedPastEvents.map((event) => (
               <div
@@ -280,7 +282,7 @@ function Events() {
                         rel="noopener noreferrer"
                         className="mt-auto inline-block text-sm font-medium text-indigo-600 hover:underline"
                       >
-                        Watch Recap
+                        {t('watch_recap')}
                       </a>
                     )}
                 </div>

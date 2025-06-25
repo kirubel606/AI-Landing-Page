@@ -10,6 +10,7 @@ import CenterColumn from "../components/News/CenterColumn";
 import MajorNews from "../components/News/MajorNews";
 import debounce from 'lodash/debounce'; // Make sure you have lodash installed: npm install lodash
 import SocialMediaLinks from "../components/SocialMediaLinks";
+import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
 
@@ -41,6 +42,7 @@ function News() {
   const [activeTab, setActiveTab] = useState("latest");
   const addedItemIds = useRef(new Set());
   const observerTarget = useRef(null);
+  const { t } = useTranslation();
 
   const getVideoThumbnail = (iframe, coverImage) => {
     const videoId = iframe?.match(/embed\/(.*?)\?/i)?.[1];
@@ -59,15 +61,15 @@ function News() {
     const date = new Date(dateStr);
     const now = new Date();
     const diffMins = Math.floor((now - date) / 60000);
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
+    if (diffMins < 1) return t('just_now');
+    if (diffMins < 60) return `${diffMins} ${t('minutes_ago')}`;
     const hours = Math.floor(diffMins / 60);
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    if (hours < 24) return `${hours} ${t('hours_ago')}`;
     const days = Math.floor(hours / 24);
-    if (days < 7) return `${days} day${days > 1 ? "s" : ""} ago`;
+    if (days < 7) return `${days} ${t('days_ago')}`;
     const weeks = Math.floor(days / 7);
-    if (days < 30) return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
-    return `${Math.floor(days / 30)} month${days / 30 > 1 ? "s" : ""} ago`;
+    if (days < 30) return `${weeks} ${t('weeks_ago')}`;
+    return `${Math.floor(days / 30)} ${t('months_ago')}`;
   };
 
 
@@ -264,8 +266,8 @@ function News() {
         <CoolSvg />
         <div className="relative h-64 mx-20 flex items-center justify-center text-white text-center">
           <div>
-            <h1 className="text-6xl font-bold mb-4">News & <span className="text-orange-400">Videos</span></h1>
-            <p className="text-xl">Advancing Innovation Through Technology</p>
+            <h1 className="text-6xl font-bold mb-4">{t('news_and_videos')}</h1>
+            <p className="text-xl">{t('advancing_innovation_through_technology')}</p>
           </div>
         </div>
       </div>
@@ -337,7 +339,7 @@ function News() {
               </svg>
             </div>
           )}
-          {!hasMore && <p>You've reached the end of the content!</p>}
+          {!hasMore && <p>{t('you_ve_reached_the_end_of_the_content')}</p>}
         </div>
 
 

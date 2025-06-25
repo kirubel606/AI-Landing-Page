@@ -1,6 +1,8 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next';
 
 const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
+  const { t } = useTranslation();
   return (
     <>
           {/* Right Sidebar */}
@@ -16,7 +18,7 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
                     }`}
                     onClick={() => setActiveTab("latest")}
                   >
-                    LATEST
+                    {t('latest')}
                   </button>
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
@@ -26,7 +28,7 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
                     }`}
                     onClick={() => setActiveTab("trending")}
                   >
-                    TRENDING
+                    {t('trending')}
                   </button>
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
@@ -36,7 +38,7 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
                     }`}
                     onClick={() => setActiveTab("videos")}
                   >
-                    VIDEOS
+                    {t('videos')}
                   </button>
                 </div>
 

@@ -4,6 +4,7 @@ import { useState, useEffect,useContext } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
+import { useTranslation } from 'react-i18next';
 
 // Add these imports at the top of the file
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
@@ -73,6 +74,7 @@ function NewsDetail() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [lightboxImages, setLightboxImages] = useState([])
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (id) {
@@ -95,10 +97,10 @@ function NewsDetail() {
           fetchRelatedNews(data.id)
         }
       } else {
-        setError("News item not found")
+        setError(t('news_not_found'))
       }
     } catch (err) {
-      setError("Failed to fetch news details")
+      setError(t('error_loading_news'))
       console.error("Error fetching news details:", err)
     } finally {
       setLoading(false)
@@ -263,13 +265,13 @@ function NewsDetail() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading News</h2>
-          <p className="text-gray-600 mb-4">{error || "News item not found"}</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('error_loading_news')}</h2>
+          <p className="text-gray-600 mb-4">{error || t('news_not_found')}</p>
           <button
             onClick={() => navigate("/news")}
             className="bg-orange-400 text-white px-4 py-2 rounded hover:bg-orange-500 transition-colors"
           >
-            Back to News
+            {t('back_to_news')}
           </button>
         </div>
       </div>
@@ -309,12 +311,12 @@ function NewsDetail() {
 
                 <div className="flex items-center">
                   <EyeIcon />
-                  <span className="ml-1">{newsItem.view_count} views</span>
+                  <span className="ml-1">{newsItem.view_count} {t('views')}</span>
                 </div>
 
                 <button onClick={handleShare} className="flex items-center hover:text-orange-300 transition-colors">
                   <ShareIcon />
-                  <span className="ml-1">Share</span>
+                  <span className="ml-1">{t('share')}</span>
                 </button>
               </div>
             </div>
@@ -330,7 +332,7 @@ function NewsDetail() {
             className="flex items-center text-black hover:text-orange-300 transition-colors mb-6"
           >
             <BackIcon />
-            <span className="ml-2">Back to News</span>
+            <span className="ml-2">{t('back_to_news')}</span>
           </button>
           {/* Featured Image */}
           {!isVideo && (
@@ -346,7 +348,7 @@ function NewsDetail() {
               <button
                 onClick={() => openLightbox([`${BASE_URL}${newsItem.cover_image}`])}
                 className="absolute top-4 right-4 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-400"
-                aria-label="View full screen"
+                aria-label={t('view_full_screen')}
               >
                 <Maximize size={20} />
               </button>
@@ -375,7 +377,7 @@ function NewsDetail() {
           {/* Additional Images */}
           {newsItem.images && newsItem.images.length > 0 && (
             <div className="mt-12">
-              <h3 className="text-2xl font-bold mb-6">Gallery</h3>
+              <h3 className="text-2xl font-bold mb-6">{t('gallery')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {newsItem.images.map((img, index) => {
                   const imageUrl = `${BASE_URL}${img.image}`
@@ -395,7 +397,7 @@ function NewsDetail() {
                           openLightbox(galleryImages, index)
                         }}
                         className="absolute top-2 right-2 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-400"
-                        aria-label="View full screen"
+                        aria-label={t('view_full_screen')}
                       >
                         <Maximize size={16} />
                       </button>
@@ -482,7 +484,7 @@ function NewsDetail() {
                       </div>
                       <div className="flex items-center">
                         <EyeIcon size="w-3 h-3" />
-                        <span className="ml-1">{article.view_count} views</span>
+                        <span className="ml-1">{article.view_count} {t('views')}</span>
                       </div>
                     </div>
                   </div>
@@ -499,7 +501,7 @@ function NewsDetail() {
             <button
               onClick={closeLightbox}
               className="absolute top-4 right-4 text-white hover:text-orange-400 transition-colors z-10"
-              aria-label="Close lightbox"
+              aria-label={t('close_lightbox')}
             >
               <X size={32} />
             </button>
@@ -527,7 +529,7 @@ function NewsDetail() {
                   className={`absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-400 transition-colors ${
                     currentImageIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  aria-label="Previous image"
+                  aria-label={t('previous_image')}
                 >
                   <ChevronLeft size={40} />
                 </button>
@@ -537,7 +539,7 @@ function NewsDetail() {
                   className={`absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-400 transition-colors ${
                     currentImageIndex === lightboxImages.length - 1 ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  aria-label="Next image"
+                  aria-label={t('next_image')}
                 >
                   <ChevronRight size={40} />
                 </button>
