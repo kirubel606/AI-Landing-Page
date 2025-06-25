@@ -56,7 +56,6 @@ const MajorNews = ({ majorNews, BASE_URL, CalendarIcon, PlayIcon, formatDate, na
               {/* <p className="text-gray-600 mb-4">{majorNews.subtitle}</p> */}
               <p className='text-justify font-serif'>{i18n.language === 'am' ? getPreviewHTML(majorNews.content_am) : getPreviewHTML(majorNews.content)}</p>
 
-              <p className='text-justify font-serif'>{getPreviewHTML(majorNews.content)}</p>
 
               <div className="flex items-center text-sm text-gray-500">
                 <CalendarIcon size="w-3.5 h-3.5" />

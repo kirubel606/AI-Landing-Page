@@ -52,7 +52,7 @@ const ProjectsGrid = () => {
             >
               <img
                 src={project.coverimage || "/placeholder.svg"}
-                alt={i18n.language === 'am' ? project.title_am : item.title}
+                alt={i18n.language === 'am' ? project.title_am : project.title}
                 
                 className="w-full h-48 object-cover"
               />
