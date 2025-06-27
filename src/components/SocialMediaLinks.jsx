@@ -1,5 +1,11 @@
-// components/SocialMediaLinks.jsx
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaYoutube,
+  FaInstagram
+} from "react-icons/fa";
+import { SiTiktok } from "react-icons/si";
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 
@@ -16,31 +22,55 @@ const SocialMediaLinks = ({ visible = true }) => {
   if (!visible) return null;
 
   return (
-    <div className="fixed top-2/4 right-4 z-50 flex flex-col gap-6 items-center">
-      {/* Language Toggle */}
+    <div className="fixed z-50 right-4 top-[60%] -translate-y-1/2 flex flex-col items-center gap-3 md:right-6 lg:right-8">
+      {/* Language Toggle Button */}
       <button
         onClick={toggleLanguage}
-        className="mb-2 px-4 py-2 rounded-full bg-slate-900 text-white border border-orange-400 hover:bg-orange-400 hover:text-slate-900 transition font-semibold"
+        className="px-4 py-2 rounded-full bg-orange-400 text-white border border-orange-500 hover:bg-gray-900 hover:text-white transition font-semibold shadow-md"
         aria-label="Toggle language"
       >
         {lang === 'en' ? 'AM' : 'EN'}
       </button>
-      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"
-        className="bg-orange-400 hover:bg-white/20 backdrop-blur p-3 rounded-full text-white transition">
-        <FaFacebookF />
-      </a>
-      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer"
-        className="bg-orange-400 hover:bg-white/20 backdrop-blur p-3 rounded-full text-white transition">
-        <FaTwitter />
-      </a>
-      <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"
-        className="bg-orange-400 hover:bg-white/20 backdrop-blur p-3 rounded-full text-white transition">
-        <FaLinkedinIn />
-      </a>
-      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"
-        className="bg-orange-400 hover:bg-white/20 backdrop-blur p-3 rounded-full text-white transition">
-        <FaYoutube />
-      </a>
+
+      {/* Social Media Icons */}
+      <div className="flex flex-col gap-2">
+        {[
+          {
+            href: "https://www.facebook.com/ArtificialIntelligenceInstituteOfficial",
+            icon: <FaFacebookF />,
+          },
+          {
+            href: "https://x.com/EthiopianAII",
+            icon: <FaTwitter />,
+          },
+          {
+            href: "http://www.linkedin.com/company/etartificialintelligenceinstitute",
+            icon: <FaLinkedinIn />,
+          },
+          {
+            href: "https://www.youtube.com/c/EthiopianArtificialIntelligenceInstitute",
+            icon: <FaYoutube />,
+          },
+          // {
+          //   href: "https://www.instagram.com/your_instagram_username", // Update this URL
+          //   icon: <FaInstagram />,
+          // },
+          // {
+          //   href: "https://www.tiktok.com/@your_tiktok_username", // Update this URL
+          //   icon: <SiTiktok />,
+          // },
+        ].map(({ href, icon }, index) => (
+          <a
+            key={index}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 flex items-center justify-center rounded-full bg-orange-400 text-white border border-orange-500 hover:bg-gray-900 hover:text-white transition-all duration-200 shadow-md"
+          >
+            {icon}
+          </a>
+        ))}
+      </div>
     </div>
   );
 };

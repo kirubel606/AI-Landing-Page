@@ -44,25 +44,28 @@ const ApplicationsGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
           {applications.map((app) => (
             <div
-              key={app.id}
-              onClick={() => handleClick(app.id)} // ✅ pass category name here
-              className="group cursor-pointer hover:scale-105 transition-transform duration-300"
-            >
-              <div className="relative overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={app.image || "/placeholder.svg"}
-                  alt={i18n.language === 'am' ? app.name_am : app.name}
-                  className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-bold mb-2">{i18n.language === 'am' ? app.name_am : app.name}</h3>
-                    
-                  <p className="text-sm text-gray-200">{i18n.language === 'am' ? app.description_am : app.description}</p>
+  key={app.id}
+  onClick={() => handleClick(app.id)}
+  className="group cursor-pointer hover:scale-105 transition-transform duration-300"
+>
+  <div className="relative overflow-hidden rounded-lg shadow-lg h-[360px] flex flex-col justify-end">
+    <img
+      src={app.image || "/placeholder.svg"}
+      alt={i18n.language === 'am' ? app.name_am : app.name}
+      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+    <div className="absolute bottom-4 left-4 right-4 text-white">
+      <h3 className="text-xl font-bold mb-2">
+        {i18n.language === 'am' ? app.name_am : app.name}
+      </h3>
+      <p className="text-sm text-gray-200 line-clamp-3">
+        {i18n.language === 'am' ? app.description_am : app.description}
+      </p>
+    </div>
+  </div>
+</div>
 
-                </div>
-              </div>
-            </div>
           ))}
         </div>
       </div>

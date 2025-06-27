@@ -97,19 +97,26 @@ function Events() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="min-h-[40vh] bg-gray-900 relative overflow-hidden">
-        <div className="absolute w-full h-full">
+      <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
+        <div className="absolute h-dvh w-full">
           <CoolSvg />
         </div>
-        <SocialMediaLinks />
-        <div className="relative h-full flex justify-center items-center text-center text-white">
-          <div>
-            <h1 className="text-5xl font-bold mb-4">{t('events')}</h1>
-            <div className="w-20 h-1 bg-orange-400 mx-auto" />
+
+        <div className="relative h-64 bg-transparent mx-20">
+          {/* <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" /> */}
+          <div className="z-20 flex items-center justify-center h-full">
+            <div className="text-center text-white h-full">
+              <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
+                {t('events')}
+              </h1>
+            </div>
           </div>
+          {/* Decorative elements */}
+          <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"></div>
+          <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
         </div>
       </div>
-
+      <SocialMediaLinks />
       <div className=" mx-auto px-6 md:px-32 py-16">
         {/* Upcoming & Live Events Section */}
         <div className="w-full mx-auto px-2 md:px-12 py-16">
@@ -120,7 +127,12 @@ function Events() {
             </div>
           ) : (
             <div className="space-y-24">
-              {upcomingEvents.map((event, index) => {
+              {upcomingEvents
+              .filter(item =>
+            i18n.language === 'am'
+              ? item.title_am?.trim()
+              : item.title?.trim()
+          ).map((event, index) => {
                 const isEven = index % 2 === 0;
                 const daysLeft = calculateDaysLeft(event.timestamp);
 
@@ -188,7 +200,7 @@ function Events() {
                             <img
                               src={event.images[0].image || PLACEHOLDER_IMAGE}
                               alt={i18n.language === 'am' ? event.title_am : event.title}
-                              
+
                               className="w-full h-80 object-cover"
                               onError={(e) => {
                                 e.currentTarget.src = PLACEHOLDER_IMAGE;
@@ -252,7 +264,7 @@ function Events() {
                         }}
                         className="object-cover w-full h-28 rounded-md"
                         alt={`${i18n.language === 'am' ? event.title_am : event.title} - image ${i + 1}`}
-                        
+
                       />
                     ))}
                   </div>

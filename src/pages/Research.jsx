@@ -16,7 +16,8 @@ const Research = () => {
     const [searchParams] = useSearchParams();
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedCategoryName, setSelectedCategoryName] = useState();
+    const [selectedCategoryName, setSelectedCategoryName] = useState("All Categories");
+    const [selectedCategoryNameAm, setSelectedCategoryNameAm] = useState("ሁሉም ምድቦች");
     const [activeTab, setActiveTab] = useState("latest");
     const [startIndex, setStartIndex] = useState(0);
     const timeAgo = (dateString) => {
@@ -77,6 +78,7 @@ const Research = () => {
             );
             if (matched) {
                 setSelectedCategoryName(matched.name);
+                setSelectedCategoryNameAm(matched.name_am);
             }
         }
     }, [searchParams, categories]);
@@ -235,7 +237,7 @@ const Research = () => {
                 </div>
 
                 <div className="relative h-64 bg-transparent mx-20">
-                    <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
+                    {/* <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" /> */}
                     <div className="z-20 flex items-center justify-center h-full">
                         <div className="text-center text-white h-full">
                             <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
@@ -272,6 +274,7 @@ const Research = () => {
                                 navigate("/research");  // removes ?category=... from the URL
                                 setSelectedCategory(null);
                                 setSelectedCategoryName(t('allCategories'));
+                                setSelectedCategoryNameAm(t('allCategories'));
                             }}
                             className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
                         >
@@ -304,6 +307,7 @@ const Research = () => {
                                             navigate(`/research?category=${category.id}`);
                                             setSelectedCategory(category.id);
                                             setSelectedCategoryName(category.name);
+                                            setSelectedCategoryNameAm(category.name_am);
                                         }}
 
                                         className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
@@ -340,13 +344,19 @@ const Research = () => {
                     {/* Content divs */}
                     <div className="lg:col-span-2">
                         {selectedCategoryName && (
-                            <h1 className="text-2xl font-bold mb-6 text-gray-900">
-                                {selectedCategoryName}
-                            </h1>
-                        )}
+  <h1 className="text-2xl font-bold mb-6 text-gray-900">
+    {i18n.language === 'am' ? selectedCategoryNameAm : selectedCategoryName}
+  </h1>
+)}
+
 
                         {paginatedProjects
                             .filter((div) => !selectedCategory || String(div.category) === String(selectedCategory))
+                            .filter(item =>
+            i18n.language === 'am'
+              ? item.title_am?.trim()
+              : item.title?.trim()
+          )
                             .map((div, index) => (
 
                                 <div key={div.id} className="lg:col-span-2">

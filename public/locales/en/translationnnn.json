@@ -5,6 +5,7 @@
   "news": "News",
   "events": "Events",
   "about": "About",
+  "aboutUs": "About Us",
   "resources": "Resources",
   "contactus": "Contact Us",
   "gallery": "Gallery",
@@ -86,10 +87,10 @@
   "help_guides_desc": "Guides and support information.",
   "help_support": "Support Request",
   "help_support_desc": "Request support from our team.",
-  "latest": "የቅርብ ጊዜ",
-  "case_study": "የጉዳይ ጥናት",
-  "development": "ልማት",
-  "research_and_development": "ምርምር እና ልማት",
+  "latest": "Latest",
+  "case_study": "Case study",
+  "development": "Development",
+  "research_and_development": "Research and development",
   "error_loading_events": "Error Loading Events",
   "failed_to_fetch_events": "Failed to fetch events.",
   "try_again": "Try Again",
@@ -101,7 +102,7 @@
   "book_event": "Book Event",
   "past_events": "Past Events",
   "watch_recap": "Watch Recap",
-  "us": "እኛ",
+  "us": "Us",
   "trending": "Trending",
   "videos": "Videos",
   "unleashing_ai_potential": "Unleashing AI's Potential in Ethiopia",
@@ -131,5 +132,4 @@
   "loading_galleries": "Loading galleries...",
   "error_gallery": "Error",
   "no_items_found": "No items found for the selected filter."
-  
 } 

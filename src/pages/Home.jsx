@@ -17,10 +17,16 @@ import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const { news, gallery } = useContext(AppContext);
-  const singleNews = news?.results?.result?.[0] || null;
+    const { t, i18n } = useTranslation();
+const singleNews = news?.results?.result?.find(item =>
+  i18n.language === 'am'
+    ? item.title_am?.trim()
+    : item.title?.trim()
+) || null;
+
   const singleGallery = gallery?.[0] || null;
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+
 
   const heroRef = useRef(null);
   const [showSocialLinks, setShowSocialLinks] = useState(false);

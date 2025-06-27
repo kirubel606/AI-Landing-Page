@@ -29,7 +29,7 @@ const About = () => {
         </div>
                     <SocialMediaLinks />
         <div className="relative h-64 bg-transparent mx-20">
-          <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" />
+          {/* <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" /> */}
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white h-full">
               <h1 variant="h1" className="text-5xl md:text-6xl flex font-bold mt-36 mb-2 text-white">

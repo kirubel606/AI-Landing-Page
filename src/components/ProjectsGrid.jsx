@@ -7,18 +7,27 @@ const ProjectsGrid = () => {
   const { t , i18n  } = useTranslation();
   const [projects, setProjects] = useState([])
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}`+"/rnd/")
-        setProjects(response.data.slice(0, 3)) // Only take first 3
-      } catch (error) {
-        console.error("Failed to fetch R&D projects:", error)
-      }
-    }
+useEffect(() => {
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/rnd/`);
 
-    fetchProjects()
-  }, [])
+      const validProjects = response.data.filter(project =>
+        i18n.language === 'am'
+          ? project.title_am?.trim()
+          : project.title?.trim()
+      );
+
+      setProjects(validProjects.slice(0, 3)); // Take first 3 valid only
+
+    } catch (error) {
+      console.error("Failed to fetch R&D projects:", error);
+    }
+  };
+
+  fetchProjects();
+}, [i18n.language]); // Re-run when language changes!
+
 
   return (
     <section className="py-16 bg-gray-50">

@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+
+import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
 import { useTranslation } from 'react-i18next';
 
 import CoolSvg from "../components/CoolSVg";
@@ -25,6 +26,7 @@ const GalleryPage = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImages, setLightboxImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -111,14 +113,33 @@ const GalleryPage = () => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' }); // optional scroll to top
   };
+const navigateImage = (direction) => {
+  setCurrentImageIndex((prevIndex) => {
+    let newIndex = prevIndex + direction;
+    if (newIndex < 0) {
+      newIndex = 0; // or wrap around: lightboxImages.length - 1
+    } else if (newIndex >= lightboxImages.length) {
+      newIndex = lightboxImages.length - 1; // or wrap around: 0
+    }
+    return newIndex;
+  });
+};
 
-  const openLightbox = (images, index) => {
-    setLightboxImages(images);
-    setCurrentIndex(index);
-    setLightboxOpen(true);
-  };
+  // Add this function before the return statement
+  const openLightbox = (images, startIndex = 0) => {
+    setLightboxImages(images)
+    setCurrentImageIndex(startIndex)
+    setLightboxOpen(true)
+    // Prevent scrolling when lightbox is open
+    document.body.style.overflow = "hidden"
+  }
 
-  const closeLightbox = () => setLightboxOpen(false);
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+    // Re-enable scrolling
+    document.body.style.overflow = "auto"
+  }
+
   const prevImage = () => setCurrentIndex((prev) => (prev - 1 + lightboxImages.length) % lightboxImages.length);
   const nextImage = () => setCurrentIndex((prev) => (prev + 1) % lightboxImages.length);
 
@@ -130,6 +151,8 @@ const GalleryPage = () => {
     t('summer_camp'),
     t('mou')
   ];
+
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -185,12 +208,26 @@ const GalleryPage = () => {
                 className="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 onClick={() => openLightbox(pagedImages, iIndex)}
               >
+                <div>
                 <img
                   src={img.image || PLACEHOLDER_IMAGE}
-                  alt={i18n.language === 'am' ? img.galleryTitle_am : img.galleryTitle}
+                  alt={
+  i18n.language === 'am' && img.galleryTitle_am
+    ? img.galleryTitle_am
+    : img.galleryTitle
+}
+
                   
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
+                <button
+                onClick={() => openLightbox([`${img.image}`])}
+                className="absolute top-4 right-4 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-400"
+                aria-label={t('view_full_screen')}
+              >
+                <Maximize size={20} />
+              </button>
+              </div>
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-center items-start p-6 text-white">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <h3 className="text-xl font-bold mb-2">{i18n.language === 'am' ? img.galleryTitle_am : img.galleryTitle}</h3>
@@ -250,7 +287,7 @@ const GalleryPage = () => {
       </div>
 
       {/* Lightbox Modal */}
-      <Modal
+      {/* <Modal
         isOpen={lightboxOpen}
         onRequestClose={closeLightbox}
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
@@ -274,8 +311,64 @@ const GalleryPage = () => {
             </button>
           </div>
         )}
-      </Modal>
+      </Modal> */}
+{lightboxOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center">
+          <div className="relative w-full h-full flex flex-col items-center justify-center">
+            {/* Close button */}
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 text-white hover:text-orange-400 transition-colors z-10"
+              aria-label={t('close_lightbox')}
+            >
+              <X size={32} />
+            </button>
 
+            {/* Image counter */}
+            <div className="absolute top-4 left-4 text-white text-sm">
+              {currentImageIndex + 1} / {lightboxImages.length}
+            </div>
+
+            {/* Image */}
+            <div className="w-full h-full flex items-center justify-center p-4 md:p-12">
+              <img
+  // src={lightboxImages[currentImageIndex] || "/placeholder.svg"}
+  src={lightboxImages[currentImageIndex].image || "/placeholder.svg"}
+
+  alt={`Full screen image ${currentImageIndex + 1}`}
+  className="max-w-full max-h-full object-contain"
+/>
+
+            </div>
+
+            {/* Navigation buttons */}
+            {lightboxImages.length > 1 && (
+              <>
+                <button
+                  onClick={() => navigateImage(-1)}
+                  disabled={currentImageIndex === 0}
+                  className={`absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-400 transition-colors ${
+                    currentImageIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  aria-label={t('previous_image')}
+                >
+                  <ChevronLeft size={40} />
+                </button>
+                <button
+                  onClick={() => navigateImage(1)}
+                  disabled={currentImageIndex === lightboxImages.length - 1}
+                  className={`absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-400 transition-colors ${
+                    currentImageIndex === lightboxImages.length - 1 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  aria-label={t('next_image')}
+                >
+                  <ChevronRight size={40} />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       <Footer />
     </div>
   );

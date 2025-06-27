@@ -42,7 +42,7 @@ function News() {
   const [activeTab, setActiveTab] = useState("latest");
   const addedItemIds = useRef(new Set());
   const observerTarget = useRef(null);
-  const { t,i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const getVideoThumbnail = (iframe, coverImage) => {
     const videoId = iframe?.match(/embed\/(.*?)\?/i)?.[1];
@@ -219,7 +219,7 @@ function News() {
           <img
             src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
             alt={i18n.language === 'am' ? a.title_am : a.title}
-            
+
             onError={(e) => {
               e.target.src = PLACEHOLDER_IMAGE;
             }}
@@ -241,8 +241,8 @@ function News() {
         </div>
         <div className="flex-1 min-w-0">
           <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
-  {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
-</span>
+            {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
+          </span>
 
           <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{i18n.language === 'am' ? a.title_am : a.title}</h4>
           <div className="flex items-center text-xs text-gray-500">
@@ -287,8 +287,12 @@ function News() {
       <section className="max-w-7xl mx-auto px-4 py-16">
         {/* <h2 className="text-3xl font-bold mb-8 text-center">Tech News & Videos</h2> */}
         <div className="space-y-8">
-                      <SocialMediaLinks />
-          {mergedContent.map((item, idx) => (
+          <SocialMediaLinks />
+          {mergedContent.filter(item =>
+            i18n.language === 'am'
+              ? item.title_am?.trim()
+              : item.title?.trim()
+          ).map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
               className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg"
@@ -300,7 +304,7 @@ function News() {
                     <img
                       src={getVideoThumbnail(item.iframe, item.cover_image)}
                       alt={i18n.language === 'am' ? item.title_am : item.title}
-                      
+
                       className="w-full h-64 md:h-80 object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">

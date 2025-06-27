@@ -7,18 +7,22 @@ const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate, navig
     return (
         <>
             {/* Left Column - Small News Items */}
-            <div className="lg:col-span-1 space-y-8 hidden md:block">
-                {leftColumnNews.slice(0, 3).map((article) => (
+            <div className="lg:col-span-1 space-y-5 hidden md:block">
+                {leftColumnNews.filter(item =>
+            i18n.language === 'am'
+              ? item.title_am?.trim()
+              : item.title?.trim()
+          ).slice(0, 3).map((article) => (
                     <div
                         key={article.id}
-                        className="bg-white rounded-lg shadow-md h-64 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col"
+                        className="bg-white rounded-lg shadow-md h- overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col"
                         onClick={() => navigateToDetail(article)}
                     >
                         <div className="relative h-[80%]">
                             <img
                                 src={article.cover_image ? `${BASE_URL}${article.cover_image}` : "/placeholder.svg"}
                                 alt=  {i18n.language === 'am' ? article.title_am : article.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full=== object-cover"
                                 onError={(e) => {
                                     e.target.src = PLACEHOLDER_IMAGE
                                 }}

@@ -43,9 +43,10 @@ const { t, i18n } = useTranslation();
         <div className="w-16 h-1 bg-orange-500 mx-auto mb-8"></div>
 
         <div className="text-center mb-12 w-[50%] justify-center items-center mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('news')}</h2>
           
-          <p className="text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
+          
+          {/* <p className="text-gray-600 max-w-2xl mx-auto">{subtitle}</p> */}
         </div>
 
         <div className="max-w-6xl mx-auto">
@@ -126,7 +127,7 @@ const { t, i18n } = useTranslation();
 
                   {/* Title at the bottom */}
                   <div className="absolute bottom-4 left-4 right-4 text-center">
-                    <h2 className="text-white text-xl md:text-3xl font-serif italic font-semibold drop-shadow-lg">
+                    <h2 className="text-white text-xl md:text-4xl  font-bold drop-shadow-lg">
                       “{title || 'News'}”
                     </h2>
                   </div>
