@@ -22,7 +22,7 @@ const SocialMediaLinks = ({ visible = true }) => {
   if (!visible) return null;
 
   return (
-    <div className="fixed z-50 right-4 top-[60%] -translate-y-1/2 flex flex-col items-center gap-3 md:right-6 lg:right-8">
+    <div className="fixed z-50 right-4 top-[60%] -translate-y-1/2 flex flex-col items-center gap-3 md:right-6 lg:right-6">
       {/* Language Toggle Button */}
       <button
         onClick={toggleLanguage}

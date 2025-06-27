@@ -18,7 +18,7 @@ const Header = () => {
     { name: t('research'), path: "/research" },
     { name: t('resources'), path: "/resources" },
     { name: t('events'), path: "/events" },
-    { name: t('aboutUs'), path: "/about" },
+    { name: t('about_us'), path: "/about" },
   ]
 
   useEffect(() => {
