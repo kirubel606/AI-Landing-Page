@@ -69,6 +69,7 @@ function NewsDetail() {
   const { newsData } = useContext(AppContext)
   const videoData = newsData.filter((item) => item.iframe)
   const normalData = newsData.filter((item) => !item.iframe)
+  const [magazineData, setMagazineData] = useState([]);
   const { t, i18n } = useTranslation()
 
   // Lightbox states
@@ -81,7 +82,23 @@ function NewsDetail() {
       fetchNewsDetail(id)
     }
   }, [id])
+useEffect(() => {
+  const fetchMagazines = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/news/magazine/`);
+      const json = await res.json();
+      const magazines = json?.results?.result || [];
+console.log("Fetched magazines:", magazines);
+      setMagazineData(magazines);
+    } catch (err) {
+      console.error("Failed to fetch magazines:", err);
+    }
+  };
 
+  if (activeTab === "latest") {
+    fetchMagazines();
+  }
+}, [activeTab]);
   const fetchNewsDetail = async (newsId) => {
     try {
       setLoading(true)
@@ -181,23 +198,32 @@ function NewsDetail() {
   }
 
   const renderSidebarContent = () => {
-    const sourceData =
-      activeTab === "trending"
-        ? [...newsData]
-        : activeTab === "videos"
-          ? [...videoData]
-          : newsData;
+    let sourceData;
+  if (activeTab === "trending") {
+    // ✅ Only news, no magazines
+    sourceData = newsData.filter(item => !item.magazine && !item.iframe);
+  } else if (activeTab === "videos") {
+    sourceData = [...videoData];
+  } else if (activeTab === "latest") {
+  
+  sourceData = magazineData.filter(item => item.pdf_file);
+  console.log("Magazine data:", magazineData);
+}
 
-    const sorted =
-      activeTab === "trending" || activeTab === "videos"
-        ? sourceData.sort((a, b) => b.view_count - a.view_count)
-        : sourceData;
+ else {
+    sourceData = newsData;
+  }
 
-    const filtered = sorted.filter(item =>
-      i18n.language === 'am'
-        ? item.title_am && item.title_am.trim() !== ''
-        : item.title && item.title.trim() !== ''
-    );
+  const sorted =
+    activeTab === "trending" || activeTab === "videos"
+      ? sourceData.sort((a, b) => b.view_count - a.view_count)
+      : sourceData;
+
+  const filtered = sorted.filter(item =>
+    i18n.language === 'am'
+      ? item.title_am && item.title_am.trim() !== ''
+      : item.title && item.title.trim() !== ''
+  );
 
     const badgeColor =
       activeTab === "trending"
@@ -340,21 +366,19 @@ function NewsDetail() {
 
           {/* Media Section */}
           {isPdfMagazine ? (
-             <div className="mb-8">
-    <object
-      data={`${BASE_URL}${newsItem.pdf_file}`}
-      type="application/pdf"
+  <div className="mb-8">
+    <iframe
+      src={`${BASE_URL}${newsItem.pdf_file}#toolbar=0&navpanes=0&scrollbar=0`}
       width="100%"
       height="600px"
       className="rounded-lg shadow-lg"
+      title={t('pdf_viewer')}
     >
-      <p>
-        Your browser does not support PDFs.{" "}
-        <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
-          Download the PDF
-        </a>
-      </p>
-    </object>
+      Your browser does not support PDFs.{" "}
+      <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
+        {t('download_pdf')}
+      </a>
+    </iframe>
     <div className="mt-4 flex justify-end">
       <a
         href={`${BASE_URL}${newsItem.pdf_file}`}
