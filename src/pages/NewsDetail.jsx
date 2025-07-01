@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
 import RightSidebar from "../components/News/RightSidebar"
 import { AppContext } from "../context/Appcontext"
-
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE
 import SocialMediaLinks from "../components/SocialMediaLinks"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -366,31 +365,32 @@ console.log("Fetched magazines:", magazines);
 
           {/* Media Section */}
           {isPdfMagazine ? (
-  <div className="mb-8">
-    <iframe
-      src={`${BASE_URL}${newsItem.pdf_file}#toolbar=0&navpanes=0&scrollbar=0`}
-      width="100%"
-      height="600px"
-      className="rounded-lg shadow-lg"
-      title={t('pdf_viewer')}
-    >
-      Your browser does not support PDFs.{" "}
-      <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
-        {t('download_pdf')}
-      </a>
-    </iframe>
-    <div className="mt-4 flex justify-end">
-      <a
-        href={`${BASE_URL}${newsItem.pdf_file}`}
-        download
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded"
-      >
-        {t('download_pdf')}
-      </a>
-    </div>
-  </div>
+             <div className="mb-8">
+
+          <iframe
+          src={`${BASE_URL}${newsItem.pdf_file}`}  width="100%"
+            height="600px"
+            className="rounded-lg shadow-lg border"
+          />
+
+            <p>
+              <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
+                Download the PDF
+              </a>
+            </p>
+          
+          <div className="mt-4 flex justify-end">
+            <a
+              href={`${BASE_URL}${newsItem.pdf_file}`}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded"
+            >
+              {t('download_pdf')}
+            </a>
+          </div>
+        </div>
           ) : !isVideo ? (
             <div className="mb-8 relative group">
               <img
