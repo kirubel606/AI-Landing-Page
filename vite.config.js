@@ -1,23 +1,28 @@
-// vite.config.js
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      // proxy any /media/* request to Django
-      "/media": {
-        target: "http://127.0.0.1:8000",
-        changeOrigin: true,
-        secure: false,
-        // remove the frame‑blocking header
-        onProxyRes(proxyRes) {
-          if (proxyRes.headers["x-frame-options"]) {
-            delete proxyRes.headers["x-frame-options"];
-          }
+// https://vitejs.dev/config/
+export default ({ mode }) => {
+  // Load all env vars, VITE_API_BASE_URL should be defined in .env
+  const env = loadEnv(mode, process.cwd(), '');
+  const backendUrl = env.VITE_API_BASE_URL;
+
+  return defineConfig({
+    plugins: [react()],
+    server: {
+      proxy: {
+        // Proxy /media requests to Django backend and strip frame-blocking headers
+        '/media': {
+          target: backendUrl,
+          changeOrigin: true,
+          secure: false,
+          onProxyRes(proxyRes) {
+            if (proxyRes.headers['x-frame-options']) {
+              delete proxyRes.headers['x-frame-options'];
+            }
+          },
         },
       },
     },
-  },
-});
+  });
+};
