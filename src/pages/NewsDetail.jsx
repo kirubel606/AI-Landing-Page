@@ -365,21 +365,18 @@ console.log("Fetched magazines:", magazines);
 
           {/* Media Section */}
           {isPdfMagazine ? (
-             <div className="mb-8">
-
-          <iframe
-          src={`${BASE_URL}${newsItem.pdf_file}`}  width="100%"
-            height="600px"
-            className="rounded-lg shadow-lg border"
-          />
-
-            <p>
-              <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
-                Download the PDF
-              </a>
-            </p>
+              <div className="col-span-full w-full">
+                <div className="p-4">
+                  <iframe
+                    src={`${BASE_URL}${newsItem.pdf_file}`}
+                    className="w-full md:w-[900px] h-[700px] rounded-lg shadow-lg border"
+                    title="Article PDF"
+                    frameBorder="0"
+                  />
+                </div>
           
-          <div className="mt-4 flex justify-end">
+
+          <div className="mt-4 flex justify-center md:justify-end">
             <a
               href={`${BASE_URL}${newsItem.pdf_file}`}
               download
