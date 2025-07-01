@@ -35,11 +35,11 @@ function News() {
   const [videoData, setVideoData] = useState([]);
   const [mergedContent, setMergedContent] = useState([]);
   const [page, setPage] = useState(1);
-
+const [magazineData, setMagazineData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("latest");
+  const [activeTab, setActiveTab] = useState("trending");
   const addedItemIds = useRef(new Set());
   const observerTarget = useRef(null);
   const { t, i18n } = useTranslation();
@@ -51,7 +51,6 @@ function News() {
     // Try the best-quality thumbnail first
     return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
   };
-
 
   const extractVideoDuration = () => "5:24"; // This is hardcoded; you might want to dynamically get this
 
@@ -71,7 +70,6 @@ function News() {
     if (days < 30) return `${weeks} ${t('weeks_ago')}`;
     return `${Math.floor(days / 30)} ${t('months_ago')}`;
   };
-
 
   const pageRef = useRef(page);
   pageRef.current = page;
@@ -111,12 +109,8 @@ function News() {
       const newItems = results.filter((item) => !addedItemIds.current.has(item.id));
       newItems.forEach((item) => addedItemIds.current.add(item.id));
 
-      const newMerged = newItems; // Already merged on backend
-
-
       // Append to merged content
       setMergedContent((prev) => [...prev, ...newItems]);
-
 
       // Set hasMore based on the `next` field from the response
       if (!json.next) {
@@ -131,6 +125,23 @@ function News() {
       setLoading(false);
     }
   };
+useEffect(() => {
+  const fetchMagazines = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/news/magazine/`);
+      const json = await res.json();
+      const magazines = json?.results?.result || [];
+console.log("Fetched magazines:", magazines);
+      setMagazineData(magazines);
+    } catch (err) {
+      console.error("Failed to fetch magazines:", err);
+    }
+  };
+
+  if (activeTab === "latest") {
+    fetchMagazines();
+  }
+}, [activeTab]);
 
   // Initial fetch on mount and whenever page changes
   useEffect(() => {
@@ -193,68 +204,105 @@ function News() {
     fetchInitial();
   }, []);
 
+const renderSidebarContent = () => {
+  let sourceData;
 
-  const renderSidebarContent = () => {
-    const sorted =
-      activeTab === "trending"
-        ? [...newsData].sort((a, b) => b.view_count - a.view_count)
-        : activeTab === "videos"
-          ? [...videoData].sort((a, b) => b.view_count - a.view_count)
-          : newsData;
+  if (activeTab === "trending") {
+    // ✅ Only news, no magazines
+    sourceData = newsData.filter(item => !item.magazine && !item.iframe);
+  } else if (activeTab === "videos") {
+    sourceData = [...videoData];
+  } else if (activeTab === "latest") {
+  
+  sourceData = magazineData.filter(item => item.pdf_file);
+  console.log("Magazine data:", magazineData);
+}
 
-    const badgeColor =
-      activeTab === "trending"
-        ? "bg-blue-100 text-blue-800"
-        : activeTab === "videos"
-          ? "bg-green-100 text-green-800"
-          : "bg-orange-100 text-orange-800";
+ else {
+    sourceData = newsData;
+  }
 
-    return sorted.slice(0, 5).map((a) => (
-      <div
-        key={a.id}
-        className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
-        onClick={() => navigateToDetail(a)}
-      >
-        <div className="relative flex-shrink-0">
-          <img
-            src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
-            alt={i18n.language === 'am' ? a.title_am : a.title}
+  const sorted =
+    activeTab === "trending" || activeTab === "videos"
+      ? sourceData.sort((a, b) => b.view_count - a.view_count)
+      : sourceData;
 
-            onError={(e) => {
-              e.target.src = PLACEHOLDER_IMAGE;
-            }}
-            className="w-20 h-20 object-cover rounded-lg"
-          />
+  const filtered = sorted.filter(item =>
+    i18n.language === 'am'
+      ? item.title_am && item.title_am.trim() !== ''
+      : item.title && item.title.trim() !== ''
+  );
 
-          {activeTab === "videos" && (
-            <>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 bg-orange-400 rounded-full text-white flex items-center justify-center">
-                  <PlayIcon size="w-3 h-3" />
-                </div>
+  const badgeColor =
+    activeTab === "trending"
+      ? "bg-blue-100 text-blue-800"
+      : activeTab === "videos"
+        ? "bg-green-100 text-green-800"
+        : "bg-orange-100 text-orange-800";
+
+  return filtered.slice(0, 5).map(a => (
+    <div
+      key={a.id}
+      className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+      onClick={() => {
+  navigateToDetail(a);
+}}
+
+    >
+      <div className="relative flex-shrink-0">
+        <img
+          src={
+            activeTab === "videos"
+              ? getVideoThumbnail(a.iframe, a.cover_image)
+              : `${BASE_URL}${a.cover_image}`
+          }
+          alt={i18n.language === 'am' ? a.title_am : a.title}
+          onError={e => {
+            e.target.src = PLACEHOLDER_IMAGE;
+          }}
+          className="w-20 h-20 object-cover rounded-lg"
+        />
+
+        {activeTab === "videos" && (
+          <>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-6 h-6 bg-orange-400 rounded-full text-white flex items-center justify-center">
+                <PlayIcon size="w-3 h-3" />
               </div>
-              <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
-                {extractVideoDuration(a.iframe)}
-              </div>
-            </>
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
-            {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
-          </span>
-
-          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{i18n.language === 'am' ? a.title_am : a.title}</h4>
-          <div className="flex items-center text-xs text-gray-500">
-            <CalendarIcon size="w-2.5 h-2.5" />
-            <span className="ml-1">{formatDate(a.created_at)}</span>
-          </div>
-        </div>
+            </div>
+            <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+              {extractVideoDuration(a.iframe)}
+            </div>
+          </>
+        )}
       </div>
-    ));
-  };
 
-  const featuredArticle = [...newsData].sort((a, b) => b.view_count - a.view_count)[0];
+      <div className="flex-1 min-w-0">
+        <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
+          {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
+        </span>
+
+        <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">
+          {i18n.language === 'am' ? a.title_am : a.title}
+        </h4>
+
+        <div className="flex items-center text-xs text-gray-500">
+          <CalendarIcon size="w-2.5 h-2.5" />
+          <span className="ml-1">{formatDate(a.created_at)}</span>
+        </div>
+
+        
+      </div>
+    </div>
+  ));
+};
+
+
+const featuredArticle = [...newsData]
+  .filter(a => !a.magazine) // ✅ filter magazines out
+  .sort((a, b) => b.view_count - a.view_count)[0];
+
+
   const majorNews = newsData.find((n) => n.category === "Healthcare") || newsData[newsData.length - 1];
   if (loading && page === 1) {
     return (
@@ -284,75 +332,119 @@ function News() {
         </div>
       </main>
 
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        {/* <h2 className="text-3xl font-bold mb-8 text-center">Tech News & Videos</h2> */}
-        <div className="space-y-8">
-          <SocialMediaLinks />
-          {mergedContent.filter(item =>
-            i18n.language === 'am'
-              ? item.title_am?.trim()
-              : item.title?.trim()
-          ).map((item, idx) => (
+<section className="max-w-7xl mx-auto px-4 py-16">
+  <div className="space-y-8">
+    <SocialMediaLinks />
+
+    {(() => {
+      // Filtered arrays without magazines, with correct language titles
+      const newsItems = mergedContent.filter(
+        item =>
+          !item.magazine &&
+          !item.iframe &&
+          (i18n.language === "am" ? item.title_am?.trim() : item.title?.trim())
+      );
+      const videoItems = mergedContent.filter(
+        item =>
+          !item.magazine &&
+          item.iframe &&
+          (i18n.language === "am" ? item.title_am?.trim() : item.title?.trim())
+      );
+
+      // Mix 2 news + 1 video pattern
+      const mixed = [];
+      let nIndex = 0,
+        vIndex = 0;
+
+      while (nIndex < newsItems.length || vIndex < videoItems.length) {
+        // Add up to 2 news items
+        for (let i = 0; i < 2 && nIndex < newsItems.length; i++, nIndex++) {
+          mixed.push({ ...newsItems[nIndex], type: "news", key: `news-${newsItems[nIndex].id}-${nIndex}` });
+        }
+        // Add 1 video item
+        if (vIndex < videoItems.length) {
+          mixed.push({ ...videoItems[vIndex], type: "video", key: `video-${videoItems[vIndex].id}-${vIndex}` });
+          vIndex++;
+        }
+      }
+
+      // Render mixed array
+      return mixed.map((item, idx) => {
+        if (item.type === "video") {
+          return (
             <div
-              key={`${item.id}-${idx}`}
+              key={item.key}
               className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg"
               onClick={() => navigateToDetail(item)}
             >
-              {item.iframe ? (
-                <>
-                  <div className="relative">
-                    <img
-                      src={getVideoThumbnail(item.iframe, item.cover_image)}
-                      alt={i18n.language === 'am' ? item.title_am : item.title}
-
-                      className="w-full h-64 md:h-80 object-cover"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-20 h-20 bg-orange-400 hover:bg-[#080a24af] text-white rounded-full flex items-center justify-center">
-                        <PlayIcon size="w-8 h-8" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-4 right-4 bg-black/80 text-white text-sm px-2 py-1 rounded">
-                      {extractVideoDuration(item.iframe)}
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{i18n.language === 'am' ? item.title_am : item.title}</h3>
-                    <p className="text-gray-600 mb-4">{i18n.language === 'am' ? item.subtitle_am : item.subtitle}</p>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{item.view_count} views</span>
-                      <span>{formatDate(item.created_at)}</span>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <MajorNews
-                  majorNews={item}
-                  BASE_URL={BASE_URL}
-                  PlayIcon={PlayIcon}
-                  CalendarIcon={CalendarIcon}
-                  formatDate={formatDate}
-                  navigateToDetail={navigateToDetail}
+              <div className="relative">
+                <img
+                  src={getVideoThumbnail(item.iframe, item.cover_image)}
+                  alt={i18n.language === "am" ? item.title_am : item.title}
+                  className="w-full h-64 md:h-80 object-cover"
                 />
-              )}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 bg-orange-400 hover:bg-[#080a24af] text-white rounded-full flex items-center justify-center">
+                    <PlayIcon size="w-8 h-8" />
+                  </div>
+                </div>
+                <div className="absolute bottom-4 right-4 bg-black/80 text-white text-sm px-2 py-1 rounded">
+                  {extractVideoDuration(item.iframe)}
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">{i18n.language === "am" ? item.title_am : item.title}</h3>
+                <p className="text-gray-600 mb-4">{i18n.language === "am" ? item.subtitle_am : item.subtitle}</p>
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <span>{item.view_count} views</span>
+                  <span>{formatDate(item.created_at)}</span>
+                </div>
+              </div>
             </div>
-          ))}
+          );
+        } else {
+          // News item
+          return (
+            <MajorNews
+              key={item.key}
+              majorNews={item}
+              BASE_URL={BASE_URL}
+              PlayIcon={PlayIcon}
+              CalendarIcon={CalendarIcon}
+              formatDate={formatDate}
+              navigateToDetail={navigateToDetail}
+            />
+          );
+        }
+      });
+    })()}
+    
+    <div ref={observerTarget} className="py-4 text-center">
+      {loading && page > 1 && (
+        <div className="flex justify-center">
+          <svg
+            className="animate-spin h-6 w-6 text-orange-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
         </div>
+      )}
+      {!hasMore && <p>{t("you_ve_reached_the_end_of_the_content")}</p>}
+    </div>
+  </div>
+</section>
 
-        <div ref={observerTarget} className="py-4 text-center">
-          {loading && page > 1 && (
-            <div className="flex justify-center">
-              <svg className="animate-spin h-6 w-6 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-              </svg>
-            </div>
-          )}
-          {!hasMore && <p>{t('you_ve_reached_the_end_of_the_content')}</p>}
-        </div>
-
-
-      </section>
 
       {/* <Footer /> */}
     </div>

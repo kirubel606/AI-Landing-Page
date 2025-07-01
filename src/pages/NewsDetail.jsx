@@ -1,18 +1,18 @@
 "use client"
 
-import { useState, useEffect,useContext } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 // Add these imports at the top of the file
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
 import RightSidebar from "../components/News/RightSidebar"
 import { AppContext } from "../context/Appcontext"
 
-const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
-import SocialMediaLinks from "../components/SocialMediaLinks";
+const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE
+import SocialMediaLinks from "../components/SocialMediaLinks"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 // Icon components
@@ -69,12 +69,12 @@ function NewsDetail() {
   const { newsData } = useContext(AppContext)
   const videoData = newsData.filter((item) => item.iframe)
   const normalData = newsData.filter((item) => !item.iframe)
-  console.log("RAW CONTENT:", newsItem)
-  // Add this state after the other state declarations in the NewsDetail component
+  const { t, i18n } = useTranslation()
+
+  // Lightbox states
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [lightboxImages, setLightboxImages] = useState([])
-  const { t , i18n } = useTranslation();
 
   useEffect(() => {
     if (id) {
@@ -85,14 +85,11 @@ function NewsDetail() {
   const fetchNewsDetail = async (newsId) => {
     try {
       setLoading(true)
-      // Fetch the specific news item
       const response = await fetch(`${BASE_URL}/news/news/${newsId}/`)
       const data = await response.json()
 
       if (data) {
         setNewsItem(data)
-
-        // Fetch related news based on category
         if (data.category) {
           fetchRelatedNews(data.id)
         }
@@ -111,7 +108,6 @@ function NewsDetail() {
     try {
       const response = await fetch(`${BASE_URL}/news/related/${currentId}/`)
       const data = await response.json()
-
       setRelatedNews(data)
     } catch (err) {
       console.error("Error fetching related news:", err)
@@ -140,26 +136,23 @@ function NewsDetail() {
         alert("Sharing failed or was canceled.")
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard
         .writeText(window.location.href)
         .then(() => alert("Link copied to clipboard!"))
         .catch((err) => console.error("Failed to copy link:", err))
     }
-  }  
+  }
 
-  // Add this function before the return statement
+  // Lightbox handlers
   const openLightbox = (images, startIndex = 0) => {
     setLightboxImages(images)
     setCurrentImageIndex(startIndex)
     setLightboxOpen(true)
-    // Prevent scrolling when lightbox is open
     document.body.style.overflow = "hidden"
   }
 
   const closeLightbox = () => {
     setLightboxOpen(false)
-    // Re-enable scrolling
     document.body.style.overflow = "auto"
   }
 
@@ -169,9 +162,9 @@ function NewsDetail() {
       setCurrentImageIndex(newIndex)
     }
   }
-  // Helper function to get video thumbnail from iframe
+
+  // Helper functions
   const getVideoThumbnail = (iframe, coverImage) => {
-    // Try to extract YouTube thumbnail or use cover image
     if (iframe && iframe.includes("youtube.com/embed/")) {
       const videoId = iframe.match(/embed\/([^?]+)/)?.[1]
       if (videoId) {
@@ -181,79 +174,83 @@ function NewsDetail() {
     return coverImage
   }
   const extractVideoDuration = (iframe) => {
-    // This is a placeholder - you might want to implement actual duration extraction
-    // or store duration in your backend
-    return "5:24"
+    return "5:24" // Placeholder
   }
   const navigateToDetail = (newsItem) => {
     navigate(`/news/${newsItem.id}`)
   }
 
   const renderSidebarContent = () => {
-    let displayData = []
-    let badgeColor = "bg-orange-100 text-orange-800"
+    const sourceData =
+      activeTab === "trending"
+        ? [...newsData]
+        : activeTab === "videos"
+          ? [...videoData]
+          : newsData;
 
-    switch (activeTab) {
-      case "trending":
-        // Filter trending news or use a different endpoint
-        displayData = normalData.sort((a, b) => b.view_count - a.view_count)
-        badgeColor = "bg-blue-100 text-blue-800"
-        break
-      case "videos":
-        displayData = videoData.sort((a, b) => b.view_count - a.view_count)
-        badgeColor = "bg-green-100 text-green-800"
-        break
-      default:
-        displayData = normalData.slice(0, 6)
-        badgeColor = "bg-orange-100 text-orange-800"
-    }
+    const sorted =
+      activeTab === "trending" || activeTab === "videos"
+        ? sourceData.sort((a, b) => b.view_count - a.view_count)
+        : sourceData;
 
-    return displayData.map((article) => (
+    const filtered = sorted.filter(item =>
+      i18n.language === 'am'
+        ? item.title_am && item.title_am.trim() !== ''
+        : item.title && item.title.trim() !== ''
+    );
+
+    const badgeColor =
+      activeTab === "trending"
+        ? "bg-blue-100 text-blue-800"
+        : activeTab === "videos"
+          ? "bg-green-100 text-green-800"
+          : "bg-orange-100 text-orange-800";
+
+    return filtered.slice(0, 5).map((a) => (
       <div
-        key={article.id}
-        className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-        onClick={() => navigateToDetail(article)}
+        key={a.id}
+        className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+        onClick={() => navigateToDetail(a)}
       >
         <div className="relative flex-shrink-0">
           <img
-            src={
-              activeTab === "videos"
-                ? getVideoThumbnail(article.iframe, `${BASE_URL}` + article.cover_image)
-                : `${BASE_URL}` + article.cover_image
-            }
-            alt={i18n.language === 'am' ? article.title_am : article.title}
-
-            className="w-20 h-20 object-cover rounded-lg"
+            src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
+            alt={i18n.language === 'am' ? a.title_am : a.title}
             onError={(e) => {
               e.target.src = PLACEHOLDER_IMAGE
             }}
+            className="w-20 h-20 object-cover rounded-lg"
           />
+
           {activeTab === "videos" && (
             <>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 bg-orange-400 backdrop-blur-sm rounded-full text-white flex items-center justify-center">
+                <div className="w-6 h-6 bg-orange-400 rounded-full text-white flex items-center justify-center">
                   <PlayIcon size="w-3 h-3" />
                 </div>
               </div>
               <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
-                {extractVideoDuration(article.iframe)}
+                {extractVideoDuration(a.iframe)}
               </div>
             </>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>{article.category}</span>
-          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">{i18n.language === 'am' ? article.title_am : article.title}</h4>
-          
+          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
+            {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
+          </span>
+
+          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">
+            {i18n.language === 'am' ? a.title_am : a.title}
+          </h4>
           <div className="flex items-center text-xs text-gray-500">
             <CalendarIcon size="w-2.5 h-2.5" />
-            <span className="ml-1">{formatDate(article.created_at)}</span>
+            <span className="ml-1">{formatDate(a.created_at)}</span>
           </div>
         </div>
       </div>
     ))
   }
-
 
   if (loading) {
     return (
@@ -280,6 +277,8 @@ function NewsDetail() {
     )
   }
 
+  // Determine media type
+  const isPdfMagazine = !!newsItem.pdf_file
   const isVideo = !!newsItem.iframe
 
   function decodeHtml(html) {
@@ -295,17 +294,17 @@ function NewsDetail() {
         <div className="absolute h-dvh w-full">
           <CoolSvg />
         </div>
-                    <SocialMediaLinks />
+        <SocialMediaLinks />
         <div className="relative h-full bg-transparent container mx-auto px-4 py-12">
 
           <div className="max-w-4xl mx-auto">
             <div className="text-white mt-[10%]">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">{i18n.language === 'am' ? newsItem.title_am : newsItem.title}</h1>
-              
+
               <p className="text-lg opacity-90 mb-6">{i18n.language === 'am' ? newsItem.subtitle_am : newsItem.subtitle}</p>
 
               <div className="flex flex-wrap items-center gap-4 text-sm">
-                
+
                 <span className="bg-orange-400 text-white px-3 py-1 rounded">{i18n.language === 'am' ? newsItem.category_am : newsItem.category}</span>
 
                 <div className="flex items-center">
@@ -330,21 +329,49 @@ function NewsDetail() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="max-w-4xl  mx-auto md:mx-auto 3xl:mx-[-200px]  md:col-span-3">
-        <button
+        <div className="max-w-4xl mx-auto md:mx-auto 3xl:mx-[-200px] md:col-span-3">
+          <button
             onClick={() => navigate("/news")}
             className="flex items-center text-black hover:text-orange-300 transition-colors mb-6"
           >
             <BackIcon />
             <span className="ml-2">{t('back_to_news')}</span>
           </button>
-          {/* Featured Image */}
-          {!isVideo && (
+
+          {/* Media Section */}
+          {isPdfMagazine ? (
+             <div className="mb-8">
+    <object
+      data={`${BASE_URL}${newsItem.pdf_file}`}
+      type="application/pdf"
+      width="100%"
+      height="600px"
+      className="rounded-lg shadow-lg"
+    >
+      <p>
+        Your browser does not support PDFs.{" "}
+        <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
+          Download the PDF
+        </a>
+      </p>
+    </object>
+    <div className="mt-4 flex justify-end">
+      <a
+        href={`${BASE_URL}${newsItem.pdf_file}`}
+        download
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded"
+      >
+        {t('download_pdf')}
+      </a>
+    </div>
+  </div>
+          ) : !isVideo ? (
             <div className="mb-8 relative group">
               <img
                 src={`${BASE_URL}${newsItem.cover_image}`}
                 alt={i18n.language === 'am' ? newsItem.title_am : newsItem.title}
-                
                 className="w-full rounded-lg shadow-lg"
                 onError={(e) => {
                   e.target.src = PLACEHOLDER_IMAGE
@@ -358,7 +385,7 @@ function NewsDetail() {
                 <Maximize size={20} />
               </button>
             </div>
-          )}
+          ) : null}
 
           {/* Video Content */}
           {isVideo && (
@@ -370,14 +397,11 @@ function NewsDetail() {
             </div>
           )}
 
-
-
           {/* Article Content */}
           <div
             className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: `${decodeHtml(i18n.language === 'am' ? newsItem.content_am : newsItem.content)}` }}
+            dangerouslySetInnerHTML={{ __html: decodeHtml(i18n.language === 'am' ? newsItem.content_am : newsItem.content) }}
           />
-
 
           {/* Additional Images */}
           {newsItem.images && newsItem.images.length > 0 && (
@@ -404,7 +428,7 @@ function NewsDetail() {
                         className="absolute top-2 right-2 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-400"
                         aria-label={t('view_full_screen')}
                       >
-                        <Maximize size={16} />
+                        <Maximize size={20} />
                       </button>
                     </div>
                   )
@@ -413,151 +437,101 @@ function NewsDetail() {
             </div>
           )}
 
-          {/* Author Info */}
-          {newsItem.author_username && (
-            <div className="mt-12 flex items-center p-6 bg-gray-50 rounded-lg">
-              <div className="w-16 h-16 rounded-full bg-gray-300 overflow-hidden mr-4">
-                {newsItem.author_profile_image ? (
-                  <img
-                    src={`${BASE_URL}${newsItem.author_profile_image}`}
-                    alt={newsItem.author_username}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-orange-400 text-white text-xl">
-                    {newsItem.author_username.charAt(0).toUpperCase()}
-                  </div>
-                )}
-              </div>
-              <div>
-                <h4 className="font-bold text-lg">Author</h4>
-                <p>{newsItem.author_username}</p>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="hidden md:block lg:col-span-1">
-          <div className="sticky top-8">
-          <RightSidebar
-          activeTab={activeTab}
-          setActiveTab ={setActiveTab}
-          renderSidebarContent={renderSidebarContent}
-        />
-          </div>
-        </div>
-      </main>
-              {/* Related News */}
-              {relatedNews && (
-          <div className="m-16">
-            <h3 className="text-2xl font-bold mb-6">Related News</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedNews.map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                  onClick={() => navigate(`/news/${article.id}`)}
-                >
-                  <div className="relative">
+          {/* Related News */}
+          {relatedNews.length > 0 && (
+            <section className="mt-12">
+              <h3 className="text-3xl font-bold mb-6">{t('related_news')}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedNews.map((related) => (
+                  <div
+                    key={related.id}
+                    className="cursor-pointer rounded-lg shadow hover:shadow-lg transition-shadow"
+                    onClick={() => navigateToDetail(related)}
+                  >
                     <img
-                      src={`${BASE_URL}${article.cover_image}`}
-                      alt={i18n.language === 'am' ? article.title_am : article.title}
-                      
-                      className="w-full h-48 object-cover"
+                      src={`${BASE_URL}${related.cover_image}`}
+                      alt={i18n.language === 'am' ? related.title_am : related.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
                       onError={(e) => {
                         e.target.src = PLACEHOLDER_IMAGE
                       }}
                     />
-                    <span className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                       {i18n.language === 'am' ? article.category_am : article.category}
-                     
-                    </span>
-                    {article.iframe && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-12 h-12 bg-orange-400 text-white rounded-full flex items-center justify-center">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <polygon points="5,3 19,12 5,21" fill="currentColor" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-2 line-clamp-2">{i18n.language === 'am' ? article.title_am : article.title}</h3>
-                     
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{i18n.language === 'am' ? article.subtitle_am : article.subtitle}</p>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <div className="flex items-center">
-                        <CalendarIcon />
-                        <span className="ml-1">{formatDate(article.created_at)}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <EyeIcon size="w-3 h-3" />
-                        <span className="ml-1">{article.view_count} {t('views')}</span>
-                      </div>
+                    <div className="p-4">
+                      <h4 className="text-lg font-semibold line-clamp-2">
+                        {i18n.language === 'am' ? related.title_am : related.title}
+                      </h4>
+                      <p className="text-sm text-gray-600">{formatDate(related.created_at)}</p>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-      {lightboxOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center">
-          <div className="relative w-full h-full flex flex-col items-center justify-center">
-            {/* Close button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 text-white hover:text-orange-400 transition-colors z-10"
-              aria-label={t('close_lightbox')}
-            >
-              <X size={32} />
-            </button>
-
-            {/* Image counter */}
-            <div className="absolute top-4 left-4 text-white text-sm">
-              {currentImageIndex + 1} / {lightboxImages.length}
-            </div>
-
-            {/* Image */}
-            <div className="w-full h-full flex items-center justify-center p-4 md:p-12">
-              <img
-                src={lightboxImages[currentImageIndex] || "/placeholder.svg"}
-                alt={`Full screen image ${currentImageIndex + 1}`}
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
-
-            {/* Navigation buttons */}
-            {lightboxImages.length > 1 && (
-              <>
-                <button
-                  onClick={() => navigateImage(-1)}
-                  disabled={currentImageIndex === 0}
-                  className={`absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-400 transition-colors ${
-                    currentImageIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  aria-label={t('previous_image')}
-                >
-                  <ChevronLeft size={40} />
-                </button>
-                <button
-                  onClick={() => navigateImage(1)}
-                  disabled={currentImageIndex === lightboxImages.length - 1}
-                  className={`absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-orange-400 transition-colors ${
-                    currentImageIndex === lightboxImages.length - 1 ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  aria-label={t('next_image')}
-                >
-                  <ChevronRight size={40} />
-                </button>
-              </>
-            )}
-          </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
-      )}
+
+        {/* Sidebar */}
+        <RightSidebar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          renderSidebarContent={renderSidebarContent}
+          sidebarItems={newsData}
+        />
+      </main>
 
       <Footer />
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('image_viewer')}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              closeLightbox()
+            }}
+            className="absolute top-4 right-4 text-white p-2 rounded hover:bg-gray-800"
+            aria-label={t('close')}
+          >
+            <X size={24} />
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              navigateImage(-1)
+            }}
+            disabled={currentImageIndex === 0}
+            className="absolute left-4 text-white p-2 rounded hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={t('previous_image')}
+          >
+            <ChevronLeft size={32} />
+          </button>
+
+          <img
+            src={lightboxImages[currentImageIndex]}
+            alt={`${t('image')} ${currentImageIndex + 1} ${t('of')} ${lightboxImages.length}`}
+            className="max-h-[80vh] max-w-[90vw] rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              navigateImage(1)
+            }}
+            disabled={currentImageIndex === lightboxImages.length - 1}
+            className="absolute right-4 text-white p-2 rounded hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={t('next_image')}
+          >
+            <ChevronRight size={32} />
+          </button>
+        </div>
+      )}
     </div>
   )
 }

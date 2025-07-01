@@ -24,7 +24,7 @@ const MajorNews = ({ majorNews, BASE_URL, CalendarIcon, PlayIcon, formatDate, na
   return (
     <>
       {/* Major News Article */}
-      {majorNews && (
+      {majorNews  && (
         <div
           className="bg-white hidden md:block overflow-hidden transition-shadow  mt-6 cursor-pointer"
           onClick={() => navigateToDetail(majorNews)}

@@ -10,16 +10,7 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
             <div className="sticky top-8">
               <div className="w-full">
                 <div className="grid grid-cols-3 p-1 mb-6">
-                  <button
-                    className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
-                      activeTab === "latest"
-                        ? "bg-orange-400 text-white shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                    onClick={() => setActiveTab("latest")}
-                  >
-                    {t('latest')}
-                  </button>
+                
                   <button
                     className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12 ${
                       activeTab === "trending"
@@ -39,6 +30,16 @@ const RightSidebar = ({ activeTab, setActiveTab, renderSidebarContent }) => {
                     onClick={() => setActiveTab("videos")}
                   >
                     {t('videos')}
+                  </button>
+                    <button
+                    className={`text-xs font-medium py- px-3 transition-all -skew-x-12 ${
+                      activeTab === "latest"
+                        ? "bg-orange-400 text-white shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                    onClick={() => setActiveTab("latest")}
+                  >
+                    {t('Digital_magazine')}
                   </button>
                 </div>
 

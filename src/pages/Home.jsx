@@ -96,9 +96,9 @@ const singleNews = news?.results?.result?.find(item =>
       {singleNews && singleNews.cover_image ? (
         <a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
           <ContentSection
-            title={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
+            title={t('news')}
 
-            subtitle={i18n.language === 'am' ? singleNews.subtitle_am : singleNews.subtitle}
+            subtitle={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
             images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
             large={false}
           />
