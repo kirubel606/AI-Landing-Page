@@ -13,7 +13,7 @@ import SocialMediaLinks from "../components/SocialMediaLinks";
 import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE;
-
+import { FiFilter ,FiSearch } from "react-icons/fi";    
 const PlayIcon = ({ size = "w-6 h-6" }) => (
   <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <polygon points="5,3 19,12 5,21" fill="currentColor" />
@@ -43,6 +43,71 @@ const [magazineData, setMagazineData] = useState([]);
   const addedItemIds = useRef(new Set());
   const observerTarget = useRef(null);
   const { t, i18n } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState("");       // the selected category filter
+  const [filterCategory, setFilterCategory] = useState(category);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [newsType, setNewsType] = useState("all");  // "all" | "regular" | "magazine" | "video"
+  const [categories, setCategories] = useState([]);   // the list of all categories
+  const [searchTerm, setSearchTerm] = useState("");
+  const panelRef = useRef();
+
+
+  // Fetch categories on mount
+  useEffect(() => {
+    fetch(`${BASE_URL}/categories/`)
+      .then((res) => res.json())
+      .then((data) => setCategories(data || []))
+      .catch(console.error);
+  }, []);
+  
+
+  // Close when clicked outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (panelRef.current && !panelRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+// Whenever the user picks a new category, restart from page 1 AND refetch immediately
+useEffect(() => {
+  addedItemIds.current.clear();
+  setMergedContent([]);
+  setNewsData([]);   // if you also want to reset the newsData array
+  setHasMore(true);
+
+  // Force page ref to 1
+  pageRef.current = 1;
+  setPage(1);
+
+  // Immediately fetch page 1 with the new category
+  fetchContent(1);
+}, [category]);
+const runSearch = () => {
+  // Prevent useless fetch if already empty and we’re on page 1
+  if (searchTerm.trim() === "" && pageRef.current === 1 && mergedContent.length > 0) {
+    return;
+  }
+
+  addedItemIds.current.clear();
+  setMergedContent([]);
+  setNewsData([]);
+  pageRef.current = 1;
+  setPage(1);
+  setHasMore(true);
+
+  fetchContent(1);
+};
+useEffect(() => {
+  if (searchTerm.trim() === "") {
+    runSearch();
+  }
+}, [searchTerm]);
 
   const getVideoThumbnail = (iframe, coverImage) => {
     const videoId = iframe?.match(/embed\/(.*?)\?/i)?.[1];
@@ -93,11 +158,42 @@ const [magazineData, setMagazineData] = useState([]);
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/news/all/?page=${targetPage}`);
+      // Build the query string
+      const params = new URLSearchParams();
+      params.set("page", targetPage);
+      if (category) {
+        params.set("category", category);
+      }
+      // date range
+      if (dateFrom) params.set("date_from", dateFrom);
+      if (dateTo)   params.set("date_to",   dateTo);
+      if (searchTerm) params.set("search", searchTerm); // <-- Add this line
+      // type
+      switch (newsType) {
+        case "regular":
+          params.set("magazine", "false");
+          params.set("iframe",   "false");
+          break;
+        case "magazine":
+          params.set("magazine", "true");
+          break;
+        case "video":
+          params.set("iframe",   "true");
+          break;
+        // "all" → no extra params
+      }
+
+      // Add any other params here, e.g. params.set("author", authorId);
+
+      const url = `${BASE_URL}/news/all/?${params.toString()}`;
+      const res = await fetch(url);
       const json = await res.json();
-
-      console.log(`Fetching page ${targetPage}`, json);
-
+      if (json.message){
+        setError(json.message);
+      }
+      else{
+        setError(null);
+      }
       const results = json?.results?.result;
 
       if (!results || results.length === 0) {
@@ -110,6 +206,7 @@ const [magazineData, setMagazineData] = useState([]);
       newItems.forEach((item) => addedItemIds.current.add(item.id));
 
       // Append to merged content
+      setNewsData((prev) => [...prev, ...newItems])
       setMergedContent((prev) => [...prev, ...newItems]);
 
       // Set hasMore based on the `next` field from the response
@@ -119,7 +216,7 @@ const [magazineData, setMagazineData] = useState([]);
 
     } catch (err) {
       console.error("Error fetching content:", err);
-      setError("Failed to fetch news data");
+      setError(err.message || "Failed to fetch news data");
       setHasMore(false);
     } finally {
       setLoading(false);
@@ -318,14 +415,145 @@ const featuredArticle = [...newsData]
         <CoolSvg />
         <div className="relative  flex items-center justify-center mt-32 text-white text-center">
           <div className="mx-auto text-center justify-normal">
-            <h1 className="text-6xl font-bold mb-4">{t('news_and_videos')}</h1>
+            <h1 className="text-4xl font-bold mb-4">{t('news_and_videos')}</h1>
             <p className="text-xl">{t('advancing_innovation_through_technology')}</p>
           </div>
         </div>
       </div>
 
       <main className="max-w-[90%] mx-auto py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10">
+        <div className="relative flex h-full bg-transparent container mx-auto px-4 py-2">
+          <div className="relative inline-block hover:bg-gray-200 transition rounded-full z-10 shadow-2xl">
+            <button
+              onClick={() => setOpen((o) => !o)}
+              className="p-2 rounded-full transition"
+              aria-label={t("Filter")}
+            >
+              <FiFilter className="w-5 h-5 text-black" />
+            </button>
+
+            {open && (
+              <div
+                ref={panelRef}
+                className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-10 p-4 space-y-4"
+              >
+                <h3 className="text-gray-800 font-semibold">{t("Filter News")}</h3>
+
+                {/* Category */}
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">{t("Category")}</label>
+                  <select
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                  >
+                    <option value="">{t("All Categories")}</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {i18n.language === "am" ? cat.name_am : cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Date Range */}
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">{t("From")}</label>
+                  <input
+                    type="date"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">{t("To")}</label>
+                  <input
+                    type="date"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                  />
+                </div>
+
+                {/* Type Dropdown */}
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">{t("Type")}</label>
+                  <select
+                    value={newsType}
+                    onChange={(e) => setNewsType(e.target.value)}
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                  >
+                    <option value="all">{t("All")}</option>
+                    <option value="regular">{t("Regular News")}</option>
+                    <option value="magazine">{t("Magazine")}</option>
+                    <option value="video">{t("Video News")}</option>
+                  </select>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="px-3 py-1 text-sm text-gray-600 hover:text-gray-800"
+                  >
+                    {t("Close")}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOpen(false);
+
+                      // Reset lists & pagination
+                      addedItemIds.current.clear();
+                      setMergedContent([]);
+                      setNewsData([]);
+                      pageRef.current = 1;
+                      setPage(1);
+                      setHasMore(true);
+
+                      // Apply filters
+                      setCategory(filterCategory);
+
+                      // Immediately fetch with new filters
+                      fetchContent(1);
+                    }}
+                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                  >
+                    {t("Apply")}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        {/* 🔍 Search Field */}
+        <div className=" items-center border border-gray-300 rounded px-2 py-1 bg-white shadow-sm">
+          <input
+            type="text"
+            placeholder={t("Search...")}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                runSearch(); // <- Function we'll define
+              }
+            }}
+            className="outline-none w-56 text-sm"
+          />
+          <button
+            onClick={runSearch}
+            className="ml-2 text-sm text-blue-600 hover:underline"
+          >
+            <FiSearch className="text-black"/>
+          </button>
+        </div>
+        </div>
+        {error && (
+          <div className="mt-[-10] flex items-center justify-center">
+            <p className="text-lg text-red-500">{error}</p>
+          </div>
+        )}
+
+        <div className={error ? "hidden":"grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10"}>
           <Leftsidebar {...{ leftColumnNews: newsData, BASE_URL, CalendarIcon, formatDate, navigateToDetail }} />
           <CenterColumn {...{ featuredArticle, BASE_URL, techNews: newsData, CalendarIcon, formatDate, navigateToDetail }} />
           <RightSidebar {...{ activeTab, setActiveTab, renderSidebarContent }} />
@@ -333,6 +561,7 @@ const featuredArticle = [...newsData]
       </main>
 
 <section className="max-w-7xl mx-auto px-4 py-16">
+  
   <div className="space-y-8">
     <SocialMediaLinks />
 
