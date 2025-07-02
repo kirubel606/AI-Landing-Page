@@ -423,7 +423,7 @@ const featuredArticle = [...newsData]
 
       <main className="max-w-[90%] mx-auto py-8">
         <div className="relative flex h-full bg-transparent container mx-auto px-4 py-2">
-          <div className="relative inline-block hover:bg-gray-200 transition rounded-full z-10 shadow-2xl">
+          <div className=" inline-block hover:bg-gray-200 transition rounded-full shadow-2xl">
             <button
               onClick={() => setOpen((o) => !o)}
               className="p-2 rounded-full transition"
