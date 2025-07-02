@@ -415,7 +415,7 @@ const featuredArticle = [...newsData]
         <CoolSvg />
         <div className="relative  flex items-center justify-center mt-32 text-white text-center">
           <div className="mx-auto text-center justify-normal">
-            <h1 className="text-4xl font-bold mb-4">{t('news_and_videos')}</h1>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">{t('news_and_videos')}</h1>
             <p className="text-xl">{t('advancing_innovation_through_technology')}</p>
           </div>
         </div>
