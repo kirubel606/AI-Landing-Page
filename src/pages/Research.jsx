@@ -257,85 +257,107 @@ const Research = () => {
             {/* Category divs */}
             <div className="container mx-auto px-4 py-8 overflow-y-clip">
 
-                <div className="relative mb-8">
-                    <div className="flex gap-4 items-start">
-                        {/* Left Arrow Button */}
-                        {overflow && (
-                            <div className="absolute top-1/2 -left-4 z-10">
-                                <button onClick={goPrev} className="bg-white rounded-full shadow p-2">
-                                    ◀
-                                </button>
+            <div className="relative mb-8">
+    <div className="flex flex-col md:flex-row gap-4 items-start">
+        {/* Left Arrow (Only for desktop) */}
+        {overflow && (
+            <div className="hidden md:block absolute top-1/2 -left-4 z-10">
+                <button onClick={goPrev} className="bg-white rounded-full shadow p-2">◀</button>
+            </div>
+        )}
+
+        {/* All Categories Card */}
+        <div
+            onClick={() => {
+                navigate("/research");
+                setSelectedCategory(null);
+                setSelectedCategoryName(t('allCategories'));
+                setSelectedCategoryNameAm(t('allCategories'));
+            }}
+            className="relative min-w-full sm:min-w-[200px] md:min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
+        >
+            <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
+                {visibleCategories.slice(0, 4).map((category, idx) => (
+                    <img
+                        key={category.id || idx}
+                        src={category.image || "/placeholder.svg"}
+                        alt={i18n.language === 'am' ? category.name_am : category.name}
+                        className="w-full h-full object-cover border border-gray-200"
+                    />
+                ))}
+            </div>
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-0">
+                <h1 className="text-white font-semibold text-center text-sm px-2">
+                    {t('allCategories')}
+                </h1>
+            </div>
+        </div>
+
+        {/* Categories Grid - Grid on desktop, Scrollable Row on mobile */}
+        <div className="relative flex-1 w-full">
+            <div className="grid md:grid-cols-5 gap-4 hidden md:grid">
+                {visibleCategories.map((category, index) => (
+                    <div
+                        key={`${category.id}-${index}`}
+                        onClick={() => {
+                            navigate(`/research?category=${category.id}`);
+                            setSelectedCategory(category.id);
+                            setSelectedCategoryName(category.name);
+                            setSelectedCategoryNameAm(category.name_am);
+                        }}
+                        className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
+                    >
+                        <div className="relative h-32">
+                            <img
+                                src={category.image || "/placeholder.svg"}
+                                alt={i18n.language === 'am' ? category.name_am : category.name}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                <h1 className="text-white font-semibold">{i18n.language === 'am' ? category.name_am : category.name}</h1>
                             </div>
-                        )}
-
-                        {/* All Categories Card - showing grid of 4 category images */}
-                        <div
-                            onClick={() => {
-                                navigate("/research");  // removes ?category=... from the URL
-                                setSelectedCategory(null);
-                                setSelectedCategoryName(t('allCategories'));
-                                setSelectedCategoryNameAm(t('allCategories'));
-                            }}
-                            className="relative min-w-[220px] cursor-pointer overflow-hidden rounded-xl hover:shadow-lg transition-shadow"
-                        >
-                            <div className="relative h-32 w-full grid grid-cols-2 grid-rows-2 gap-0">
-                                {visibleCategories.slice(0, 4).map((category, idx) => (
-                                    <img
-                                        key={category.id || idx}
-                                        src={category.image || "/placeholder.svg"}
-                                        alt={i18n.language === 'am' ? category.name_am : category.name}
-                                        
-                                        className="w-full h-full object-cover border border-gray-200"
-                                    />
-                                ))}
-                            </div>
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl z-0">
-                                <h1 className="text-white font-semibold text-center text-sm px-2">
-                                    {t('allCategories')}
-                                </h1>
-                            </div>
-                        </div>
-
-
-                        {/* Scrollable Categories Grid */}
-                        <div className="relative flex-1">
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                                {visibleCategories.map((category, index) => (
-                                    <div
-                                        key={`${category.id}-${index}`}
-                                        onClick={() => {
-                                            navigate(`/research?category=${category.id}`);
-                                            setSelectedCategory(category.id);
-                                            setSelectedCategoryName(category.name);
-                                            setSelectedCategoryNameAm(category.name_am);
-                                        }}
-
-                                        className="overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
-                                    >
-                                        <div className="relative h-32">
-                                            <img
-                                                src={category.image || "/placeholder.svg"}
-                                                alt={i18n.language === 'am' ? category.name_am : category.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                                <h1 className="text-white font-semibold">{i18n.language === 'am' ? category.name_am : category.name}</h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {overflow && (
-                                <div className="absolute top-1/2 -right-4 z-10">
-                                    <button onClick={goNext} className="bg-white rounded-full shadow p-2">
-                                        ▶
-                                    </button>
-                                </div>
-                            )}
                         </div>
                     </div>
+                ))}
+            </div>
+
+            {/* Mobile: Horizontal Scroll */}
+            <div className="flex md:hidden gap-3 overflow-x-auto py-2">
+                {visibleCategories.slice(0, 6).map((category, index) => (
+                    <div
+                        key={`${category.id}-${index}`}
+                        onClick={() => {
+                            navigate(`/research?category=${category.id}`);
+                            setSelectedCategory(category.id);
+                            setSelectedCategoryName(category.name);
+                            setSelectedCategoryNameAm(category.name_am);
+                        }}
+                        className="min-w-[160px] flex-shrink-0 overflow-hidden cursor-pointer rounded-xl hover:shadow-lg transition-shadow"
+                    >
+                        <div className="relative h-28">
+                            <img
+                                src={category.image || "/placeholder.svg"}
+                                alt={i18n.language === 'am' ? category.name_am : category.name}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                <h1 className="text-white font-semibold text-sm">{i18n.language === 'am' ? category.name_am : category.name}</h1>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Right Arrow (Only for desktop) */}
+            {overflow && (
+                <div className="hidden md:block absolute top-1/2 -right-4 z-10">
+                    <button onClick={goNext} className="bg-white rounded-full shadow p-2">▶</button>
                 </div>
+            )}
+        </div>
+    </div>
+</div>
+
 
 
 
