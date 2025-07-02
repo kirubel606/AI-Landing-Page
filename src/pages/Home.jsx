@@ -53,7 +53,7 @@ const singleNews = news?.results?.result?.find(item =>
           <div className="text-center max-w-4xl mx-auto">
             {/* AI Badge */}
             <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
-              <span className="sm:px-2 md:px-3 bg-white text-black text-sm font-bold py-1 mr-2 rounded-lg">
+              <span className="sm:px-2 md:px-3 px-1 bg-white text-black text-sm font-bold py-1 mr-2 rounded-lg">
                 AI
               </span>
               <span className="text-gray-300 text-sm font-medium">{t('for_all')}</span>
