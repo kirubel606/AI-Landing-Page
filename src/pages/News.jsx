@@ -86,7 +86,7 @@ useEffect(() => {
   setPage(1);
 
   // Immediately fetch page 1 with the new category
-  fetchContent(1);
+  fetchContent();
 }, [category]);
 const runSearch = () => {
   // Prevent useless fetch if already empty and we’re on page 1
@@ -101,7 +101,7 @@ const runSearch = () => {
   setPage(1);
   setHasMore(true);
 
-  fetchContent(1);
+  fetchContent();
 };
 useEffect(() => {
   if (searchTerm.trim() === "") {
