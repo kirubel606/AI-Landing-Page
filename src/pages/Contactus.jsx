@@ -1,13 +1,15 @@
 "use client"
 
-import { useState, useContext, useEffect } from "react"
+import { useState, useContext, useRef, useEffect } from "react"
 import CoolSvg from "../components/CoolSVg"
 import Footer from "../components/Footer"
 import { AppContext } from "../context/Appcontext"
 import { Phone, Mail, MapPin, HelpCircle, BookOpen, MessageSquare } from "lucide-react"
 import { useTranslation } from 'react-i18next';
 import SocialMediaLinks from "../components/SocialMediaLinks"
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Contactus() {
+
   const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -15,6 +17,7 @@ function Contactus() {
     email: "",
     phone: "",
     message: "",
+
   })
   const { settings, loading } = useContext(AppContext)
 
@@ -25,7 +28,7 @@ function Contactus() {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/faq/`)
+        const res = await fetch(`${BASE_URL}/faq/`)
         const data = await res.json()
         setFaqs(data)
       } catch (error) {
@@ -43,23 +46,26 @@ function Contactus() {
     }))
   }
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setSubmitStatus(null)
 
-    try {
-      // Simulate API call - replace with your actual endpoint
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+    const name = `${formData.firstName} ${formData.lastName}`
 
-      // Reset form on success
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        message: "",
+    try {
+      const response = await fetch(`${BASE_URL}/contacts/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          name: name.trim()
+        }),
       })
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", message: "" })
       setSubmitStatus("success")
     } catch (error) {
       setSubmitStatus("error")
@@ -67,6 +73,8 @@ function Contactus() {
       setIsSubmitting(false)
     }
   }
+
+
 
   const contactInfo = [
     {
@@ -259,7 +267,6 @@ function Contactus() {
                   required
                 />
               </div>
-
               <button
                 type="submit"
                 disabled={isSubmitting}

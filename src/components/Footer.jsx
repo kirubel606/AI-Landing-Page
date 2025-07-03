@@ -89,7 +89,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-slate-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-slate-700 mt-8 pt-8 pr-20 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
             © 2025 {t('ethiopian_ai_institute')}. {t('all_rights_reserved')}
           </p>
@@ -109,12 +109,18 @@ const Footer = () => {
   <a href="https://www.instagram.com/ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
     <Instagram size={20} />
   </a>
-  <a href="https://www.tiktok.com/@ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
-    {/* TikTok icon as inline SVG */}
-    <svg viewBox="0 0 256 256" width="20" height="20" fill="currentColor">
-      <path d="M168 48V92a48 48 0 11-48 48V92h28a44 44 0 0044-44h-24z"/>
-    </svg>
-  </a>
+<a href="https://www.tiktok.com/@ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 256 256"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M212.68 79.4a73.56 73.56 0 0 1-40.24-11.88V160a64 64 0 1 1-64-64 63.08 63.08 0 0 1 8 .53V72.37A96 96 0 1 0 224 160V84.45a95.49 95.49 0 0 1-11.32-5.05Z"/>
+  </svg>
+</a>
+
 </div>
 
         </div>

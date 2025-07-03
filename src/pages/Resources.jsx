@@ -478,7 +478,9 @@ console.log(paginatedData)
           </div>
         </div>
       </div>
+      <div className="bg-gray-50 border-t border-gray-200 mt-52">
       <Footer />
+      </div>
     </div>
   )
 }
