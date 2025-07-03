@@ -21,24 +21,24 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [sidebarNews, setSidebarNews] = useState([]);
-const [loading, setLoading] = useState(true);
-useEffect(() => {
-  const fetchSidebarNews = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/news/sidebar/`);
-      const json = await res.json();
-      const data = Array.isArray(json) ? json : [];
-      const filteredData = data.filter(item => !item.iframe && !item.magazine);
-      setSidebarNews(filteredData);
-    } catch (err) {
-      console.error("Failed to fetch sidebar news:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchSidebarNews();
-}, []);
-const singleNews = sidebarNews
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchSidebarNews = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/news/sidebar/`);
+        const json = await res.json();
+        const data = Array.isArray(json) ? json : [];
+        const filteredData = data.filter(item => !item.iframe && !item.magazine);
+        setSidebarNews(filteredData);
+      } catch (err) {
+        console.error("Failed to fetch sidebar news:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSidebarNews();
+  }, []);
+  const singleNews = sidebarNews
     .filter(item =>
       i18n.language === 'am' ? item.title_am?.trim() : item.title?.trim()
     )
@@ -113,22 +113,20 @@ const singleNews = sidebarNews
       {showSocialLinks && <SocialMediaLinks />}
 
       {/* News Section */}
-     {loading ? (
-  <p className="text-center text-white">Loading news...</p>
-) : singleNews && singleNews.cover_image ? (
-  <a onClick={() => navigate(`/news/${singleNews.id}`)} className="cursor-pointer">
-    <ContentSection
-      title={t('news')}
-      subtitle={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
-      images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
-      large={false}
-    />
-  </a>
-) : (
-  <p className="text-center text-white">{t('no_news_available')}</p>
-)}
-
-
+      {loading ? (
+        <p className="text-center text-white">Loading news...</p>
+      ) : singleNews && singleNews.cover_image ? (
+        <a onClick={() => navigate(`/news/${singleNews.id}`)} className="cursor-pointer">
+          <ContentSection
+            title={t('news')}
+            subtitle={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
+            images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
+            large={false}
+          />
+        </a>
+      ) : (
+        <p className="text-center text-white">{t('no_news_available')}</p>
+      )}
 
       {/* Other Sections */}
       <ApplicationsGrid />
@@ -148,7 +146,7 @@ const singleNews = sidebarNews
       <Quotes />
       <Testimonial />
       <Collaborations />
-      {showSocialLinks && <ChatbotWrapper />}
+      {showSocialLinks}
       <Footer />
     </>
   );

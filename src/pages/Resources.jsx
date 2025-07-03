@@ -161,7 +161,7 @@ const Resources = () => {
             onClick={() => typeof page === "number" && onPageChange(page)}
             disabled={page === "..."}
             className={`px-3 py-2 rounded border text-sm ${page === currentPage
-              ? "bg-blue-600 text-white border-blue-600"
+              ? "bg-sky-950 text-white border-sky-950"
               : page === "..."
                 ? "border-transparent cursor-default"
                 : "border-gray-300 hover:bg-gray-50"
@@ -363,7 +363,7 @@ console.log(paginatedData)
                     setSearchTerm(e.target.value)
                     setCurrentPage(1)
                   }}
-                  className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-950"
                 />
               </div>
             </div>
