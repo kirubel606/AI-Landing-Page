@@ -7,12 +7,24 @@ import {
 } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SocialMediaLinks = ({ visible = true }) => {
   const { i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language || 'en');
-
+useEffect(() => {
+    // Set initial language state based on i18n
+    setLang(i18n.language || 'en');
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/685e870e8b962e190cb8fc07/1iuojv4f4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+  }, [i18n.language]);
   const toggleLanguage = () => {
     const newLang = lang === 'en' ? 'am' : 'en';
     i18n.changeLanguage(newLang);
