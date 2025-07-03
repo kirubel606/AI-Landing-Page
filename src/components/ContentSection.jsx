@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react"
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
 import { useTranslation } from 'react-i18next';
 
-const ContentSection = ({ title, subtitle, images, large = false }) => {
+const ContentSection = ({ title, subtitle,subsub, images, large = false }) => {
   const getImageUrl = (img) => {
     if (typeof img !== 'string') return ''; // skip invalid types
     return img.startsWith('http') ? img : BASE_URL + img;
@@ -54,63 +54,112 @@ const { t, i18n } = useTranslation();
             <div className="flex flex-col md:flex-row gap-6 md:items-center">
               {/* Mobile: Large image first */}
               <div className="md:order-2 md:flex-2">
-                {images[0] && (
-                  <div className="relative group">
-                    <img
-                      src={getImageUrl(images[0])}
-                      alt="AI Conference"
-                      className="w-full h-80 md:h-[410px] object-cover rounded-lg shadow-lg shadow-orange-300"
-                    />
-                    <button
-                      onClick={() => {
-                        const galleryImages = images.map((galleryImg) => galleryImg)
-                        openLightbox(galleryImages, 0)
-                      }}
-                      className="absolute top-4 right-4 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-400"
-                      aria-label="View full screen"
-                    >
-                      <Maximize size={16} />
-                    </button>
-                  </div>
-                )}
+               {images[0] && (
+  <div className="relative group">
+    <img
+      src={getImageUrl(images[0])}
+      alt="AI Conference"
+      className="w-full h-80 md:h-[410px] object-cover rounded-lg shadow-lg shadow-orange-300"
+    />
+
+    {/* Title & subtitle overlay */}
+    <div
+      className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-center text-white p-4"
+    >
+      <h3 className="text-xl md:text-2xl font-bold">{subtitle}</h3>
+      {subsub && (
+        <p className="text-sm md:text-lg mt-2">{subsub}</p>
+      )}
+    </div>
+
+    {/* Fullscreen button */}
+    <button
+      onClick={() => {
+        const galleryImages = images.map((galleryImg) => galleryImg)
+        openLightbox(galleryImages, 0)
+      }}
+      className="absolute top-4 right-4 bg-black/50 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-400"
+      aria-label="View full screen"
+    >
+      <Maximize size={16} />
+    </button>
+  </div>
+)}
+
 
               </div>
 
               {/* Left side - 2 smaller images */}
-              <div className="flex flex-row md:flex-col gap-4 md:order-1 md:flex-1">
-                {images[1] && (
-                  <img
-                    src={getImageUrl(images[1])}
-                    alt="Event 1"
-                    className="w-full h-32 md:h-[240px] object-cover rounded-lg shadow-md shadow-orange-300"
-                  />
-                )}
-                {images[2] && (
-                  <img
-                    src={getImageUrl(images[2])}
-                    alt="Event 2"
-                    className="w-full h-32 md:h-[150px] object-cover rounded-lg shadow-md shadow-orange-300"
-                  />
-                )}
-              </div>
+<div className="flex flex-row md:flex-col gap-4 md:order-1 md:flex-1">
+  {images[1] && (
+    <div className="relative group w-full h-32 md:h-[240px] overflow-hidden rounded-lg shadow-md shadow-orange-300">
+      <img
+        src={getImageUrl(images[1])}
+        alt="Event 1"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-center text-white p-2">
+        <h3 className="text-sm md:text-base font-semibold">{subtitle}</h3>
+        {subsub && (
+          <p className="text-xs md:text-sm mt-1">{subsub}</p>
+        )}
+      </div>
+    </div>
+  )}
+
+  {images[2] && (
+    <div className="relative group w-full h-32 md:h-[150px] overflow-hidden rounded-lg shadow-md shadow-orange-300">
+      <img
+        src={getImageUrl(images[2])}
+        alt="Event 2"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-center text-white p-2">
+        <h3 className="text-sm md:text-base font-semibold">{subtitle}</h3>
+        {subsub && (
+          <p className="text-xs md:text-sm mt-1">{subsub}</p>
+        )}
+      </div>
+    </div>
+  )}
+</div>
+
 
               {/* Right side - 2 smaller images */}
-              <div className="flex flex-row md:flex-col gap-4 md:order-3 md:flex-1">
-                {images[3] && (
-                  <img
-                    src={getImageUrl(images[3])}
-                    alt="Event 3"
-                    className="w-full h-32 md:h-[240px] object-cover rounded-lg shadow-md shadow-orange-300"
-                  />
-                )}
-                {images[4] && (
-                  <img
-                    src={getImageUrl(images[4])}
-                    alt="Event 4"
-                    className="w-full h-32 md:h-[150px] object-cover rounded-lg shadow-md shadow-orange-300"
-                  />
-                )}
-              </div>
+<div className="flex flex-row md:flex-col gap-4 md:order-3 md:flex-1">
+  {images[3] && (
+    <div className="relative group w-full h-32 md:h-[240px] overflow-hidden rounded-lg shadow-md shadow-orange-300">
+      <img
+        src={getImageUrl(images[3])}
+        alt="Event 3"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-center text-white p-2">
+        <h3 className="text-sm md:text-base font-semibold">{subtitle}</h3>
+        {subsub && (
+          <p className="text-xs md:text-sm mt-1">{subsub}</p>
+        )}
+      </div>
+    </div>
+  )}
+
+  {images[4] && (
+    <div className="relative group w-full h-32 md:h-[150px] overflow-hidden rounded-lg shadow-md shadow-orange-300">
+      <img
+        src={getImageUrl(images[4])}
+        alt="Event 4"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-center text-white p-2">
+        <h3 className="text-sm md:text-base font-semibold">{subtitle}</h3>
+        {subsub && (
+          <p className="text-xs md:text-sm mt-1">{subsub}</p>
+        )}
+      </div>
+    </div>
+  )}
+</div>
+
             </div>
           ) : (
             <div className="grid gap-6">

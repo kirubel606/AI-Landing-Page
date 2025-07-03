@@ -136,6 +136,7 @@ const Home = () => {
         <ContentSection
           title={t('our_gallery')}
           subtitle={i18n.language === 'am' ? singleGallery.title_am : singleGallery.title}
+          subsub={i18n.language === 'am' ? singleGallery.discription_am : singleGallery.discription}
           images={(singleGallery.images || []).map(img => img.image)}
           large={true}
         />
