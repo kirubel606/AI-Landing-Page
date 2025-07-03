@@ -192,7 +192,7 @@ const Research = () => {
                         onClick={() => typeof page === "number" && onPageChange(page)}
                         disabled={page === "..."}
                         className={`px-3 py-2 rounded border text-sm ${page === currentPage
-                            ? "bg-blue-600 text-white border-blue-600"
+                            ? "bg-sky-950 text-white border-sky-950"
                             : page === "..."
                                 ? "border-transparent cursor-default"
                                 : "border-gray-300 hover:bg-gray-50"

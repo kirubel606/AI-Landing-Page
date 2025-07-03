@@ -4,81 +4,82 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useTranslation } from 'react-i18next'
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Testimonial = () => {
-  const { t } = useTranslation();
-  const [testimonials, setTestimonials] = useState([])
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const { t, i18n } = useTranslation();
+  const [testimonials, setTestimonials] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}`+"/quotes/testimonials/")
-        setTestimonials(response.data)
+        const response = await axios.get(`${BASE_URL}/quotes/testimonials/`);
+        setTestimonials(response.data);
       } catch (error) {
-        console.error("Failed to fetch testimonials:", error)
+        console.error("Failed to fetch testimonials:", error);
       }
-    }
+    };
 
-    fetchTestimonials()
-  }, [])
+    fetchTestimonials();
+  }, []);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length)
-  }
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+  };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length)
-  }
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+  };
 
   const getVisibleTestimonials = () => {
-    const visible = []
-    // Show different number of testimonials based on screen size
-    const range = window.innerWidth < 768 ? 0 : window.innerWidth < 1024 ? 1 : 2
+    const visible = [];
+    const range = window.innerWidth < 768 ? 0 : window.innerWidth < 1024 ? 1 : 2;
 
     for (let i = -range; i <= range; i++) {
-      const index = (currentIndex + i + testimonials.length) % testimonials.length
+      const index = (currentIndex + i + testimonials.length) % testimonials.length;
       visible.push({
         ...testimonials[index],
         position: i,
-      })
+      });
     }
-    return visible
-  }
+    return visible;
+  };
 
   // Touch/swipe handlers for mobile
-  const [touchStart, setTouchStart] = useState(null)
-  const [touchEnd, setTouchEnd] = useState(null)
-
-  const minSwipeDistance = 50
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const minSwipeDistance = 50;
 
   const onTouchStart = (e) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
-  }
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
 
   const onTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
 
   const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe) {
-      nextSlide()
+      nextSlide();
     } else if (isRightSwipe) {
-      prevSlide()
+      prevSlide();
     }
-  }
+  };
 
   return (
     <section className="py-8 md:py-16 bg-gray-50 w-full">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-4xl font-bold text-center text-gray-900 mb-8 md:mb-12">{t('testimonial')}</h2>
+        <h2 className="text-2xl md:text-4xl font-bold text-center text-gray-900 mb-8 md:mb-12">
+          {t('testimonial')}
+        </h2>
 
         <div className="relative max-w-6xl mx-auto">
           {/* Navigation Buttons */}
@@ -104,9 +105,14 @@ const Testimonial = () => {
             onTouchEnd={onTouchEnd}
           >
             {getVisibleTestimonials().map((testimonial, index) => {
-              const isCenter = testimonial.position === 0
-              const isAdjacent = Math.abs(testimonial.position) === 1
-              const isEdge = Math.abs(testimonial.position) === 2
+              const isCenter = testimonial.position === 0;
+              const isAdjacent = Math.abs(testimonial.position) === 1;
+              const isEdge = Math.abs(testimonial.position) === 2;
+
+              // ✅ Pick Amharic version if available
+              const displayQuote = i18n.language === 'am' && testimonial.quote_am ? testimonial.quote_am : testimonial.quote;
+              const displayName = i18n.language === 'am' && testimonial.name_am ? testimonial.name_am : testimonial.name;
+              const displayTitle = i18n.language === 'am' && testimonial.title_am ? testimonial.title_am : testimonial.title;
 
               return (
                 <div
@@ -130,13 +136,13 @@ const Testimonial = () => {
                         ${isCenter ? "text-sm md:text-base font-semibold" : "text-xs"}
                       `}
                     >
-                      "{testimonial.quote}"
+                      "{displayQuote}"
                     </blockquote>
 
                     <div className="flex items-center space-x-3">
                       <img
                         src={testimonial.image || "/placeholder.svg?height=48&width=48"}
-                        alt={testimonial.name}
+                        alt={displayName}
                         className={`rounded-full object-cover ${
                           isCenter ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-10 md:h-10"
                         }`}
@@ -148,22 +154,22 @@ const Testimonial = () => {
                             ${isCenter ? "text-sm md:text-base font-bold text-white" : "text-gray-900 text-xs"}
                           `}
                         >
-                          {testimonial.name}
+                          {displayName}
                         </p>
-                        {testimonial.title && (
+                        {displayTitle && (
                           <p
                             className={`
                               ${isCenter ? "text-xs md:text-sm text-blue-100" : "text-xs text-gray-600"}
                             `}
                           >
-                            {testimonial.title}
+                            {displayTitle}
                           </p>
                         )}
                       </div>
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
 
@@ -187,7 +193,7 @@ const Testimonial = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Testimonial
+export default Testimonial;

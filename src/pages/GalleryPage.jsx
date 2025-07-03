@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import CoolSvg from "../components/CoolSVg";
 import Footer from "../components/Footer";
-
+import SocialMediaLinks from "../components/SocialMediaLinks";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE || "/placeholder.svg";
 const filters = ['ALL', 'DATA CENTER', 'SHOWROOM', 'SUMMER CAMP', 'MOU'];
@@ -171,6 +171,7 @@ const navigateImage = (direction) => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 mb-10 sm:px-6 lg:px-8">
+        <SocialMediaLinks />
         {/* Filters */}
         <div className="flex justify-center mt-10 mb-8">
           <div className="flex flex-wrap justify-center gap-2 bg-white rounded-lg p-2 shadow-sm">
@@ -265,7 +266,7 @@ const navigateImage = (direction) => {
                 disabled={page === "..."}
                 className={`px-3 py-2 rounded border text-sm ${
                   page === currentPage
-                    ? "bg-blue-600 text-white border-blue-600"
+                    ? "bg-sky-950 text-white border-sky-950"
                     : page === "..."
                       ? "border-transparent cursor-default"
                       : "border-gray-300 hover:bg-gray-50"

@@ -1,17 +1,20 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { LinkedinIcon } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AUTO_ADVANCE_DELAY = 5000; // 5 seconds
 
 const Quotes = () => {
+  const { t, i18n } = useTranslation();
   const [quotes, setQuotes] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef(null);
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}`+"/quotes/")
+      .get(`${BASE_URL}/quotes/`)
       .then((res) => setQuotes(res.data))
       .catch((err) => console.error("Failed to fetch quotes:", err));
   }, []);
@@ -19,21 +22,23 @@ const Quotes = () => {
   useEffect(() => {
     if (quotes.length === 0) return;
 
-    // Clear any existing interval to avoid multiple intervals
     clearInterval(intervalRef.current);
 
-    // Set up auto-advance interval
     intervalRef.current = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % quotes.length);
     }, AUTO_ADVANCE_DELAY);
 
-    // Cleanup on unmount
     return () => clearInterval(intervalRef.current);
   }, [quotes]);
 
-  if (quotes.length === 0) return null; // or a loading spinner
+  if (quotes.length === 0) return null;
 
   const quote = quotes[activeIndex];
+
+  // ✅ Pick Amharic version if current language is 'am'
+  const displayQuote = i18n.language === 'am' && quote.quote_am ? quote.quote_am : quote.quote;
+  const displayName = i18n.language === 'am' && quote.name_am ? quote.name_am : quote.name;
+  const displayPosition = i18n.language === 'am' && quote.position_am ? quote.position_am : quote.position;
 
   return (
     <section className="py-16">
@@ -43,10 +48,10 @@ const Quotes = () => {
 
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Quotes
+            {t('Quotes')}
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            Leading voices in Ethiopian AI development share their insights
+            {t('QuotesSubtitle')}
           </p>
         </div>
 
@@ -55,20 +60,20 @@ const Quotes = () => {
             <div className="flex-shrink-0">
               <img
                 src={quote.image || "/placeholder.svg"}
-                alt={quote.name}
+                alt={displayName}
                 className="w-32 h-32 rounded-full object-cover border-4 border-orange-200"
               />
             </div>
             <div className="flex-1 text-center md:text-left">
               <blockquote className="text-lg text-white mb-4 italic">
-                "{quote.quote}"
+                "{displayQuote}"
               </blockquote>
-              <div className="text-white ">
-                <p className="font-bold text-lg">{quote.name}</p>
-                <p className="text-gray-200">{quote.position}</p>
+              <div className="text-white">
+                <p className="font-bold text-lg">{displayName}</p>
+                <p className="text-gray-200">{displayPosition}</p>
                 {quote.link && (
                   <a href={quote.link} target="_blank" rel="noopener noreferrer">
-                  <LinkedinIcon/>
+                    <LinkedinIcon />
                   </a>
                 )}
               </div>
