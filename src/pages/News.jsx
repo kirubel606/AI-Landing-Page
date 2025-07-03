@@ -86,7 +86,7 @@ useEffect(() => {
   setPage(1);
 
   // Immediately fetch page 1 with the new category
-  fetchContent(1);
+  fetchContent();
 }, [category]);
 const runSearch = () => {
   // Prevent useless fetch if already empty and we’re on page 1
@@ -101,7 +101,7 @@ const runSearch = () => {
   setPage(1);
   setHasMore(true);
 
-  fetchContent(1);
+  fetchContent();
 };
 useEffect(() => {
   if (searchTerm.trim() === "") {
@@ -438,7 +438,7 @@ const featuredArticle = [...newsData]
 
       <main className="max-w-[90%] mx-auto py-8">
         <div className="relative flex h-full bg-transparent container mx-auto px-4 py-2">
-          <div className="relative inline-block hover:bg-gray-200 transition rounded-full z-10 shadow-2xl">
+          <div className=" inline-block hover:bg-gray-200 transition rounded-full shadow-2xl">
             <button
               onClick={() => setOpen((o) => !o)}
               className="p-2 rounded-full transition"
