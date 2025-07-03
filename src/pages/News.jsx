@@ -300,23 +300,40 @@ console.log("Fetched magazines:", magazines);
     };
     fetchInitial();
   }, []);
+const [sidebarNews, setSidebarNews] = useState([]);
 
-const renderSidebarContent = () => {
+useEffect(() => {
+  const fetchSidebarNews = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/news/sidebar/`);
+      const json = await res.json();
+
+      const data = Array.isArray(json) ? json : [];
+
+      // DON'T filter here, keep all items
+      setSidebarNews(data);
+    } catch (err) {
+      console.error("Failed to fetch sidebar news:", err);
+    }
+  };
+
+  fetchSidebarNews();
+}, []);
+
+
+
+
+const renderSidebarContent = (data) => {
   let sourceData;
 
   if (activeTab === "trending") {
-    // ✅ Only news, no magazines
-    sourceData = newsData.filter(item => !item.magazine && !item.iframe);
+    sourceData = data.filter(item => !item.magazine && !item.iframe);
   } else if (activeTab === "videos") {
-    sourceData = [...videoData];
+    sourceData = data.filter(item => item.iframe);
   } else if (activeTab === "latest") {
-  
-  sourceData = magazineData.filter(item => item.pdf_file);
-  console.log("Magazine data:", magazineData);
-}
-
- else {
-    sourceData = newsData;
+    sourceData = data.filter(item => item.pdf_file);
+  } else {
+    sourceData = data;
   }
 
   const sorted =
@@ -342,9 +359,8 @@ const renderSidebarContent = () => {
       key={a.id}
       className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
       onClick={() => {
-  navigateToDetail(a);
-}}
-
+        navigateToDetail(a);
+      }}
     >
       <div className="relative flex-shrink-0">
         <img
@@ -387,16 +403,15 @@ const renderSidebarContent = () => {
           <CalendarIcon size="w-2.5 h-2.5" />
           <span className="ml-1">{formatDate(a.created_at)}</span>
         </div>
-
-        
       </div>
     </div>
   ));
 };
 
 
+
 const featuredArticle = [...newsData]
-  .filter(a => !a.magazine) // ✅ filter magazines out
+  .filter(a => !a.magazine && !a.iframe) // ✅ filter magazines out
   .sort((a, b) => b.view_count - a.view_count)[0];
 
 
@@ -553,11 +568,31 @@ const featuredArticle = [...newsData]
           </div>
         )}
 
-        <div className={error ? "hidden":"grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10"}>
-          <Leftsidebar {...{ leftColumnNews: newsData, BASE_URL, CalendarIcon, formatDate, navigateToDetail }} />
-          <CenterColumn {...{ featuredArticle, BASE_URL, techNews: newsData, CalendarIcon, formatDate, navigateToDetail }} />
-          <RightSidebar {...{ activeTab, setActiveTab, renderSidebarContent }} />
-        </div>
+<div className={error ? "hidden" : "grid grid-cols-1 lg:grid-cols-4 gap-x-8 gap-y-10"}>
+<Leftsidebar
+   leftColumnNews={sidebarNews.filter(item => !item.iframe && !item.magazine)}  // <- Pass sidebarNews, not newsData or mergedContent
+  BASE_URL={BASE_URL}
+  CalendarIcon={CalendarIcon}
+  formatDate={formatDate}
+  navigateToDetail={navigateToDetail}
+/>
+
+  <CenterColumn
+    featuredArticle={featuredArticle}  // keep this if you want featured from main news or adjust accordingly
+    BASE_URL={BASE_URL}
+    techNews={sidebarNews}             // <-- use sidebarNews here as well or filter as needed
+    CalendarIcon={CalendarIcon}
+    formatDate={formatDate}
+    navigateToDetail={navigateToDetail}
+  />
+  <RightSidebar
+    activeTab={activeTab}
+    setActiveTab={setActiveTab}
+    renderSidebarContent={() => renderSidebarContent(sidebarNews)} // modify renderSidebarContent to accept data param
+  />
+</div>
+
+
       </main>
 
 <section className="max-w-7xl mx-auto px-4 py-16">

@@ -14,22 +14,42 @@ import SocialMediaLinks from "../components/SocialMediaLinks";
 // import RotatingText from '../components/RotatingText' // Uncomment if you use RotatingText
 import ChatbotWrapper from "../components/ChatbotWrapper";
 import { useTranslation } from 'react-i18next';
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Home = () => {
-  const { news, gallery } = useContext(AppContext);
-    const { t, i18n } = useTranslation();
-const singleNews = news?.results?.result?.find(item =>
-  i18n.language === 'am'
-    ? item.title_am?.trim()
-    : item.title?.trim()
-) || null;
+  const { gallery } = useContext(AppContext);
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+
+  const [sidebarNews, setSidebarNews] = useState([]);
+const [loading, setLoading] = useState(true);
+useEffect(() => {
+  const fetchSidebarNews = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/news/sidebar/`);
+      const json = await res.json();
+      const data = Array.isArray(json) ? json : [];
+      const filteredData = data.filter(item => !item.iframe && !item.magazine);
+      setSidebarNews(filteredData);
+    } catch (err) {
+      console.error("Failed to fetch sidebar news:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchSidebarNews();
+}, []);
+const singleNews = sidebarNews
+    .filter(item =>
+      i18n.language === 'am' ? item.title_am?.trim() : item.title?.trim()
+    )
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0] || null;
 
   const singleGallery = gallery?.[0] || null;
-  const navigate = useNavigate();
 
 
   const heroRef = useRef(null);
   const [showSocialLinks, setShowSocialLinks] = useState(false);
+
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -93,19 +113,21 @@ const singleNews = news?.results?.result?.find(item =>
       {showSocialLinks && <SocialMediaLinks />}
 
       {/* News Section */}
-      {singleNews && singleNews.cover_image ? (
-        <a className="cursor-pointer" onClick={() => navigate(`/news/${singleNews.id}`)}>
-          <ContentSection
-            title={t('news')}
+     {loading ? (
+  <p className="text-center text-white">Loading news...</p>
+) : singleNews && singleNews.cover_image ? (
+  <a onClick={() => navigate(`/news/${singleNews.id}`)} className="cursor-pointer">
+    <ContentSection
+      title={t('news')}
+      subtitle={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
+      images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
+      large={false}
+    />
+  </a>
+) : (
+  <p className="text-center text-white">{t('no_news_available')}</p>
+)}
 
-            subtitle={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
-            images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
-            large={false}
-          />
-        </a>
-      ) : (
-        <p className="text-center text-white">{t('no_news_available')}</p>
-      )}
 
 
       {/* Other Sections */}

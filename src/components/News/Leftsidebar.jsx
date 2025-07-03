@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 const Leftsidebar = ({ leftColumnNews, BASE_URL, CalendarIcon, formatDate, navigateToDetail }) => {
     const { i18n, t } = useTranslation();
+    console.log(leftColumnNews, 'leftColumnNews');
     return (
         <>
             {/* Left Column - Small News Items */}

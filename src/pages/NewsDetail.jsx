@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { X, ChevronLeft, ChevronRight, Maximize } from "lucide-react"
 import RightSidebar from "../components/News/RightSidebar"
 import { AppContext } from "../context/Appcontext"
+
 const PLACEHOLDER_IMAGE = import.meta.env.VITE_PLACEHOLDER_IMAGE
 import SocialMediaLinks from "../components/SocialMediaLinks"
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -68,7 +69,6 @@ function NewsDetail() {
   const { newsData } = useContext(AppContext)
   const videoData = newsData.filter((item) => item.iframe)
   const normalData = newsData.filter((item) => !item.iframe)
-  const [magazineData, setMagazineData] = useState([]);
   const { t, i18n } = useTranslation()
 
   // Lightbox states
@@ -81,23 +81,7 @@ function NewsDetail() {
       fetchNewsDetail(id)
     }
   }, [id])
-useEffect(() => {
-  const fetchMagazines = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/news/magazine/`);
-      const json = await res.json();
-      const magazines = json?.results?.result || [];
-console.log("Fetched magazines:", magazines);
-      setMagazineData(magazines);
-    } catch (err) {
-      console.error("Failed to fetch magazines:", err);
-    }
-  };
 
-  if (activeTab === "latest") {
-    fetchMagazines();
-  }
-}, [activeTab]);
   const fetchNewsDetail = async (newsId) => {
     try {
       setLoading(true)
@@ -195,27 +179,42 @@ console.log("Fetched magazines:", magazines);
   const navigateToDetail = (newsItem) => {
     navigate(`/news/${newsItem.id}`)
   }
+const [sidebarNews, setSidebarNews] = useState([]);
 
-  const renderSidebarContent = () => {
-    let sourceData;
+useEffect(() => {
+  const fetchSidebarNews = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/news/sidebar/`);
+      const json = await res.json();
+
+      const data = Array.isArray(json) ? json : [];
+      setSidebarNews(data); // store raw data, no filtering here
+    } catch (err) {
+      console.error("Failed to fetch sidebar news:", err);
+    }
+  };
+
+  fetchSidebarNews();
+}, []);
+
+const renderSidebarContent = () => {
+  if (!sidebarNews.length) return null; // or a loading state
+
+  let sourceData = [];
+
   if (activeTab === "trending") {
-    // ✅ Only news, no magazines
-    sourceData = newsData.filter(item => !item.magazine && !item.iframe);
+    sourceData = sidebarNews.filter(item => !item.iframe && !item.magazine);
   } else if (activeTab === "videos") {
-    sourceData = [...videoData];
+    sourceData = sidebarNews.filter(item => item.iframe);
   } else if (activeTab === "latest") {
-  
-  sourceData = magazineData.filter(item => item.pdf_file);
-  console.log("Magazine data:", magazineData);
-}
-
- else {
-    sourceData = newsData;
+    sourceData = sidebarNews.filter(item => item.magazine);
+  } else {
+    sourceData = sidebarNews;
   }
 
   const sorted =
     activeTab === "trending" || activeTab === "videos"
-      ? sourceData.sort((a, b) => b.view_count - a.view_count)
+      ? [...sourceData].sort((a, b) => b.view_count - a.view_count)
       : sourceData;
 
   const filtered = sorted.filter(item =>
@@ -224,58 +223,63 @@ console.log("Fetched magazines:", magazines);
       : item.title && item.title.trim() !== ''
   );
 
-    const badgeColor =
-      activeTab === "trending"
-        ? "bg-blue-100 text-blue-800"
-        : activeTab === "videos"
-          ? "bg-green-100 text-green-800"
+  const badgeColor =
+    activeTab === "trending"
+      ? "bg-blue-100 text-blue-800"
+      : activeTab === "videos"
+        ? "bg-green-100 text-green-800"
+        : activeTab === "digital-magazines"
+          ? "bg-purple-100 text-purple-800"
           : "bg-orange-100 text-orange-800";
 
-    return filtered.slice(0, 5).map((a) => (
-      <div
-        key={a.id}
-        className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
-        onClick={() => navigateToDetail(a)}
-      >
-        <div className="relative flex-shrink-0">
-          <img
-            src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
-            alt={i18n.language === 'am' ? a.title_am : a.title}
-            onError={(e) => {
-              e.target.src = PLACEHOLDER_IMAGE
-            }}
-            className="w-20 h-20 object-cover rounded-lg"
-          />
+  return filtered.slice(0, 5).map((a) => (
+    <div
+      key={a.id}
+      className="flex space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+      onClick={() => navigateToDetail(a)}
+    >
+      <div className="relative flex-shrink-0">
+        <img
+          src={activeTab === "videos" ? getVideoThumbnail(a.iframe, a.cover_image) : `${BASE_URL}${a.cover_image}`}
+          alt={i18n.language === 'am' ? a.title_am : a.title}
+          onError={(e) => { e.target.src = PLACEHOLDER_IMAGE; }}
+          className="w-20 h-20 object-cover rounded-lg"
+        />
 
-          {activeTab === "videos" && (
-            <>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-6 h-6 bg-orange-400 rounded-full text-white flex items-center justify-center">
-                  <PlayIcon size="w-3 h-3" />
-                </div>
+        {activeTab === "videos" && (
+          <>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-6 h-6 bg-orange-400 rounded-full text-white flex items-center justify-center">
+                <PlayIcon size="w-3 h-3" />
               </div>
-              <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
-                {extractVideoDuration(a.iframe)}
-              </div>
-            </>
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
-            {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
-          </span>
+            </div>
+            <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+              {extractVideoDuration(a.iframe)}
+            </div>
+          </>
+        )}
+      </div>
 
-          <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">
-            {i18n.language === 'am' ? a.title_am : a.title}
-          </h4>
-          <div className="flex items-center text-xs text-gray-500">
-            <CalendarIcon size="w-2.5 h-2.5" />
-            <span className="ml-1">{formatDate(a.created_at)}</span>
-          </div>
+      <div className="flex-1 min-w-0">
+        <span className={`inline-block text-xs mb-2 px-2 py-1 rounded ${badgeColor}`}>
+          {i18n.language === 'am' ? a.category?.name_am : a.category?.name}
+        </span>
+
+        <h4 className="text-sm font-medium leading-tight mb-2 line-clamp-3">
+          {i18n.language === 'am' ? a.title_am : a.title}
+        </h4>
+
+        <div className="flex items-center text-xs text-gray-500">
+          <CalendarIcon size="w-2.5 h-2.5" />
+          <span className="ml-1">{formatDate(a.created_at)}</span>
         </div>
       </div>
-    ))
-  }
+    </div>
+  ));
+};
+
+
+
 
   if (loading) {
     return (
@@ -365,29 +369,31 @@ console.log("Fetched magazines:", magazines);
 
           {/* Media Section */}
           {isPdfMagazine ? (
-              <div className="col-span-full w-full">
-                <div className="p-4">
-                  <iframe
-                    src={`${BASE_URL}${newsItem.pdf_file}`}
-                    className="w-full md:w-[900px] h-[700px] rounded-lg shadow-lg border"
-                    title="Article PDF"
-                    frameBorder="0"
-                  />
-                </div>
-          
-
-          <div className="mt-4 flex justify-center md:justify-end">
-            <a
-              href={`${BASE_URL}${newsItem.pdf_file}`}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded"
-            >
-              {t('download_pdf')}
-            </a>
-          </div>
-        </div>
+            <div className="mb-8">
+              <iframe
+                src={`${BASE_URL}${newsItem.pdf_file}#toolbar=0&navpanes=0&scrollbar=0`}
+                width="100%"
+                height="600px"
+                className="rounded-lg shadow-lg"
+                title={t('pdf_viewer')}
+              >
+                Your browser does not support PDFs.{" "}
+                <a href={`${BASE_URL}${newsItem.pdf_file}`} target="_blank" rel="noreferrer">
+                  {t('download_pdf')}
+                </a>
+              </iframe>
+              <div className="mt-4 flex justify-end">
+                <a
+                  href={`${BASE_URL}${newsItem.pdf_file}`}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded"
+                >
+                  {t('download_pdf')}
+                </a>
+              </div>
+            </div>
           ) : !isVideo ? (
             <div className="mb-8 relative group">
               <img
