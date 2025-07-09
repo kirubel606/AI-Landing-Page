@@ -55,31 +55,49 @@ const Quotes = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto bg-gradient-to-r from-orange-400 via-orange-500 to-orange-700 rounded-lg shadow-xl p-8">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-shrink-0">
-              <img
-                src={quote.image || "/placeholder.svg"}
-                alt={displayName}
-                className="w-32 h-32 rounded-full object-cover border-4 border-orange-200"
-              />
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <blockquote className="text-lg text-white mb-4 italic">
-                "{displayQuote}"
-              </blockquote>
-              <div className="text-white">
-                <p className="font-bold text-lg">{displayName}</p>
-                <p className="text-gray-200">{displayPosition}</p>
-                {quote.link && (
-                  <a href={quote.link} target="_blank" rel="noopener noreferrer">
-                    <LinkedinIcon />
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+<div
+  className="max-w-4xl mx-auto rounded-lg shadow-xl p-8"
+  style={{
+    background: 'linear-gradient(-45deg, #003366, #ff9933, #003366)',
+    backgroundSize: '400% 400%',
+    animation: 'gradientShift 8s ease infinite'
+  }}
+>
+  <style>{`
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  `}</style>
+
+  <div className="flex flex-col md:flex-row items-center gap-8">
+    <div className="flex-shrink-0">
+      <img
+        src={quote.image || "/placeholder.svg"}
+        alt={displayName}
+        className="w-32 h-32 rounded-full object-cover border-4 border-orange-200"
+      />
+    </div>
+    <div className="flex-1 text-center md:text-left">
+      <blockquote className="text-lg text-white mb-4 italic">
+        "{displayQuote}"
+      </blockquote>
+      <div className="text-white">
+        <p className="font-bold text-lg">{displayName}</p>
+        <p className="text-gray-200">{displayPosition}</p>
+        {quote.link && (
+          <a href={quote.link} target="_blank" rel="noopener noreferrer">
+            <LinkedinIcon />
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
         {/* Pagination dots */}
         <div className="flex justify-center mt-8 space-x-2">
@@ -90,11 +108,10 @@ const Quotes = () => {
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 aria-label={`Show quote ${index + 1}`}
-                className={`rounded-full transition-all duration-300 ${
-                  isActive
+                className={`rounded-full transition-all duration-300 ${isActive
                     ? "w-3 h-3 bg-orange-500 scale-125"
                     : "w-3 h-3 bg-orange-300 hover:bg-orange-400"
-                }`}
+                  }`}
               />
             );
           })}

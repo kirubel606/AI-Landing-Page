@@ -243,9 +243,9 @@ const Research = () => {
                             <h1 variant="h1" className="text-4xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
                                 {t('research_and_development')}
                             </h1>
-                            <h1 variant="lead" className="text-lg opacity-90 text-white">
+                            {/* <h1 variant="lead" className="text-lg opacity-90 text-white">
                                 {t('advancing_innovation')}
-                            </h1>
+                            </h1> */}
                         </div>
                     </div>
                     {/* Decorative elements */}

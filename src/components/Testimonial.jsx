@@ -119,12 +119,11 @@ const Testimonial = () => {
                   key={`${testimonial.id}-${index}`}
                   className={`
                     transition-all duration-500 ease-in-out rounded-2xl p-3 md:p-4 shadow-lg flex-shrink-0
-                    ${
-                      isCenter
-                        ? "w-full max-w-sm md:w-80 h-56 md:h-64 opacity-100 scale-100 z-20 bg-gradient-to-br text-white from-blue-900 via-blue-700 to-violet-700"
-                        : isAdjacent
-                          ? "hidden md:block md:w-64 md:h-56 opacity-80 scale-90 z-10 bg-gradient-to-br text-gray-800 from-orange-500 via-orange-300 to-orange-100"
-                          : "hidden lg:block lg:w-48 lg:h-48 opacity-60 scale-75 z-0 text-gray-800"
+                    ${isCenter
+                      ? "w-full max-w-sm md:w-80 h-56 md:h-64 opacity-100 scale-100 z-20 bg-gradient-to-br text-white from-indigo-950 to-indigo-600"
+                      : isAdjacent
+                        ? "hidden md:block md:w-64 md:h-56 opacity-80 scale-90 z-10 bg-gradient-to-br text-gray-800 from-orange-500 via-orange-300 to-orange-100"
+                        : "hidden lg:block lg:w-48 lg:h-48 opacity-60 scale-75 z-0 text-gray-800"
                     }
                     ${isEdge ? "blur-sm text-gray-800 bg-orange-200" : ""}
                   `}
@@ -143,9 +142,8 @@ const Testimonial = () => {
                       <img
                         src={testimonial.image || "/placeholder.svg?height=48&width=48"}
                         alt={displayName}
-                        className={`rounded-full object-cover ${
-                          isCenter ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-10 md:h-10"
-                        }`}
+                        className={`rounded-full object-cover ${isCenter ? "w-10 h-10 md:w-12 md:h-12" : "w-8 h-8 md:w-10 md:h-10"
+                          }`}
                       />
                       <div>
                         <p
@@ -179,9 +177,8 @@ const Testimonial = () => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-colors ${
-                  index === currentIndex ? "bg-blue-600" : "bg-gray-300"
-                }`}
+                className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-colors ${index === currentIndex ? "bg-blue-600" : "bg-gray-300"
+                  }`}
               />
             ))}
           </div>

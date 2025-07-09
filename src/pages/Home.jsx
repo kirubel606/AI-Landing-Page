@@ -71,13 +71,7 @@ const Home = () => {
         <CoolSvg />
         <section className="flex items-center justify-center min-h-screen px-40">
           <div className="text-center max-w-4xl mx-auto">
-            {/* AI Badge */}
-            <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
-              <span className="sm:px-2 md:px-3 px-1 bg-white text-black text-sm font-bold py-1 mr-2 rounded-lg">
-                AI
-              </span>
-              <span className="text-gray-300 text-sm font-medium">{t('for_all')}</span>
-            </div>
+            
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
@@ -95,7 +89,7 @@ const Home = () => {
             </p>
 
             {/* CTA Button */}
-            <a href="/contactus">
+            {/* <a href="/contactus">
               <button className="relative px-[2px] py-[2px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200">
                 <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-800 via-white to-orange-500 p-[0.3px]"></span>
                 <span className="relative block rounded-full bg-[#202024] px-8 py-3">
@@ -103,7 +97,14 @@ const Home = () => {
                 </span>
               </button>
 
-            </a>
+            </a> */}
+            {/* AI Badge */}
+            <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
+              <span className="sm:px-2 md:px-3 px-1 bg-white text-black text-sm font-bold py-1 mr-2 rounded-lg">
+                AI
+              </span>
+              <span className="text-gray-300 text-sm font-medium">{t('for_all')}</span>
+            </div>
           </div>
         </section>
 

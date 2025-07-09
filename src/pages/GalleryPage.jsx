@@ -164,7 +164,7 @@ const navigateImage = (direction) => {
             <h1 className="text-6xl font-bold mb-4">
               <span className="text-orange-400">{t('gallery')}</span>
             </h1>
-            <p className="text-xl">{t('advancing_innovation')}</p>
+            {/* <p className="text-xl">{t('advancing_innovation')}</p> */}
           </div>
         </div>
       </div>

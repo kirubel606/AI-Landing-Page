@@ -104,7 +104,7 @@ const Collaborations = () => {
                   <img
                     src={collab.logo || "/placeholder.svg"}
                     alt={`${collab.name || "Collaboration"} logo`}
-                    className="h-16 md:h-24 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+                    className="h-16 md:h-24 w-auto object-contain  hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
                   />
                   </a>
                 </div>

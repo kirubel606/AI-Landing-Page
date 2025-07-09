@@ -3,10 +3,7 @@ const Hero = () => {
     <section className="relative z-10 flex items-center justify-center min-h-[80vh] px-6">
       <div className="text-center max-w-4xl mx-auto">
         {/* AI Badge */}
-        <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
-          <span className="bg-white text-black text-xs font-bold px-2 py-1 rounded mr-2">AI</span>
-          <span className="text-gray-300 text-sm font-medium">AI FOR ALL</span>
-        </div>
+        
 
         {/* Main Heading */}
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
