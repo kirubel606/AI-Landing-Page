@@ -68,7 +68,7 @@
   "days_ago": "ቀናት በፊት",
   "weeks_ago": "ከሳምንታት በፊት",
   "months_ago": "ከወራቶች በፊት",
-  "news_and_videos": "ዜናዎች እና ቪዲዮዎች",
+  "news_and_videos": "ዜናዎች",
   "advancing_innovation_through_technology": "አዲስነትን በቴክኖሎጂ እየገነባን",
   "you_ve_reached_the_end_of_the_content": "ወደ መጨረሻው ደርሰዋል!",
   "error_loading_news": "ዜና ማግኘት አልተቻለም",
@@ -134,6 +134,7 @@
   "no_items_found": "ለተመረጠው ማጣሪያ ምንም ነገር አልተገኘም።",
   "Digital_magazine": "ዲጂታል መጽሔት",
   "Quotes": "አስተያየቶች",
-  "QuotesSubtitle": "ከምርምር ተቋማት ጋር በመስራት የኤ.አይ ምርምርን እና ልማትን ማሻሻል"
+  "QuotesSubtitle": "ከምርምር ተቋማት ጋር በመስራት የኤ.አይ ምርምርን እና ልማትን ማሻሻል",
+  "Moto": "የሞቶ ክፍል"
 
 }

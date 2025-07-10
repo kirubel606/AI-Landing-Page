@@ -71,7 +71,7 @@ const Home = () => {
         <CoolSvg />
         <section className="flex items-center justify-center min-h-screen px-40">
           <div className="text-center max-w-4xl mx-auto">
-            
+
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
@@ -99,11 +99,11 @@ const Home = () => {
 
             </a> */}
             {/* AI Badge */}
-            <div className="inline-flex items-center bg-gray-800/50 border border-gray-700 rounded-full px-4 py-2 mb-8">
-              <span className="sm:px-2 md:px-3 px-1 bg-white text-black text-sm font-bold py-1 mr-2 rounded-lg">
-                AI
+            <div className="inline-flex items-center bg-gray-800/50 border border-orange-500   rounded-full px-4 py-2 mb-8">
+              <span className="sm:px-2 md:px-3 px-1 bg-transparent text-white  text-sm font-bold py-1 mr-2 rounded-lg">
+                AI{t('for_all')}
               </span>
-              <span className="text-gray-300 text-sm font-medium">{t('for_all')}</span>
+              {/* <span className="text-gray-300  text-sm font-medium"></span> */}
             </div>
           </div>
         </section>
@@ -116,22 +116,65 @@ const Home = () => {
       {/* News Section */}
       {loading ? (
         <p className="text-center text-white">Loading news...</p>
-      ) : singleNews && singleNews.cover_image ? (
-        <a onClick={() => navigate(`/news/${singleNews.id}`)} className="cursor-pointer">
-          <ContentSection
-            title={t('news')}
-            subtitle={i18n.language === 'am' ? singleNews.title_am : singleNews.title}
-            images={[singleNews.cover_image, ...(singleNews.images || []).map(img => img.image)]}
-            large={false}
-          />
-        </a>
+      ) : sidebarNews && sidebarNews.length > 0 ? (
+        <div className="flex flex-col items-center justify-center max-w-6xl mx-auto px-4 py-6">
+          <div className="w-16 h-1 bg-orange-500 mx-auto mb-8"></div>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {t('News')}
+            </h2>
+          </div>
+          {/* Featured News */}
+          <div
+            className="w-full relative mb-4 cursor-pointer overflow-hidden rounded-xl shadow-xl"
+            onClick={() => navigate(`/news/${sidebarNews[0].id}`)}
+          >
+            <img
+              src={sidebarNews[0].cover_image}
+              alt={sidebarNews[0].title}
+              className="w-full h-[350px] object-cover rounded-xl"
+            />
+            {/* Gradient text overlay */}
+            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 via-black/40 to-transparent px-6 py-4">
+              <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-extrabold drop-shadow-lg">
+                {i18n.language === 'am'
+                  ? sidebarNews[0].title_am
+                  : sidebarNews[0].title}
+              </h2>
+            </div>
+          </div>
+
+          {/* Other News */}
+          {sidebarNews.length > 1 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+              {sidebarNews.slice(1).map((news) => (
+                <div
+                  key={news.id}
+                  className="relative cursor-pointer overflow-hidden rounded-xl shadow-md transform transition duration-300 hover:scale-105"
+                  onClick={() => navigate(`/news/${news.id}`)}
+                >
+                  <img
+                    src={news.cover_image}
+                    alt={news.title}
+                    className="w-full h-48 object-cover rounded-xl"
+                  />
+                  {/* Hover overlay with title */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-3">
+                    <h3 className="text-white text-base font-semibold text-center drop-shadow-md">
+                      {i18n.language === 'am' ? news.title_am : news.title}
+                    </h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       ) : (
         <p className="text-center text-white">{t('no_news_available')}</p>
       )}
-
       {/* Other Sections */}
       <ApplicationsGrid />
-      <ProjectsGrid />
+      <ProjectsGrid  />
       {/* Gallery Section */}
       {singleGallery && singleGallery.images ? (
         <ContentSection

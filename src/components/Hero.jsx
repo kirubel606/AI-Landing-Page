@@ -6,7 +6,7 @@ const Hero = () => {
         
 
         {/* Main Heading */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl items-center font-bold  leading-tight">
           <span className="text-white">Ethiopian Artificial</span>
           <br />
           <span className="text-orange-400">Intelligence Institute</span>

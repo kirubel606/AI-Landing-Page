@@ -8,7 +8,7 @@
   "resources": "Resources",
   "contactus": "Contact Us",
   "gallery": "Gallery",
-  "for_all": "FOR ALL",
+  "for_all": "4ALL",
   "home_heading1": "Ethiopian Artificial",
   "home_heading2": "Intelligence Institute",
   "home_description": "In 2030 to be a state-of-the-art National AI Research and Development Center with Excellence and Key Role in Creating Innovative AI-enabled solutions at national and international level.",
@@ -68,7 +68,7 @@
   "days_ago": "days ago",
   "weeks_ago": "weeks ago",
   "months_ago": "months ago",
-  "news_and_videos": "News & Videos",
+  "news_and_videos": "News",
   "advancing_innovation_through_technology": "Advancing Innovation Through Technology",
   "you_ve_reached_the_end_of_the_content": "You've reached the end of the content!",
   "error_loading_news": "Error Loading News",
@@ -133,5 +133,6 @@
   "no_items_found": "No items found for the selected filter.",
   "Digital_magazine": "Digital Magazine",
   "Quotes" : "Quotes",
-  "QuotesSubtitle" : "Explore the transformative power of AI through inspiring quotes from thought leaders and innovators."
+  "QuotesSubtitle" : "Explore the transformative power of AI through inspiring quotes from thought leaders and innovators.",
+  "Moto": "moto section"
 } 

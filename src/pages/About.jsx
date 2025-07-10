@@ -93,7 +93,7 @@ const About = () => {
           </Card>
 
           {/* Our Vision */}
-          <Card className="bg-blue-900">
+          <Card className="bg-slate-800">
             <CardBody className="p-6">
               <Typography variant="h3" className="text-xl font-bold mb-3 text-white">
                 {t('about_vision')}

@@ -1,38 +1,42 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import { Navigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import axios from "axios";
 import { useTranslation } from 'react-i18next';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, EffectCoverflow } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/effect-coverflow';
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ProjectsGrid = () => {
-  const { t , i18n  } = useTranslation();
-  const [projects, setProjects] = useState([])
+  const { t, i18n } = useTranslation();
+  const [projects, setProjects] = useState([]);
 
-useEffect(() => {
-  const fetchProjects = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/rnd/`);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
-      const validProjects = response.data.filter(project =>
-        i18n.language === 'am'
-          ? project.title_am?.trim()
-          : project.title?.trim()
-      );
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/rnd/`);
+        const validProjects = response.data.filter(project =>
+          i18n.language === 'am'
+            ? project.title_am?.trim()
+            : project.title?.trim()
+        );
+        setProjects(validProjects);
+      } catch (error) {
+        console.error("Failed to fetch R&D projects:", error);
+      }
+    };
 
-      setProjects(validProjects.slice(0, 3)); // Take first 3 valid only
-
-    } catch (error) {
-      console.error("Failed to fetch R&D projects:", error);
-    }
-  };
-
-  fetchProjects();
-}, [i18n.language]); // Re-run when language changes!
-
+    fetchProjects();
+  }, [i18n.language]);
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        {/* Orange accent bar */}
         <div className="w-16 h-1 bg-orange-500 mx-auto mb-8"></div>
 
         <div className="text-center mb-12">
@@ -43,46 +47,138 @@ useEffect(() => {
             {t('building_the_future')}
           </p>
         </div>
-      <div className="justify-center flex" >
-         <div
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto${
-              projects.length === 1 ? "grid-cols-1" :
-              projects.length === 2 ? "grid-cols-2" :
-              "grid-cols-1 md:grid-cols-3"
-            }`}
+
+        {/* Fancy 3D perspective container */}
+        <div className="relative max-w-6xl mx-auto perspective-[1200px]">
+          <Swiper
+            modules={[Autoplay, Navigation, EffectCoverflow]}
+            spaceBetween={30}
+            slidesPerView={1}
+            centeredSlides={true}
+            loop={true}
+            effect="coverflow"
+            coverflowEffect={{
+              rotate: 30,
+              stretch: 0,
+              depth: 250,
+              modifier: 1.2,
+              slideShadows: true,
+            }}
+            breakpoints={{
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onInit={(swiper) => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+              swiper.navigation.init();
+              swiper.navigation.update();
+            }}
+            className="pb-12 fancy-swiper"
           >
-          {projects.map((project) => (
-            <a
-              href='/research'
-              target="_blank"
-              rel="noopener noreferrer"
-              key={project.id}
-              className="relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-sm w-full"
-            >
-              <img
-                src={project.coverimage || "/placeholder.svg"}
-                alt={i18n.language === 'am' ? project.title_am : project.title}
-                
-                className="w-full h-48 object-cover"
-              />
-                            {project.logo && (
-                  <img
-                      src={project.logo}
-                      alt={`${project.title} logo`}
-                      className="absolute top-40 right-10 w-16 rounded-full border-2 border-white shadow-md object-cover"
-                  />
-              )}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{i18n.language === 'am' ? project.title_am : project.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{(i18n.language === 'am' ? project.description_am : project.description).split(" ").slice(0, 20).join(" ") + ((i18n.language === 'am' ? project.description_am : project.description).split(" ").length > 20 ? "..." : "")}</p>
-              </div>
-            </a>
-          ))}
+            {projects.map((project) => (
+              <SwiperSlide
+                key={project.id}
+                className="relative overflow-hidden mb-28 transition-transform duration-500 ease-in-out"
+              >
+                <div className="w-full h-full flex items-center justify-center">
+                  <a
+                    href="/research"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative w-[90%] h-full bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-[1.05]"
+                  >
+                    <div className="relative w-full h-60 overflow-hidden">
+                      <img
+                        src={project.coverimage || "/placeholder.svg"}
+                        alt={i18n.language === 'am' ? project.title_am : project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      {project.logo && (
+                        <img
+                          src={project.logo}
+                          alt={`${project.title} logo`}
+                          className="absolute top-44 right-6 w-16 rounded-full border-2 border-white shadow-md object-cover bg-white p-1"
+                        />
+                      )}
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-500 transition-colors duration-300">
+                        {i18n.language === 'am' ? project.title_am : project.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {(i18n.language === 'am'
+                          ? project.description_am
+                          : project.description
+                        )
+                          .split(" ")
+                          .slice(0, 20)
+                          .join(" ") +
+                          ((i18n.language === 'am'
+                            ? project.description_am
+                            : project.description
+                          ).split(" ").length > 20
+                            ? "..."
+                            : "")}
+                      </p>
+                    </div>
+                  </a>
+                </div>
+                {/* Dark overlay for side slides */}
+                <div className="absolute inset-0 pointer-events-none fancy-overlay"></div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Nav buttons */}
+          <div
+            ref={prevRef}
+            className="absolute top-1/2 -left-6 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2  hover:bg-gray-100 cursor-pointer z-10"
+          >
+            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2"
+              viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+          <div
+            ref={nextRef}
+            className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2 shadow hover:bg-gray-100 cursor-pointer z-10"
+          >
+            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2"
+              viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
       </div>
-      </div>
-    </section>
-  )
-}
 
-export default ProjectsGrid
+      {/* Fancy slide active effect */}
+      <style>{`
+        .fancy-swiper .swiper-slide {
+          transition: transform 0.6s ease, filter 0.6s ease;
+        }
+        .fancy-swiper .swiper-slide:not(.swiper-slide-active) .fancy-overlay {
+          background: rgba(0,0,0,0.0);
+          backdrop-filter: blur(1px);
+        }
+        .fancy-swiper .swiper-slide-active {
+          transform: scale(1.1);
+          z-index: 10;
+        }
+      `}</style>
+    </section>
+  );
+};
+
+export default ProjectsGrid;
