@@ -114,10 +114,10 @@ const Header = () => {
         <div className="flex items-center gap-4">
           {/* Get in Touch Button */}
           <button
-            className={`hidden lg:flex relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024] hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200 ${isSticky ? "opacity-0 pointer-events-none" : "opacity-100 scale-100"}`}
+            className={`hidden lg:flex relative px-[3px] py-[3px] rounded-full text-white text-lg font-medium bg-[#202024]  hover:border-gray-400 hover:bg-gray-700/50 transition-all duration-200 ${isSticky ? "opacity-0 pointer-events-none" : "opacity-100 scale-100"}`}
           >
             {/* Gradient border layer */}
-            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-white to-orange-400 p-[1px]"></span>
+            <span className="absolute inset-0 rounded-full bg-gradient-to-r  from-[#003366] via-white to-[#FF9933] p-[1px] "></span>
 
             {/* Inner solid bg to create border effect */}
             <a href="/contactus">
