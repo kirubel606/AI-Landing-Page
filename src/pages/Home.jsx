@@ -99,7 +99,7 @@ const Home = () => {
 
             </a> */}
             {/* AI Badge */}
-            <div className="inline-flex items-center bg-gray-800/50 border border-orange-500   rounded-full px-4 py-2 mb-8">
+            <div className="inline-flex items-center bg-gray-800/50 border border-[#FF9933]   rounded-full px-4 py-2 mb-8">
               <span className="sm:px-2 md:px-3 px-1 bg-transparent text-white  text-sm font-bold py-1 mr-2 rounded-lg">
                 AI{t('for_all')}
               </span>
@@ -118,7 +118,7 @@ const Home = () => {
         <p className="text-center text-white">Loading news...</p>
       ) : sidebarNews && sidebarNews.length > 0 ? (
         <div className="flex flex-col items-center justify-center max-w-6xl mx-auto px-4 py-6">
-          <div className="w-16 h-1 bg-orange-500 mx-auto mb-8"></div>
+          <div className="w-16 h-1 bg-[#FF9933] mx-auto mb-8"></div>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               {t('News')}
@@ -147,7 +147,7 @@ const Home = () => {
           {/* Other News */}
           {sidebarNews.length > 1 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
-              {sidebarNews.slice(1).map((news) => (
+              {sidebarNews.slice(1,4).map((news) => (
                 <div
                   key={news.id}
                   className="relative cursor-pointer overflow-hidden rounded-xl shadow-md transform transition duration-300 hover:scale-105"

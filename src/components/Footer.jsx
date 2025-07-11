@@ -21,7 +21,7 @@ const Footer = () => {
                 style={{ boxShadow: '0 8px 90px 60px rgba(255, 153, 51, 0.3)' }}
                 alt="Logo"
               />
-              <p className="text-center text-gray-600 italic max-w-xs">
+              <p className="text-center text-[#ff9933] italic max-w-xs">
                 {t('Moto')}
               </p>
             </div>
@@ -90,7 +90,7 @@ const Footer = () => {
                 placeholder={t('enter_your_email')}
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded focus:outline-none focus:border-orange-500"
               />
-              <button className="w-full bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded transition-colors">
+              <button className="w-full bg-[#FF9933] hover:bg-orange-500 px-4 py-2 rounded transition-colors">
                 {t('subscribe')}
               </button>
             </div>
@@ -120,15 +120,15 @@ const Footer = () => {
             </a>
             <a href="https://www.tiktok.com/@ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
               <svg
-                width="20"
-                height="20"
-                viewBox="0 0 448 512"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-              >
-                <path d="M448 209.9v125.1c0 97.2-78.8 176-176 176s-176-78.8-176-176 78.8-176 176-176h48V96h-48c-79.5 0-144 64.5-144 144s64.5 144 144 144 144-64.5 144-144V209.9c-16.6 3.5-33.8 5.1-51.4 5.1-72.6 0-133.6-45.9-156.8-110H208V0h96c0 96.6 78.4 175 176 175 17.6 0 34.8-1.6 51.4-5.1z" />
-              </svg>
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 448 512"
+      fill="currentColor"
+      className="w-5 h-5"
+    >
+      <path d="M448,209.9V96h-66.7c-24.1,0-43.7-19.5-43.7-43.5V0H285v304.8c0,40.4-32.9,73.2-73.2,73.2s-73.2-32.9-73.2-73.2  c0-40.4,32.9-73.2,73.2-73.2c9.3,0,18,1.8,26.1,4.8V192c-8.6-1.2-17.4-2-26.1-2c-73.6,0-133.2,59.6-133.2,133.2  S138.3,456,211.9,456s133.2-59.6,133.2-133.2V176.1c19.5,11.6,42.1,18.2,66.7,18.2H448z"/>
+    </svg>
             </a>
 
             <a href="https://t.me/ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">

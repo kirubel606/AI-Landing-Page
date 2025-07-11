@@ -8,10 +8,11 @@ const CenterColumn = ({ featuredArticle, BASE_URL, techNews, CalendarIcon, forma
   const isAmharic = i18n.language === 'am';
 
   // Filter out magazines from techNews
-  const nonMagazineNews = techNews.filter(article => !article.magazine);
+  const nonMagazineNews = techNews.filter(article => !article.magazine && !article.iframe );
+
 
   // Ensure the featured article is not a magazine either
-  const validFeatured = featuredArticle && !featuredArticle.magazine &&
+  const validFeatured = featuredArticle && !featuredArticle.magazine && !featuredArticle.magazine &&
     (isAmharic ? featuredArticle.title_am?.trim() : featuredArticle.title?.trim())
     ? featuredArticle
     : nonMagazineNews.find(article =>

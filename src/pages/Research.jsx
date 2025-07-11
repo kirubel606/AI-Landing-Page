@@ -241,7 +241,7 @@ const Research = () => {
                     <div className="z-20 flex items-center justify-center h-full">
                         <div className="text-center mb-10 text-white h-full">
                             <h1 variant="h1" className="text-4xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                                {t('research_and_development')}
+                                {t('research_title')}<p className=" text-[#ff9933] px-4">{t('and')}</p> {t('development_title')}
                             </h1>
                             {/* <h1 variant="lead" className="text-lg opacity-90 text-white">
                                 {t('advancing_innovation')}
@@ -441,7 +441,7 @@ const Research = () => {
                                         key={tab.value}
                                         onClick={() => setActiveTab(tab.value)}
                                         className={`text-xs font-medium py-2 px-3 transition-all -skew-x-12  ${activeTab === tab.value
-                                            ? "bg-orange-500 text-white"
+                                            ? "bg-[#ff9933] text-white"
                                             : " text-gray-600 hover:text-gray-900"
                                             }`}
 

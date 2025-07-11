@@ -127,7 +127,7 @@ const Header = () => {
 
           <button
             onClick={toggleLanguage}
-            className="inline py-2 px-4 rounded-full bg-gray-900  text-white border border-orange-500 hover:bg-orange-400 hover:text-white transition font-semibold shadow-md"
+            className="inline py-2 px-4 rounded-full bg-gray-900  text-white border border-[#FF9933] hover:bg-[#FF9933] hover:text-white transition font-semibold shadow-md"
             aria-label="Toggle language"
           >
             {lang === 'en' ? 'አማ' : 'EN'}

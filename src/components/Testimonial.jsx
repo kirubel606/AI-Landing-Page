@@ -120,7 +120,7 @@ const Testimonial = () => {
                   className={`
                     transition-all duration-500 ease-in-out rounded-2xl p-3 md:p-4 shadow-lg flex-shrink-0
                     ${isCenter
-                      ? "w-full max-w-sm md:w-80 h-56 md:h-64 opacity-100 scale-100 z-20 bg-gradient-to-br text-white from-indigo-950 to-indigo-600"
+                      ? "w-full max-w-sm md:w-80 h-56 md:h-64 opacity-100 scale-100 z-20 bg-gradient-to-br text-white from-[#003366]   to-[#003366]"
                       : isAdjacent
                         ? "hidden md:block md:w-64 md:h-56 opacity-80 scale-90 z-10 bg-gradient-to-br text-gray-800 from-orange-500 via-orange-300 to-orange-100"
                         : "hidden lg:block lg:w-48 lg:h-48 opacity-60 scale-75 z-0 text-gray-800"
