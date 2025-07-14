@@ -62,7 +62,7 @@ const ProjectsGrid = () => {
               stretch: 0,
               depth: 250,
               modifier: 1.2,
-              slideShadows: true,
+              slideShadows: false,
             }}
             breakpoints={{
               640: { slidesPerView: 1 },
@@ -89,7 +89,7 @@ const ProjectsGrid = () => {
             {projects.map((project) => (
               <SwiperSlide
                 key={project.id}
-                className="relative overflow-hidden mb-28 transition-transform duration-500 ease-in-out"
+                className="relative mb-28 transition-transform duration-500 ease-in-out"
               >
                 <div className="w-full h-full flex items-center justify-center">
                   <a
@@ -104,7 +104,7 @@ const ProjectsGrid = () => {
                         alt={i18n.language === 'am' ? project.title_am : project.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-orange-400/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       {project.logo && (
                         <img
                           src={project.logo}
@@ -135,8 +135,6 @@ const ProjectsGrid = () => {
                     </div>
                   </a>
                 </div>
-                {/* Dark overlay for side slides */}
-                <div className="absolute inset-0 pointer-events-none fancy-overlay"></div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -169,7 +167,7 @@ const ProjectsGrid = () => {
           transition: transform 0.6s ease, filter 0.6s ease;
         }
         .fancy-swiper .swiper-slide:not(.swiper-slide-active) .fancy-overlay {
-          background: rgba(0,0,0,0.0);
+          background: transparent;
           backdrop-filter: blur(1px);
         }
         .fancy-swiper .swiper-slide-active {
