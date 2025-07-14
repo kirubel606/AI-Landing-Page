@@ -188,7 +188,7 @@ const Resources = () => {
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedCollections, setSelectedCollections] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6
+  const itemsPerPage = 5
 
   // Filter data by tab first
   const tabFilteredData = useMemo(() => {
@@ -298,7 +298,7 @@ console.log(paginatedData)
   return (
 
     <div className="min-h-screen overflow-y-clip bg-white">
-      <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
+      <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden overflow-y-clip">
         <div className="absolute h-dvh w-full">
           <CoolSvg />
         </div>
@@ -478,7 +478,7 @@ console.log(paginatedData)
           </div>
         </div>
       </div>
-      <div className="bg-gray-50 border-t border-gray-200 mt-52">
+      <div className="bg-gray-50 border-t border-gray-200 relative mt-96">
       <Footer />
       </div>
     </div>

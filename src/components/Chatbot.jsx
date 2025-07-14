@@ -1,88 +1,208 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import axios from "axios";
-import { FiMessageCircle, FiX } from "react-icons/fi";
+import { FiMessageCircle, FiArrowLeft, FiLogOut } from "react-icons/fi";
 
-const sampleQuestions = [
-  "ስለ ኢትዮጵያ አርቴፊሻል ኢንተለጀንስ ኢንስቲትዩት",
-  "አርቴፊሻል ኢንተለጀንስ (AI) ምንድነው?",
-  "ኢትዮጵያ ውስጥ AI እንዴት እየተጠቀሰ ነው?",
-  "AI በኢንዱስትሪ ምን ማድረግ ይችላል?",
-  "የEAII አላማ ምንድነው?",
-  "AI ስለ ወደፊት ምን ትንቢት አላችሁ?",
-];
+const menuTree = {
+  title: "ዋና ምናሌ",
+  options: [
+    {
+      label: "የምንሰጣቸው አገልግሎቶች",
+      children: [
+        { label: "ስለ ኢንስቲትዩት" },
+        { label: "የAI መተግበሪያዎች" },
+        { label: "ምርምር እና ልማት" },
+        { label: "ዕድሎች" },
+        { label: "ትብብር" },
+        { label: "አድራሻ" },
+        { label: "አጠቃላይ መረጃ" },
+      ],
+    },
+    {
+      label: "ስለ ኢትዮጵያ አርቴፊሻል ኢንተለጀንስ ኢንስቲትዩት",
+      children: [
+        { label: "አርቴፊሻል ኢንተለጀንስ ምንድነው?" },
+        { label: "ራዕያችን" },
+        { label: "ተልእኮችን" },
+        { label: "እሴቶች" },
+        { label: "አቅም" },
+      ],
+    },
+    {
+      label: "በተለያዩ ዘርፎች የAI መተግበሪያ",
+      children: [
+        { label: "በጤና" },
+        { label: "በግብርና" },
+        { label: "በህግ ማስከባር" },
+        { label: "በትምህርት" },
+        { label: "በዲጂታል ኢኮኖሚ" },
+      ],
+    },
+    {
+      label: "አጠቃላይ መረጃ",
+      children: [
+        { label: "የምርምር ፕሮጀክቶች" },
+        { label: "የገንዘብ ድጋፍ" },
+        { label: "ሳይንስ እና ቴክኖሎጂ" },
+        { label: "ዲጂታል መንትያ" },
+      ],
+    },
+    {
+      label: "ዕድሎች",
+      children: [
+        { label: "ለወጣቶች" },
+        { label: "ለአካል ጉዳተኞች" },
+        { label: "ኢንተርንሽፕ" },
+        { label: "የስራ እድሎች" },
+      ],
+    },
+  ],
+};
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      message: "ሰላም! እባክህ ከታች ያሉትን ጥያቄዎች ይምረጡ።",
-      options: [],
+      message: "ሰላም! እባክህ ከታች ያሉትን አማራጮች ይምረጡ።",
       id: 0,
     },
   ]);
+  const [menuStack, setMenuStack] = useState([menuTree]);
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // Scroll to bottom when messages change or chatbot opens
   useEffect(() => {
-    if (isOpen) scrollToBottom();
+    if (isOpen) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages, isOpen]);
 
-  const handleSend = async (text) => {
-    if (!text.trim()) return;
+  const currentMenu = menuStack[menuStack.length - 1];
 
-    const userMessage = { sender: "user", message: text, id: Date.now() };
-    setMessages((prev) => [...prev, userMessage]);
+  // Handle user option selection
+  const handleOptionClick = useCallback(
+    async (optionLabel, hasChildren) => {
+      // Add user's message
+      const userMessage = { sender: "user", message: optionLabel, id: Date.now() };
+      setMessages((prev) => [...prev, userMessage]);
 
-    try {
-      const response = await axios.post(
-        "https://cms.aii.et/chatbot/webhooks/rest/webhook/",
-        userMessage
-      );
+      if (hasChildren) {
+        // Navigate into submenu
+        const nextMenu = currentMenu.options.find((opt) => opt.label === optionLabel);
 
-      const botReplies = response.data;
-
-      if (Array.isArray(botReplies)) {
-        setMessages((prev) => [
-          ...prev,
-          ...botReplies.map((reply) => ({
+        if (nextMenu && nextMenu.children) {
+          setMenuStack((prev) => [...prev, { ...nextMenu, options: nextMenu.children }]);
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              message: `እባክህ የ "${optionLabel}" አማራጮችን ይምረጡ።`,
+              id: Date.now() + 1,
+            },
+          ]);
+        }
+      } else if (optionLabel === "ይዉጡ") {
+        // Exit chat
+        setIsOpen(false);
+        setMessages([
+          {
             sender: "bot",
-            message: reply.text,
-            options: [],
-            id: Date.now() + Math.random(),
-          })),
+            message: "እናመሰግናለን! ደግሞ በእንግዲኛ እንገናኛለን።",
+            id: Date.now(),
+          },
         ]);
-      } else {
+        setMenuStack([menuTree]);
+      } else if (optionLabel === "<-- ወደ ዋና ምናሌ") {
+        // Go back to main menu
+        setMenuStack([menuTree]);
         setMessages((prev) => [
           ...prev,
           {
             sender: "bot",
-            message: botReplies.text,
-            options: [],
-            id: Date.now() + Math.random(),
+            message: "ዋና ምናሌ ወደቀለቀለ። እባክህ አንድ አማራጭ ይምረጡ።",
+            id: Date.now(),
           },
         ]);
+      } else {
+        // Leaf option: call backend
+        try {
+          const { data: botReplies } = await axios.post(
+            "https://cms.aii.et/chatbot/webhooks/rest/webhook/",
+            { sender: "user", message: optionLabel }
+          );
+
+          if (Array.isArray(botReplies) && botReplies.length > 0) {
+            setMessages((prev) => [
+              ...prev,
+              ...botReplies.map((reply) => ({
+                sender: "bot",
+                message: reply.text,
+                id: Date.now() + Math.random(),
+              })),
+            ]);
+          } else if (botReplies?.text) {
+            setMessages((prev) => [
+              ...prev,
+              {
+                sender: "bot",
+                message: botReplies.text,
+                id: Date.now() + Math.random(),
+              },
+            ]);
+          } else {
+            setMessages((prev) => [
+              ...prev,
+              {
+                sender: "bot",
+                message: "ይቅርታ፣ መልስ አልተገኘም።",
+                id: Date.now() + Math.random(),
+              },
+            ]);
+          }
+        } catch (error) {
+          console.error(error);
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "bot",
+              message: "ይቅርታ፣ አንድ ስህተት ተከስቷል።",
+              id: Date.now() + Math.random(),
+            },
+          ]);
+        }
       }
-    } catch (error) {
-      console.error(error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "bot",
-          message: "ይቅርታ፣ አንድ ስህተት ተከስቷል።",
-          options: [],
-          id: Date.now() + Math.random(),
-        },
-      ]);
-    }
-  };
+    },
+    [currentMenu]
+  );
+
+  // Go back one menu level
+  const handleBack = useCallback(() => {
+    setMenuStack((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "bot",
+        message: "ዋና ምናሌ ወደቀለቀለ። እባክህ አንድ አማራጭ ይምረጡ።",
+        id: Date.now(),
+      },
+    ]);
+  }, []);
+
+  // Exit chat and reset
+  const handleExit = useCallback(() => {
+    setIsOpen(false);
+    setMessages([
+      {
+        sender: "bot",
+        message: "እናመሰግናለን! ደግሞ በእንግዲኛ እንገናኛለን።",
+        id: Date.now(),
+      },
+    ]);
+    setMenuStack([menuTree]);
+  }, []);
 
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
-      {/* Floating Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -95,7 +215,6 @@ const Chatbot = () => {
         </button>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
         <div
           className="w-80 h-[520px] bg-white border border-gray-300 rounded-2xl shadow-2xl flex flex-col overflow-hidden
@@ -106,21 +225,32 @@ const Chatbot = () => {
         >
           {/* Header */}
           <div
-            className="bg-[#003366] text-white p-4 flex items-center justify-between
-            shadow-md"
+            className="bg-[#003366] text-white p-4 flex items-center justify-between shadow-md"
           >
             <h2 className="text-lg font-semibold tracking-wide select-none">Chatbot</h2>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="hover:rotate-90 transition-transform duration-300 text-white focus:outline-none focus:ring-2 focus:ring-white rounded"
-              aria-label="Close chat"
-              title="Close chat"
-            >
-              <FiX size={22} />
-            </button>
+            <div className="flex items-center gap-3">
+              {menuStack.length > 1 && (
+                <button
+                  onClick={handleBack}
+                  className="hover:bg-[#002244] p-1 rounded-md transition-colors"
+                  aria-label="Back"
+                  title="Back"
+                >
+                  <FiArrowLeft size={20} />
+                </button>
+              )}
+              <button
+                onClick={handleExit}
+                className="hover:bg-[#002244] p-1 rounded-md transition-colors"
+                aria-label="Exit"
+                title="Exit"
+              >
+                <FiLogOut size={20} />
+              </button>
+            </div>
           </div>
 
-          {/* Messages Area */}
+          {/* Messages */}
           <div
             className="flex-1 p-4 overflow-y-auto space-y-5 bg-gray-50 shadow-inner rounded-b-2xl"
             tabIndex={-1}
@@ -128,13 +258,13 @@ const Chatbot = () => {
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex items-start max-w-full
-                  ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex items-start max-w-full ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 {msg.sender === "bot" && (
                   <div
-                    className="w-9 h-9 bg-[#003366] text-white rounded-full flex items-center justify-center mr-3
-                    select-none animate-bounce"
+                    className="w-9 h-9 bg-[#003366] text-white rounded-full flex items-center justify-center mr-3 select-none animate-bounce"
                     aria-hidden="true"
                     title="Bot"
                   >
@@ -143,33 +273,26 @@ const Chatbot = () => {
                 )}
 
                 <div
-                  className={`relative px-5 py-3 rounded-2xl max-w-[75%] shadow-md
-                    transition-all duration-500 ease-in-out
-                    ${
-                      msg.sender === "user"
-                        ? "bg-[#FF9933] text-white rounded-br-none"
-                        : "bg-white border border-gray-200 text-gray-900 rounded-bl-none"
-                    }
-                    animate-fade-slide
-                    `}
+                  className={`relative px-5 py-3 rounded-2xl max-w-[75%] shadow-md transition-all duration-500 ease-in-out ${
+                    msg.sender === "user"
+                      ? "bg-[#FF9933] text-white rounded-br-none"
+                      : "bg-white border border-gray-200 text-gray-900 rounded-bl-none"
+                  } animate-fade-slide`}
                   style={{ animationFillMode: "forwards" }}
                 >
                   {msg.message}
-                  {/* Message tail arrow */}
                   <span
-                    className={`absolute bottom-0 w-3 h-3 bg-transparent
-                    ${
+                    className={`absolute bottom-0 w-3 h-3 ${
                       msg.sender === "user"
                         ? "right-0 translate-x-1/2 rotate-45 bg-[#FF9933]"
                         : "left-0 -translate-x-1/2 rotate-45 bg-white border-l border-b border-gray-200"
                     }`}
-                  ></span>
+                  />
                 </div>
 
                 {msg.sender === "user" && (
                   <div
-                    className="w-9 h-9 bg-[#FF9933] text-white rounded-full flex items-center justify-center ml-3
-                    select-none animate-bounce"
+                    className="w-9 h-9 bg-[#FF9933] text-white rounded-full flex items-center justify-center ml-3 select-none animate-bounce"
                     aria-hidden="true"
                     title="User"
                   >
@@ -181,28 +304,60 @@ const Chatbot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Questions Selection */}
+          {/* Options Panel */}
           <div
-            className="p-4 border-t border-gray-300 bg-gray-50 flex flex-wrap gap-3 max-h-36 overflow-y-auto
-            scrollbar-thin scrollbar-thumb-[#FF9933] scrollbar-track-gray-200"
+            className="p-4 border-t border-gray-300 bg-gray-50 flex flex-col gap-3 max-h-40 overflow-y-auto
+            scrollbar-thin scrollbar-thumb-[#FF9933] scrollbar-track-gray-200 rounded-b-2xl"
           >
-            {sampleQuestions.map((q, i) => (
+            {currentMenu.options.map((opt, i) => (
               <button
                 key={i}
-                onClick={() => handleSend(q)}
+                onClick={() => handleOptionClick(opt.label, !!opt.children)}
                 className="bg-[#FF9933] hover:bg-[#e68900] text-white px-4 py-2 rounded-full text-sm
-                  font-semibold shadow-md transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#003366]/80"
-                aria-label={`Send question: ${q}`}
-                title={q}
+                  font-semibold shadow-md transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#003366]/80
+                  flex justify-between items-center"
+                aria-label={`Send question: ${opt.label}`}
+                title={opt.label}
+                type="button"
               >
-                {q}
+                <span>{opt.label}</span>
+                {opt.children && (
+                  <span
+                    aria-hidden="true"
+                    className="ml-2 inline-block transform transition-transform duration-300"
+                  >
+                    ▶
+                  </span>
+                )}
               </button>
             ))}
+
+            {/* Back & Exit buttons */}
+            {menuStack.length > 1 && (
+              <button
+                onClick={handleBack}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold
+                  shadow-md transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#003366]/80"
+                aria-label="Back to previous menu"
+                type="button"
+              >
+                ← ወደ ዋና ምናሌ
+              </button>
+            )}
+            <button
+              onClick={handleExit}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold
+                shadow-md transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#003366]/80"
+              aria-label="Exit chat"
+              type="button"
+            >
+              ይዉጡ
+            </button>
           </div>
         </div>
       )}
 
-      {/* Tailwind keyframes and custom animations injected directly */}
+      {/* Styles */}
       <style>{`
         @keyframes chatbot-slide {
           0% { transform: translateY(50%); opacity: 0; }
@@ -211,7 +366,6 @@ const Chatbot = () => {
         .animate-chatbot-slide {
           animation: chatbot-slide 0.3s ease-out forwards;
         }
-
         @keyframes fade-slide {
           0% { opacity: 0; transform: translateY(12px);}
           100% { opacity: 1; transform: translateY(0);}
@@ -219,8 +373,6 @@ const Chatbot = () => {
         .animate-fade-slide {
           animation: fade-slide 0.35s ease forwards;
         }
-
-        /* Scrollbar styling */
         .scrollbar-thin {
           scrollbar-width: thin;
           scrollbar-color: #FF9933 #f0f0f0;

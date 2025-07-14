@@ -12,7 +12,7 @@ const { t, i18n } = useTranslation();
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [lightboxImages, setLightboxImages] = useState([])
-  console.log("Light Box:", lightboxImages);
+
   // Add this function before the return statement
   const openLightbox = (images, startIndex = 0) => {
     setLightboxImages(images)

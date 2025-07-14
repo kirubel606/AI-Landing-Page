@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const ApplicationsGrid = () => {
+const ApplicationsGrid = memo(() => {
   const [applications, setApplications] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  const handleClick = (category) => {
-    navigate(`/research?category=${category}`);
-  };
+  const handleClick = useCallback(
+    (category) => {
+      navigate(`/research?category=${category}`);
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -52,6 +55,7 @@ const ApplicationsGrid = () => {
                 <img
                   src={app.image || "/placeholder.svg"}
                   alt={i18n.language === 'am' ? app.name_am : app.name}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
 
@@ -83,6 +87,6 @@ const ApplicationsGrid = () => {
       </div>
     </section>
   );
-};
+});
 
 export default ApplicationsGrid;
