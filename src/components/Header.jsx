@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../../public/logo.png"
 import { useTranslation } from 'react-i18next';
+import Chatbot from "./Chatbot";
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -15,15 +16,16 @@ const Header = () => {
   useEffect(() => {
     // Set initial language state based on i18n
     setLang(i18n.language || 'en');
-    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-    (function () {
-      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-      s1.async = true;
-      s1.src = 'https://embed.tawk.to/685e870e8b962e190cb8fc07/1iuojv4f4';
-      s1.charset = 'UTF-8';
-      s1.setAttribute('crossorigin', '*');
-      s0.parentNode.insertBefore(s1, s0);
-    })();
+    // var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    // (function () {
+    //   var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    //   s1.async = true;
+    //   s1.src = 'https://embed.tawk.to/685e870e8b962e190cb8fc07/1iuojv4f4';
+    //   s1.charset = 'UTF-8';
+    //   s1.setAttribute('crossorigin', '*');
+    //   s0.parentNode.insertBefore(s1, s0);
+    // })();
+
   }, [i18n.language]);
   const toggleLanguage = () => {
     const newLang = lang === 'en' ? 'am' : 'en';
@@ -196,7 +198,9 @@ const Header = () => {
           <button onClick={() => i18n.changeLanguage('am')} className="text-white">AM</button>
         </div> */}
       </nav>
+     
     </header>
+    
   )
 }
 
