@@ -6,14 +6,19 @@ import axios from "axios"
 import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import SocialMediaLinks from "../components/SocialMediaLinks";
+import { AIOrganizationalChart } from "../components/ai-organizational-chart";
+import { OrganizationalChart } from "../components/organization-list";
 const About = () => {
   const { t,i18n } = useTranslation();
   const [about, setAbout] = useState([]);
+  const [orgdata, setOrgdata] = useState([]);
   useEffect(() => {
     const fetchAbout = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/about/`);
+        const orgdata = await axios.get(`${BASE_URL}/about/units`);
         setAbout(response.data);
+        setOrgdata(orgdata.data);
       } catch (error) {
         console.error("Failed to fetch about:", error);
       }
@@ -21,6 +26,21 @@ const About = () => {
 
     fetchAbout();
   }, []);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check initial window width
+    setIsMobile(window.innerWidth < 768); // Tailwind md breakpoint
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden">
@@ -111,7 +131,16 @@ const About = () => {
             {about.quote}
           </Typography>
         </div>
-
+        {orgdata && (
+          <>
+          <h1 className="text-center text-[#003366] text-5xl font-extrabold">EAII Organizatinal Structure</h1>
+            {isMobile ? (
+              <OrganizationalChart data={orgdata.length ? [orgdata[0]] : []} />
+            ) : (
+              <AIOrganizationalChart data={orgdata.length ? [orgdata[0]] : []} />
+            )}
+            </>
+          )}
         {/* Four Pillars Section */}
         <div className="grid md:grid-cols-2 gap-8">
           {/* Advancing AI Research */}
