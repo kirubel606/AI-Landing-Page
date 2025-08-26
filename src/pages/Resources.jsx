@@ -308,7 +308,7 @@ console.log(paginatedData)
           <div className="z-20 flex items-center justify-center h-full">
             <div className="text-center text-white mb-10 h-full">
               <h1 variant="h1" className="text-4xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                {t('resource_and_publications')}
+                {t('resources')}<p className=" text-[#ff9933] px-4">{t('and')}</p> {t('publications')}
               </h1>
               {/* <h1 variant="lead" className="text-lg opacity-90 text-white">
                 {t('advancing_innovation')}
@@ -347,7 +347,7 @@ console.log(paginatedData)
         </div>
       </div>
 
-      <div className="max-w-7xl h-screen mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl h-screen mx-auto px-4 sm:px-6 lg:px-8 py-6 mb-30">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar */}
           <div className="lg:w-64 flex-shrink-0">
@@ -478,7 +478,7 @@ console.log(paginatedData)
           </div>
         </div>
       </div>
-      <div className="bg-gray-50 border-t border-gray-200 relative mt-96">
+      <div className="bg-gray-50 border-t border-gray-200 relative pt-20 mt-96">
       <Footer />
       </div>
     </div>

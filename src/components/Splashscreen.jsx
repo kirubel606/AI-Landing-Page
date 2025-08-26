@@ -5,7 +5,7 @@ import splashAnimation from '../../public/Assets/BrainLottie.json' // adjust if 
 
 const Splashscreen = () => {
   return (
-<div className="h-screen flex flex-col justify-center items-center bg-[#080a24] px-4">
+<div className=" pt-32 h-screen flex flex-col justify-center items-center bg-[#080a24] px-4">
   <div className="absolute inset-0 w-full h-full blur-sm bg-gradient-to-br from-[#080a24] via-[#000] to-[#080a24]" />
 
   <img

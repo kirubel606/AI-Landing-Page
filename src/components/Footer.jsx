@@ -103,32 +103,32 @@ const Footer = () => {
             © 2025 {t('ethiopian_ai_institute')}. {t('all_rights_reserved')}
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            <a href="https://www.facebook.com/ArtificialIntelligenceInstituteOfficial" className="text-gray-400 hover:text-orange-400 transition-colors">
+            <a href="https://www.facebook.com/ArtificialIntelligenceInstituteOfficial" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors">
               <Facebook size={20} />
             </a>
-            <a href="https://x.com/EthiopianAII" className="text-gray-400 hover:text-orange-400 transition-colors">
+            <a href="https://x.com/EthiopianAII" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors">
               <Twitter size={20} />
             </a>
-            <a href="http://www.linkedin.com/company/etartificialintelligenceinstitute" className="text-gray-400 hover:text-orange-400 transition-colors">
+            <a href="http://www.linkedin.com/company/etartificialintelligenceinstitute" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors">
               <Linkedin size={20} />
             </a>
-            <a href="https://www.youtube.com/c/EthiopianArtificialIntelligenceInstitute" className="text-gray-400 hover:text-orange-400 transition-colors">
+            <a href="https://www.youtube.com/c/EthiopianArtificialIntelligenceInstitute" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors">
               <Youtube size={20} />
             </a>
-            <a href="https://www.instagram.com/ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
+            <a href="https://www.instagram.com/ethiopianaii" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors">
               <Instagram size={20} />
             </a>
-            <a href="https://www.tiktok.com/@ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
+            <a href="https://www.tiktok.com/@ethiopianaii" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-orange-400 transition-colors">
               <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 448 512"
-      fill="currentColor"
-      className="w-5 h-5"
-    >
-      <path d="M448,209.9V96h-66.7c-24.1,0-43.7-19.5-43.7-43.5V0H285v304.8c0,40.4-32.9,73.2-73.2,73.2s-73.2-32.9-73.2-73.2  c0-40.4,32.9-73.2,73.2-73.2c9.3,0,18,1.8,26.1,4.8V192c-8.6-1.2-17.4-2-26.1-2c-73.6,0-133.2,59.6-133.2,133.2  S138.3,456,211.9,456s133.2-59.6,133.2-133.2V176.1c19.5,11.6,42.1,18.2,66.7,18.2H448z"/>
-    </svg>
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 448 512"
+                fill="currentColor"
+                className="w-5 h-5"
+              >
+                <path d="M448,209.9V96h-66.7c-24.1,0-43.7-19.5-43.7-43.5V0H285v304.8c0,40.4-32.9,73.2-73.2,73.2s-73.2-32.9-73.2-73.2  c0-40.4,32.9-73.2,73.2-73.2c9.3,0,18,1.8,26.1,4.8V192c-8.6-1.2-17.4-2-26.1-2c-73.6,0-133.2,59.6-133.2,133.2  S138.3,456,211.9,456s133.2-59.6,133.2-133.2V176.1c19.5,11.6,42.1,18.2,66.7,18.2H448z" />
+              </svg>
             </a>
 
             <a href="https://t.me/ethiopianaii" className="text-gray-400 hover:text-orange-400 transition-colors">
