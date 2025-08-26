@@ -100,7 +100,7 @@ const Collaborations = () => {
             {isClient &&
               getInfiniteCollabs().map((collab) => (
                 <div key={collab.key} className="flex justify-center transition-all duration-500 ease-in-out">
-                  <a href={collab.link}>
+                  <a href={collab.link} target="_blank" rel="noopener noreferrer">
                   <img
                     src={collab.logo || "/placeholder.svg"}
                     alt={`${collab.name || "Collaboration"} logo`}

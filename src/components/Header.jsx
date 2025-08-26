@@ -89,7 +89,7 @@ const Header = () => {
 
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
-        <Link to="/Home" className="flex items-center">
+        <Link to="/Home" className="flex items-center mr-32">
           <div className="w-20 bg-white rounded-full flex items-center justify-center">
             <img src={logo || "/placeholder.svg"} className="rounded-full" />
           </div>

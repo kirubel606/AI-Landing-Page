@@ -88,7 +88,7 @@ const Home = () => {
         <CoolSvg />
         <section className="flex items-center justify-center min-h-screen px-8 md:px-40">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+            <h1 className="text-4xl mt-28 md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
               <span className="text-white">{t("home_heading1")}</span>
               <br />
               <span className="bg-gradient-to-r from-orange-500 via-white to-orange-500 bg-clip-text text-transparent">

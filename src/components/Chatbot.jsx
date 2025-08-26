@@ -107,7 +107,7 @@ const Chatbot = () => {
         setMessages([
           {
             sender: "bot",
-            message: "እናመሰግናለን! ደግሞ በእንግዲኛ እንገናኛለን።",
+            message: "ሰላም! እባክህ ከታች ያሉትን አማራጮች ይምረጡ።",
             id: Date.now(),
           },
         ]);
@@ -126,6 +126,9 @@ const Chatbot = () => {
       } else {
         // Leaf option: call backend
         try {
+          const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+            
+          await sleep(1000);
           const { data: botReplies } = await axios.post(
             "https://cms.aii.et/chatbot/webhooks/rest/webhook/",
             { sender: "user", message: optionLabel }
@@ -194,7 +197,7 @@ const Chatbot = () => {
     setMessages([
       {
         sender: "bot",
-        message: "እናመሰግናለን! ደግሞ በእንግዲኛ እንገናኛለን።",
+        message: "ሰላም! እባክዎ ከታች ያሉትን አማራጮች ይምረጡ።",
         id: Date.now(),
       },
     ]);
