@@ -36,10 +36,15 @@ const Header = () => {
     { name: t('home'), path: "/Home" },
     { name: t('news'), path: "/news" },
     { name: t('research'), path: "/research" },
-    { name: t('resources'), path: "/resources" },
     { name: t('events'), path: "/events" },
     { name: t('about_us'), path: "/about" },
   ]
+
+  const researchDropdown = [
+    { name: "Projects", path: "/research" },
+    { name: "Resources", path: "/research/resources" },
+    { name: "Startup", path: "/research/startup" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,19 +105,60 @@ const Header = () => {
           className="bg-[#202024] border border-white/20 rounded-3xl px-3 py-2 shadow-2xl hidden lg:flex items-center space-x-8"
           style={{ boxShadow: "0 8px 10px 2px rgba(255, 153, 51, 0.15)" }}
         >
-          {navItems.map((item, index) => (
-            <Link
-              key={index}
-              to={item.path}
-              className={`transition-colors duration-200 text-sm font-medium ${location.pathname.startsWith(item.path)
-                  ? "text-white bg-[#363639] rounded-3xl px-5 py-2"
-                  : "text-gray-300 hover:text-white px-1 py-2"
+          {navItems.map((item, index) => {
+            if (item.name === t('research')) {
+              return (
+                <div key={index} className="relative group">
+                  <button
+                    className={`transition-colors duration-200 text-sm font-medium flex items-center gap-2 ${
+                      location.pathname.startsWith(item.path)
+                        ? "text-white bg-[#363639] rounded-3xl px-5 py-2"
+                        : "text-gray-300 hover:text-white px-3 py-2"
+                    }`}
+                  >
+                    {item.name}
+                    <svg
+                      className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown */}
+                  <div className="absolute left-0 mt-2 w-56 bg-[#202024] border border-gray-700 rounded-xl shadow-xl opacity-0 scale-95 transform transition-all duration-300 origin-top group-hover:opacity-100 group-hover:scale-100">
+                    {researchDropdown.map((subItem, subIndex) => (
+                      <Link
+                        key={subIndex}
+                        to={subItem.path}
+                        className="block px-4 py-2 text-sm text-gray-300 hover:text-white "
+                      >
+                        {subItem.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={`transition-colors duration-200 text-sm font-medium ${
+                  location.pathname.startsWith(item.path)
+                    ? "text-white bg-[#363639] rounded-3xl px-5 py-2"
+                    : "text-gray-300 hover:text-white px-1 py-2"
                 }`}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
+              >
+                {item.name}
+              </Link>
+            )
+          })}
+      </div>
         <div className="flex items-center gap-4">
           {/* Get in Touch Button */}
           <button

@@ -12,6 +12,7 @@ import "./App.css"
 import SplashWrapper from './components/SplashWrapper';
 import NewsDetail from "./pages/NewsDetail";
 import GalleryPage from "./pages/GalleryPage";
+import StartupPage from './pages/Startup';
 
 function App() {
   const location = useLocation(); // <-- This now works correctly
@@ -27,7 +28,8 @@ function App() {
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/events" element={<Events />} />
               <Route path="/about" element={<About />} />
-              <Route path="/resources" element={<Resources />} />    
+              <Route path="/research/resources" element={<Resources />} />    
+              <Route path="/research/startup" element={<StartupPage />} />    
               <Route path="/contactus" element={<Contactus/>} /> 
               <Route path="/gallery" element={<GalleryPage />} />   
               
