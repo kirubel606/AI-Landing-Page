@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000"
 
 const Resources = () => {
-  const { t ,i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [mockData, setMockData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // NEW
 
@@ -161,7 +161,7 @@ const Resources = () => {
             onClick={() => typeof page === "number" && onPageChange(page)}
             disabled={page === "..."}
             className={`px-3 py-2 rounded border text-sm ${page === currentPage
-              ? "bg-sky-950 text-white border-sky-950"
+              ? "bg-blue-600 text-white border-blue-600"
               : page === "..."
                 ? "border-transparent cursor-default"
                 : "border-gray-300 hover:bg-gray-50"
@@ -188,18 +188,21 @@ const Resources = () => {
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedCollections, setSelectedCollections] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 6
 
   // Filter data by tab first
   const tabFilteredData = useMemo(() => {
     return mockData.filter((item) => {
       if (activeTab === "PUBLICATIONS") {
         return item.classification === "publication";
+      } else if (activeTab === "PATENTS") {  // also fix typo "PATTENT" -> "PATENT"
+        return item.classification === "patents";
       } else {
-        return item.classification === "resource";
+        return item.classification === "resource" || item.classification === "dataset" || item.classification === "tool";
       }
     });
-  }, [activeTab, mockData]); // <-- ADD mockData here
+  }, [activeTab, mockData]); // <-- mockData is correctly added
+
 
 
   // Get unique values for filters from tab-filtered data
@@ -224,42 +227,70 @@ const Resources = () => {
 
 
   const collections = [
-    "Biomedical Engineering",
-    "Medical Imaging",
-    "Healthcare Analytics",
-    "Clinical Data",
-    "Drug Discovery",
-    "Healthcare Management",
-  ].sort()
+    { label: "Datasets", value: "dataset" },
+    { label: "Tools", value: "tool" },
+  ];
+
 
 
   // Apply additional filters and sort
   const filteredData = useMemo(() => {
     const filtered = tabFilteredData.filter((item) => {
+      // Search filter
       const matchesSearch =
         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.tags.toLowerCase().includes(searchTerm.toLowerCase())
+        item.tags.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const itemYear = new Date(item.published_at).getFullYear().toString()
-      const matchesYear = selectedYears.length === 0 || selectedYears.includes(itemYear)
-      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.category)
+      // Year filter
+      const itemYear = new Date(item.published_at).getFullYear().toString();
+      const matchesYear =
+        selectedYears.length === 0 || selectedYears.includes(itemYear);
+
+      // Category filter
+      const matchesCategory =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(item.category);
+
+      // Collection filter
       const matchesCollection =
         selectedCollections.length === 0 ||
-        selectedCollections.some((col) => item.tags.toLowerCase().includes(col.toLowerCase()))
+        selectedCollections.some((col) => {
+          const colLower = col.toLowerCase();
 
-      return matchesSearch && matchesYear && matchesCategory && matchesCollection
-    })
+          // dataset / tool → check classification
+          if (["dataset", "tool"].includes(colLower)) {
+            return item.classification?.toLowerCase() === colLower;
+          }
 
-    // Sort by date (latest first)
-    return filtered.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
-  }, [tabFilteredData, searchTerm, selectedYears, selectedCategories, selectedCollections])
+          // default → check tags
+          return item.tags?.toLowerCase().includes(colLower);
+        });
+
+      return (
+        matchesSearch &&
+        matchesYear &&
+        matchesCategory &&
+        matchesCollection
+      );
+    });
+
+    // Sort latest first
+    return filtered.sort(
+      (a, b) => new Date(b.published_at) - new Date(a.published_at)
+    );
+  }, [
+    tabFilteredData,
+    searchTerm,
+    selectedYears,
+    selectedCategories,
+    selectedCollections,
+  ]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage)
-console.log(paginatedData)
   // Reset filters and page when tab changes
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -295,194 +326,199 @@ console.log(paginatedData)
       })
       .toUpperCase()
   }
-  return (
-
-    <div className="min-h-screen overflow-y-clip bg-white">
-      <div className="min-h-[30vh] md:min-h-[50vh] bg-gray-900 relative overflow-hidden overflow-y-clip">
-        <div className="absolute h-dvh w-full">
-          <CoolSvg />
-        </div>
-                    <SocialMediaLinks />
-        <div className="relative h-64 bg-transparent mx-20">
-          {/* <img src="./../public/Assets/Andrew_Derr.png" className="absolute w-[27%] top-12 left-6 m-0 p-0" /> */}
-          <div className="z-20 flex items-center justify-center h-full">
-            <div className="text-center text-white mb-10 h-full">
-              <h1 variant="h1" className="text-4xl md:text-6xl flex font-bold mt-36 mb-2 text-white">
-                {t('resource_and_publications')}
-              </h1>
-              {/* <h1 variant="lead" className="text-lg opacity-90 text-white">
-                {t('advancing_innovation')}
-              </h1> */}
-            </div>
-          </div>
-          {/* Decorative elements */}
-          <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"></div>
-          <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl"></div>
-        </div>
+return (
+  <div className="min-h-screen flex flex-col bg-white">
+    {/* Hero Section */}
+    <div className="relative min-h-[30vh] md:min-h-[50vh] bg-gray-900 overflow-hidden">
+      <div className="absolute inset-0">
+        <CoolSvg />
       </div>
-      {/* Navigation Tabs */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-4">
+
+      <SocialMediaLinks />
+
+      <div className="relative flex items-center justify-center h-full px-6">
+        <div className="text-center text-white">
+          <h1 className="text-4xl md:text-6xl font-bold mt-20 md:mt-36 mb-3">
+            {t("resource_and_publications")}
+          </h1>
+          <p className="text-lg opacity-90">{t("advancing_innovation")}</p>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl" />
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl" />
+      </div>
+    </div>
+
+    {/* Tabs */}
+    <div className="bg-white border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap gap-2">
+          {["PUBLICATIONS", "RESOURCES", "PATENTS"].map((tab) => (
             <button
-              onClick={() => handleTabChange("PUBLICATIONS")}
-              className={`py-2 px-3 text-sm transition-all duration-200 ${activeTab === "PUBLICATIONS"
-                ? "text-orange-600 font-bold italic bg-orange-100 rounded"
-                : "text-gray-400 italic hover:text-gray-600"
-                }
+              key={tab}
+              onClick={() => handleTabChange(tab)}
+              className={`py-2 px-3 text-sm rounded transition-all duration-200 ${
+                activeTab === tab
+                  ? "text-orange-600 font-bold italic bg-orange-100"
+                  : "text-gray-400 italic hover:text-gray-600"
               }`}
             >
-              {t('publications')}
+              {t(tab.toLowerCase())}
             </button>
-            <button
-              onClick={() => handleTabChange("RESOURCES")}
-              className={`py-2 px-3 text-sm transition-all duration-200 ${activeTab === "RESOURCES"
-                ? "text-orange-600 font-bold italic bg-orange-100 rounded"
-                : "text-gray-400 italic hover:text-gray-600"
-                }`}
-            >
-              {t('resources')}
-            </button>
-          </div>
+          ))}
         </div>
       </div>
+    </div>
 
-      <div className="max-w-7xl h-screen mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar */}
-          <div className="lg:w-64 flex-shrink-0">
-            {/* Search */}
-            <div className="relative">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder={t('search_publications')}
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value)
-                    setCurrentPage(1)
-                  }}
-                  className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-950"
-                />
-              </div>
-            </div>
+    {/* Content Section */}
+    <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+      <div className="flex flex-col lg:flex-row gap-6">
+       {/* Sidebar */}
+<aside className="lg:w-64 flex-shrink-0 space-y-4">
+  {/* Search */}
+  <div className="relative">
+    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+    <input
+      type="text"
+      placeholder={t("search_publications")}
+      value={searchTerm}
+      onChange={(e) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
 
-            {/* Filters */}
-            <div className="space-y-4 bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-sm font-bold text-gray-900 border-b pb-2">Filters</h3>
+  {/* Filters */}
+  <div className="space-y-4 bg-white rounded-lg shadow-md p-4">
+    <h3 className="text-sm font-bold text-gray-900 border-b pb-2">{t("Filters")}</h3>
 
-              <div className="space-y-4">
-                {/* Year Filter */}
-                <div>
-                  <label className="flex items-center justify-between text-sm font-medium text-gray-700 mb-1">
-                    {t('year')}
-                  </label>
-                  <FilterDropdown
-                    label={t('year')}
-                    options={years.map((year) => ({ label: year, value: year }))}
-                    selectedValues={selectedYears}
-                    onChange={(values) => handleFilterChange("years", values)}
-                    placeholder={t('select_years')}
-                  />
-                </div>
+    {/* Year Filter */}
+    <div>
+      <label className="flex items-center justify-between text-sm font-medium text-gray-700 mb-1">
+        {t("year")}
+      </label>
+      <FilterDropdown
+        label={t("year")}
+        options={years.map((year) => ({ label: year, value: year }))}
+        selectedValues={selectedYears}
+        onChange={(values) => handleFilterChange("years", values)}
+        placeholder={t("select_years")}
+      />
+    </div>
 
-                {/* Category Filter */}
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">
-                    {t('research_areas')}
-                  </label>
-                  <FilterDropdown
-                    label={t('category')}
-                    options={categoryData.map((cat) => ({
-                      label: (i18n.language === 'am' ? cat.name_am : cat.name),
-                      value: cat.id,
-                    }))}
-                    selectedValues={selectedCategories}
-                    onChange={(values) => handleFilterChange("categories", values)}
-                    placeholder={t('select_categories')}
-                  />
-                </div>
+    {/* Category Filter */}
+    <div>
+      <label className="text-sm font-medium text-gray-700 mb-1 block">
+        {t("research_areas")}
+      </label>
+      <FilterDropdown
+        label={t("research_areas")}
+        options={categoryData.map((cat) => ({
+          label: i18n.language === "am" ? cat.name_am : cat.name,
+          value: cat.id,
+        }))}
+        selectedValues={selectedCategories}
+        onChange={(values) => handleFilterChange("categories", values)}
+        placeholder={t("select_categories")}
+      />
+    </div>
+
+    {/* Collections Filter */}
+    {(activeTab === "RESOURCES" || activeTab === "PATENTS") && (
+      <div>
+        <label className="text-sm font-medium text-gray-700 mb-1 block">
+          {t("collections")}
+        </label>
+        <FilterDropdown
+          label={t("collections")}
+          options={collections}
+          selectedValues={selectedCollections}
+          onChange={(values) => handleFilterChange("collections", values)}
+          placeholder={t("select_collections")}
+        />
+      </div>
+    )}
+  </div>
+</aside>
 
 
-                {/* Collections Filter */}
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1 block">
-                    {t('collections')}
-                  </label>
-                  <FilterDropdown
-                    disabled
-                    label={t('collections')}
-                    options={collections.map((col) => ({ label: col, value: col }))}
-                    selectedValues={selectedCollections}
-                    onChange={(values) => handleFilterChange("collections", values)}
-                    placeholder={t('select_collections')}
-                  />
+        {/* Main Content */}
+        <main className="flex-1">
+          {/* Content List */}
+          <div className="space-y-6">
+            {paginatedData
+              .filter((item) =>
+                i18n.language === "am"
+                  ? item.title_am?.trim()
+                  : item.title?.trim()
+              )
+              .map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm"
+                >
+                  <span className="inline-block text-xs font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                    {formatDate(item.published_at)}
+                  </span>
 
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Content List */}
-            <div className="space-y-6">
-              {paginatedData
-              .filter(item =>
-            i18n.language === 'am'
-              ? item.title_am?.trim()
-              : item.title?.trim()
-          ).map((item) => (
-                <div key={item.id} className="bg-white p-5 rounded border border-gray-200">
-                  <div className="mb-2">
-                    <span className="text-xs font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded">
-                      {formatDate(item.published_at)}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base font-semibold text-gray-900 mb-2 leading-tight">{i18n.language === 'am' ? item.title_am : item.title}</h3>
-                  
+                  <h3 className="text-base font-semibold text-gray-900 my-2 leading-tight">
+                    {i18n.language === "am" ? item.title_am : item.title}
+                  </h3>
 
                   <div className="space-y-1 text-sm text-gray-600 mb-3">
                     <div>
-                      <span className="font-medium">{t('author')}:</span> {item.author}
-                      
+                      <span className="font-medium">{t("author")}:</span>{" "}
+                      {item.author}
                     </div>
                     <div>
-                      <span className="font-medium">{t('published')}:</span>{i18n.language === 'am' ? item.plublisher_am : item.plublisher}
+                      <span className="font-medium">{t("published")}:</span>{" "}
+                      {i18n.language === "am"
+                        ? item.plublisher_am
+                        : item.plublisher}
                     </div>
                   </div>
 
-                  <div>
-                    <a href={item.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                      {t('view_more')}
-                    </a>
-                  </div>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  >
+                    {t("view_more")}
+                  </a>
                 </div>
               ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-            )}
-
-            {/* No results */}
-            {filteredData.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">{t('no_news_available')}</p>
-              </div>
-            )}
           </div>
-        </div>
-      </div>
-      <div className="bg-gray-50 border-t border-gray-200 relative mt-96">
-      <Footer />
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
+
+          {/* No Results */}
+          {filteredData.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500">{t("no_news_available")}</p>
+            </div>
+          )}
+        </main>
       </div>
     </div>
-  )
+
+    {/* Footer */}
+    <Footer />
+  </div>
+);
+
 }
 
 export default Resources
