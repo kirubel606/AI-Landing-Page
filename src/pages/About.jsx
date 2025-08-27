@@ -134,11 +134,7 @@ const About = () => {
         {orgdata && (
           <>
           <h1 className="text-center text-[#003366] text-5xl font-extrabold">EAII Organizatinal Structure</h1>
-            {isMobile ? (
               <OrganizationalChart data={orgdata.length ? [orgdata[0]] : []} />
-            ) : (
-              <AIOrganizationalChart data={orgdata.length ? [orgdata[0]] : []} />
-            )}
             </>
           )}
         {/* Four Pillars Section */}

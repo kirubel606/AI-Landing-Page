@@ -60,10 +60,6 @@ function UnitCard({ unit, depth = 0 }) {
                   )}
 
                   <h3 className="text-xl font-semibold text-gray-900">{unit.name}</h3>
-
-                  <Badge variant="secondary" className="text-xs">
-                    Level {unit.level}
-                  </Badge>
                 </div>
 
                 <p className="text-gray-600 mb-3">{unit.description}</p>
@@ -90,45 +86,6 @@ function UnitCard({ unit, depth = 0 }) {
             </div>
           </CardContent>
         </Card>
-
-        {/* Tooltip */}
-        {showTooltip && unit.in_charge && (
-          <div className="absolute top-0 left-0 ml-4 z-10 w-80 bg-white rounded-lg shadow-xl border p-4 animate-in fade-in-0 zoom-in-95">
-            <div className="flex items-start gap-4">
-              <Avatar className="w-16 h-16">
-              <AvatarImage src={unit.in_charge.photo || undefined} />
-                      {!unit.in_charge.photo && (
-                      <AvatarFallback className="text-xs bg-gray-200">
-                      {getInitials(unit.in_charge.name)}
-                    </AvatarFallback>
-                      )}
-              </Avatar>
-
-              <div className="flex-1">
-                <h4 className="font-semibold text-gray-900 mb-1">{unit.in_charge.name}</h4>
-                <p className="text-sm text-gray-600 mb-3">{unit.in_charge.position}</p>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Mail className="w-4 h-4" />
-                    <a href={`mailto:${unit.in_charge.email}`} className="hover:text-[#003366] transition-colors">
-                      {unit.in_charge.email}
-                    </a>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Phone className="w-4 h-4" />
-                    <span>{unit.in_charge.phone}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-3 pt-3 border-t">
-              <p className="text-xs text-gray-500">Department: {unit.name}</p>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Children */}
