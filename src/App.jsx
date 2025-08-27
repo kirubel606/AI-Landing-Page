@@ -13,6 +13,7 @@ import SplashWrapper from './components/SplashWrapper';
 import NewsDetail from "./pages/NewsDetail";
 import GalleryPage from "./pages/GalleryPage";
 import StartupPage from './pages/Startup';
+import TrainingsPage from './pages/Training';
 
 function App() {
   const location = useLocation(); // <-- This now works correctly
@@ -30,6 +31,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/research/resources" element={<Resources />} />    
               <Route path="/research/startup" element={<StartupPage />} />    
+              <Route path="/research/trainings" element={<TrainingsPage />} />    
               <Route path="/contactus" element={<Contactus/>} /> 
               <Route path="/gallery" element={<GalleryPage />} />   
               

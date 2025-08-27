@@ -41,9 +41,10 @@ const Header = () => {
   ]
 
   const researchDropdown = [
-    { name: "Projects", path: "/research" },
-    { name: "Resources", path: "/research/resources" },
-    { name: "Startup", path: "/research/startup" },
+    { name: t('projects'), path: "/research" },
+    { name: t('resources'), path: "/research/resources" },
+    { name: t('startup'), path: "/research/startup" },
+    { name: t('trainings'), path: "/research/trainings" },
   ];
 
   useEffect(() => {
