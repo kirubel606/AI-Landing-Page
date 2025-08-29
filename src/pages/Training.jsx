@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "../components/ui/button"
-import { Cards, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/Cards"
+import { Cards, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/cards"
 import { Badge } from "../components/ui/Badge"
 import { Lightbulb, TrendingUp, Monitor, QrCode, ExternalLink, ArrowRight, Rocket, Target, Zap } from "lucide-react"
 import Header from "../components/Header"
