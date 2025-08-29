@@ -145,7 +145,7 @@ export default function StartupPage() {
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Startup
-            <span className="text-accent block">Center</span>
+            <span className="text-accent block text-[#ff9933]">Center</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto">
             Transform your innovative ideas into successful businesses with our
