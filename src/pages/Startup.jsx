@@ -135,7 +135,7 @@ export default function StartupPage() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/modern-startup-incubator-building-with-glass-facad.png"
+            src="/startup.png"
             alt="Startup Center Building"
             className="w-full h-full object-cover"
           />

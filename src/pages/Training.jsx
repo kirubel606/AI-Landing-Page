@@ -98,7 +98,7 @@ export default function TrainingsPage() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/modern-training-center-with-students-learning-tech.png"
+            src="/training.jpg"
             alt="Training Center"
             className="w-full h-full object-cover"
           />
@@ -108,7 +108,7 @@ export default function TrainingsPage() {
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Training
-            <span className="text-accent block">Center</span>
+            <span className="text-accent block text-[#ff9933]">Center</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto">
             Join our comprehensive training programs designed to launch your career in technology
