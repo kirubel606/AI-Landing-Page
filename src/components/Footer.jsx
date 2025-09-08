@@ -1,12 +1,43 @@
 import { Facebook, Twitter, Linkedin, Youtube, Instagram } from "lucide-react"
-import React, { useContext } from "react"
+import React, { useContext,useState  } from "react"
 import { AppContext } from "../context/Appcontext"
 import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
   const { t } = useTranslation();
-  const { settings, loading } = useContext(AppContext)
+  const { settings } = useContext(AppContext)
+  const [email, setEmail] = useState("");
+  const [success, setSuccess] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  const handleSubscribe = async () => {
+    if (!email) return;
+
+    setLoading(true);
+    setSuccess(null);
+
+    try {
+      const response = await fetch("http://localhost:8000/contacts/subscribe/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setSuccess("🎉 Subscription successful!");
+        setEmail("");
+      } else {
+        const data = await response.json();
+        setSuccess(data?.email?.[0] || "❌ Subscription failed");
+      }
+    } catch (err) {
+      setSuccess("❌ Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
   // console.log("Here is Setting:",settings);
   return (
     <footer className="bg-slate-900 text-white">
@@ -82,19 +113,35 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">{t('newsletter')}</h3>
-            <p className="text-gray-300 mb-4">{t('stay_updated')}</p>
-            <div className="space-y-3">
-              <input
-                type="email"
-                placeholder={t('enter_your_email')}
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded focus:outline-none focus:border-orange-500"
-              />
-              <button className="w-full bg-[#FF9933] hover:bg-orange-500 px-4 py-2 rounded transition-colors">
-                {t('subscribe')}
-              </button>
-            </div>
-          </div>
+      <h3 className="font-semibold text-lg mb-4">{t("newsletter")}</h3>
+      <p className="text-gray-300 mb-4">{t("stay_updated")}</p>
+      <div className="space-y-3">
+        <input
+          type="email"
+          placeholder={t("enter_your_email")}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded focus:outline-none focus:border-orange-500"
+        />
+        <button
+          onClick={handleSubscribe}
+          disabled={loading}
+          className="w-full bg-[#FF9933] hover:bg-orange-500 px-4 py-2 rounded transition-colors disabled:opacity-50"
+        >
+          {loading ? t("loading") : t("subscribe")}
+        </button>
+
+        {success && (
+          <p
+            className={`text-sm mt-2 ${
+              success.startsWith("🎉") ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {success}
+          </p>
+        )}
+      </div>
+    </div>
         </div>
 
         {/* Bottom Section */}
