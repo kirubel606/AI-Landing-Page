@@ -9,6 +9,7 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
+  const backendUrl = env.VITE_API_BASE_URL;
 
   const handleSubscribe = async () => {
     if (!email) return;
@@ -17,7 +18,7 @@ const Footer = () => {
     setSuccess(null);
 
     try {
-      const response = await fetch("http://localhost:8000/contacts/subscribe/", {
+      const response = await fetch(`${backendUrl}/contacts/subscribe/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
