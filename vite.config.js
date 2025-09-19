@@ -19,6 +19,7 @@ export default ({ mode }) => {
       }),
     ],
     server: {
+      allowedHosts:'all',
       host: '0.0.0.0', // 👈 Bind to all network interfaces
       port: 5173,       // 👈 Optional but explicit
       proxy: {
